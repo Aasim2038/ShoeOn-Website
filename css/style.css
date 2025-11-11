@@ -1,0 +1,404 @@
+/* ===== GLOBAL STYLES (Mobile First) ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== HEADER / NAVBAR STYLES ===== */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Mobile par Logo hide rakhenge */
+.nav-left .logo {
+  display: none;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-left: 10px;
+  color: #333;
+}
+
+.nav-icon {
+  font-size: 1.3rem;
+  color: #555;
+  margin-left: 15px;
+  position: relative;
+}
+
+.nav-right .nav-icon:first-child {
+  margin-left: 0;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background-color: #d9534f;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.nav-center {
+  flex-grow: 1;
+  padding: 0 15px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.search-bar i {
+  color: #888;
+  margin-right: 8px;
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+/* ===== MOBILE NAV MENU (Hidden by default) ===== */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: -280px; /* Screen ke bahar hide rakha hai */
+  width: 280px;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 2000;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease-in-out; /* Smooth slide effect */
+}
+.mobile-nav.active {
+  left: 0; /* 'active' class lagne par menu dikhega */
+}
+
+.mobile-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.mobile-nav-header h3 {
+  font-size: 1.2rem;
+}
+.close-btn {
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+}
+
+.mobile-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mobile-nav ul li {
+  border-bottom: 1px solid #f0f0f0;
+}
+.mobile-nav ul li a {
+  display: block;
+  padding: 15px 20px;
+  font-size: 1rem;
+  color: #333;
+}
+.mobile-nav ul li a:hover {
+  background-color: #f9f9f9;
+}
+
+/* Overlay (Jab menu khulega tab background ko dark karega) */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1999;
+}
+.overlay.active {
+  display: block;
+}
+
+
+/* ===== MAIN CONTENT CONTAINER ===== */
+.container {
+  padding: 0;
+  background-color: #ffffff;
+}
+
+/* ===== 1. CATEGORY NAV SECTION ===== */
+.category-nav {
+  display: flex;
+  overflow-x: auto;
+  background-color: #fff;
+  padding: 15px 10px;
+  border-bottom: 1px solid #f0f0f0;
+  scrollbar-width: none; /* Firefox */
+}
+.category-nav::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.category-item {
+  flex: 0 0 70px;
+  text-align: center;
+  margin: 0 5px;
+}
+.category-item img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: #f0f0f0; /* Placeholder color */
+  border: 1px solid #e0e0e0;
+  object-fit: cover;
+}
+.category-item p {
+  font-size: 0.75rem;
+  color: #333;
+  margin-top: 5px;
+  white-space: nowrap;
+}
+
+/* ===== 2. HERO BANNER SECTION ===== */
+.hero-banner-slider {
+  width: 100%;
+  overflow: hidden; /* IMPORTANT: Yahi magic hai, extra slides ko chupata hai */
+  background-color: #f0f0f0; /* Placeholder color */
+}
+
+.slider-track {
+  display: flex; /* Sabhi slides ko ek line me rakhta hai */
+  /* Width calculate hogi JS se, lekin default 4 slides ke liye 400% */
+  width: 400%; 
+  position: relative;
+  
+  /* IMPORTANT: Ye smooth sliding effect dega */
+  transition: transform 0.5s ease-in-out; 
+}
+
+.slide {
+  width: 100%; /* Har slide poori screen width lega */
+}
+
+.slide img {
+  width: 100%;
+  display: block; /* Image ke neeche extra space hatane ke liye */
+  min-height: 150px; /* Loading ke time jagah bani rahe */
+  object-fit: cover; /* Image stretch na ho */
+}
+
+/* ===== 3. "MY RANGE" (HORIZONTAL LIST) SECTION ===== */
+.horizontal-list-section {
+  padding: 20px 0;
+  background-color: #fff;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  margin-bottom: 15px;
+}
+.section-header h2 {
+  font-size: 1.2rem;
+  color: #333;
+}
+.section-header a {
+  font-size: 0.9rem;
+  color: #007bff;
+  font-weight: bold;
+}
+.horizontal-list {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 15px;
+  gap: 15px;
+  scrollbar-width: none;
+}
+.horizontal-list::-webkit-scrollbar {
+  display: none;
+}
+.list-item-circle {
+  flex: 0 0 90px;
+  text-align: center;
+}
+.list-item-circle img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 1px solid #e0e0e0;
+  object-fit: cover;
+}
+.list-item-circle p {
+  font-size: 0.85rem;
+  color: #333;
+  margin-top: 8px;
+}
+
+/* ===== 4. PRODUCT CAROUSEL SECTION ===== */
+.product-carousel {
+  width: 100%;
+  padding: 20px 0;
+  background-color: #f9f9f9;
+}
+.carousel-title {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #d3a14b; /* Golden color */
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.carousel-container {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 15px;
+  gap: 15px;
+  scrollbar-width: none;
+}
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+.product-card {
+  flex: 0 0 160px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+.product-info {
+  padding: 12px;
+  text-align: center;
+}
+.product-brand {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0 0 4px 0;
+}
+.product-category {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin: 0 0 8px 0;
+}
+.product-price {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+
+/* ===== RESPONSIVE STYLES (Tablet & Desktop) ===== */
+@media (min-width: 768px) {
+  
+  body {
+    background-color: #e9e9e9;
+  }
+  .main-header,
+  .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+  }
+  .container {
+     padding: 10px;
+  }
+  
+  /* Desktop par logo dikhao */
+  .nav-left .logo {
+    display: block;
+    font-size: 1.6rem;
+  }
+  /* Desktop par Hamburger menu hide karo */
+  #menu-toggle {
+    display: none;
+  }
+  
+  .main-header {
+    padding: 15px 30px;
+  }
+  .nav-icon {
+    font-size: 1.5rem;
+    margin-left: 25px;
+  }
+  .search-bar {
+    padding: 12px 15px;
+  }
+  .category-nav {
+    justify-content: center;
+  }
+  .category-item {
+    flex: 0 0 90px;
+    margin: 0 10px;
+  }
+  .category-item img {
+    width: 70px;
+    height: 70px;
+  }
+  .category-item p {
+    font-size: 0.9rem;
+  }
+  .horizontal-list {
+     justify-content: center;
+  }
+  .product-card {
+    flex: 0 0 200px;
+  }
+  .carousel-title {
+    font-size: 1.8rem;
+  }
+}

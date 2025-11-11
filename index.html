@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShoeOn - Home</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="nav-left">
+      <a href="#" class="nav-icon" id="menu-toggle"><i class="fa-solid fa-bars"></i></a>
+      <a href="/" class="logo">ShoeOn</a>
+    </div>
+    
+    <div class="nav-center">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search styles, brands...">
+      </div>
+    </div>
+    
+    <div class="nav-right">
+      <a href="#" class="nav-icon"><i class="fa-regular fa-heart"></i></a>
+      <a href="#" class="nav-icon">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="cart-count">0</span>
+      </a>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav-menu">
+    <div class="mobile-nav-header">
+      <h3>Menu</h3>
+      <button class="close-btn" id="close-menu-btn">&times;</button>
+    </div>
+    <ul>
+      <li><a href="#">Men's Footwear</a></li>
+      <li><a href="#">Women's Footwear</a></li>
+      <li><a href="#">Kids' Footwear</a></li>
+      <li><a href="#">Top Brands</a></li>
+      <li><a href="#">My Account</a></li>
+      <li><a href="#">Login / Register</a></li>
+    </ul>
+  </nav>
+  <div class="overlay" id="overlay"></div>
+
+
+  <main class="container">
+    
+    <!-- <section class="category-nav">
+       <div class="category-item">
+        <img src="images/top-brand.jpg" alt="Top Brands">
+        <p>Top Brands</p>
+      </div> 
+      <div class="category-item">
+        <img src="images/catogyman.png" alt="Men">
+        <p>Men</p>
+      </div>
+      <div class="category-item">
+        <img src="images/catogywomen.png" alt="Women">
+        <p>Women</p>
+      </div>
+      <div class="category-item">
+        <img src="images/kids-shoes.jpg" alt="Kids">
+        <p>Kids</p>
+      </div>
+       <div class="category-item">
+        <img src="images/accessories.jpg" alt="Accessories">
+        <p>Accessories</p>
+      </div> 
+      <div class="category-item">
+        <img src="images/sports.jpg" alt="Sports">
+        <p>Sports</p>
+      </div>
+    </section> -->
+
+   <section class="hero-banner-slider">
+  <div class="slider-track" id="slider-track">
+    <div class="slide">
+      <img src="images/banner-shoe-1.jpg" alt="Banner 1">
+    </div>
+    <div class="slide">
+      <img src="images/banner-shoe-2.jpg" alt="Banner 2">
+    </div>
+    <div class="slide">
+      <img src="images/banner-shoe-3.jpg" alt="Banner 3">
+    </div>
+    <div class="slide">
+      <img src="images/banner-shoe-4.jpg" alt="Banner 4">
+    </div>
+  </div>
+</section>
+
+    <section class="horizontal-list-section">
+      <div class="section-header">
+        <h2>My Range</h2>
+      </div>
+      <div class="horizontal-list">
+        <div class="list-item-circle">
+          <img src="images/catogyman.png" alt="Boys Footwear">
+          <p>Mens Footwear</p>
+        </div>
+        <div class="list-item-circle">
+          <img src="images/catogywomen.png" alt="Girls Footwear">
+          <p>womens Footwear</p>
+        </div>
+        <div class="list-item-circle">
+          <img src="images/infant-footwear.jpg" alt="Infant Footwear">
+          <p>Infant Footwear</p>
+        </div>
+        <div class="list-item-circle">
+          <img src="images/men-formal.jpg" alt="Men Footwear">
+          <p>Men Footwear</p>
+        </div>
+        <div class="list-item-circle">
+          <img src="images/women-heels.jpg" alt="Women Footwear">
+          <p>Women Footwear</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-carousel">
+      <h2 class="carousel-title">TOP WISHLISTED BRANDS</h2>
+      <div class="carousel-container">
+        
+        <div class="product-card">
+          <img src="images/shoe1.jpg" alt="Product Image">
+          <div class="product-info">
+            <h3 class="product-brand">CoolBrand</h3>
+            <p class="product-category">Sneakers & More</p>
+            <p class="product-price">STARTING AT ₹335/-</p>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <img src="images/shoe2.jpg" alt="Product Image">
+          <div class="product-info">
+            <h3 class="product-brand">FastStep</h3>
+            <p class="product-category">Running Shoes</p>
+            <p class="product-price">STARTING AT ₹447/-</p>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <img src="images/shoe3.jpg" alt="Product Image">
+          <div class="product-info">
+            <h3 class="product-brand">FormalCo</h3>
+            <p class="product-category">Formal Shoes</p>
+            <p class="product-price">STARTING AT ₹599/-</p>
+          </div>
+        </div>
+        
+         <div class="product-card">
+          <img src="images/shoe4.jpg" alt="Product Image">
+          <div class="product-info">
+            <h3 class="product-brand">Hiker</h3>
+            <p class="product-category">Boots</p>
+            <p class="product-price">STARTING AT ₹799/-</p>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+  </main>
+  
+  <script src="js/script.js" defer></script>
+</body>
+</html>
