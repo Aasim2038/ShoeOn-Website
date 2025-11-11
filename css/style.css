@@ -222,13 +222,16 @@ a {
 
 .slide {
   width: 100%; /* Har slide poori screen width lega */
+  height: 200px; /* Mobile par height 200px */
+  
+  overflow: hidden; /* Extra image part ko hide karega */
 }
 
 .slide img {
   width: 100%;
-  display: block; /* Image ke neeche extra space hatane ke liye */
-  min-height: 150px; /* Loading ke time jagah bani rahe */
-  object-fit: cover; /* Image stretch na ho */
+  height: 100%; /* Image ko container ki poori height lene ko bol rahe hain */
+  display: block;
+  object-fit: cover; 
 }
 
 /* ===== 3. "MY RANGE" (HORIZONTAL LIST) SECTION ===== */
@@ -401,5 +404,9 @@ a {
   }
   .carousel-title {
     font-size: 1.8rem;
+  }
+
+  .slide {
+    height: 400px; /* Desktop par banner ki height 400px */
   }
 }
