@@ -207,6 +207,7 @@ a {
   width: 100%;
   overflow: hidden; /* IMPORTANT: Yahi magic hai, extra slides ko chupata hai */
   background-color: #f0f0f0; /* Placeholder color */
+  height: 230px; /* Fixed height for mobile */
 }
 
 .slider-track {
