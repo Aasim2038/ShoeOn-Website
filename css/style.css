@@ -306,40 +306,217 @@ a {
 .carousel-container::-webkit-scrollbar {
   display: none;
 }
-.product-card {
-  flex: 0 0 160px;
+.product-card-b2b {
+  flex: 0 0 170px; /* Card ki width 170px fix */
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  border-radius: 12px; /* Thode zyada rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden; /* Rounded corners ke liye */
+  font-family: Arial, sans-serif;
+  
+  /* Responsive ke liye, taaki cards overlap na ho */
+  margin-bottom: 25px; 
 }
-.product-card img {
-  width: 100%;
+
+.card-image-container {
+  position: relative; /* Logo ko position karne ke liye */
   height: 200px;
-  object-fit: cover;
-  background-color: #f0f0f0;
 }
-.product-info {
-  padding: 12px;
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Image ko poora cover karega */
+  display: block;
+  background-color: #f0f0f0; /* Image load hote time */
+}
+
+/* Logo ka white circle */
+.brand-logo-container {
+  position: absolute;
+  bottom: -25px; /* Aadha image me, aadha neeche info me */
+  left: 50%; /* Center me */
+  transform: translateX(-50%); /* Exact center ke liye */
+  
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  
+  /* Logo ko circle ke andar center karega */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box; /* Padding ko width me include karega */
+}
+
+.brand-logo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Neeche ka info wala hissa */
+.card-info-container {
+  padding: 15px;
+  /* Logo ke liye upar se extra space */
+  padding-top: 35px; /* (25px logo ka + 10px extra space) */
   text-align: center;
 }
+
 .product-brand {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #2c3e50;
-  margin: 0 0 4px 0;
-}
-.product-category {
-  font-size: 0.8rem;
-  color: #7f8c8d;
-  margin: 0 0 8px 0;
-}
-.product-price {
-  font-size: 0.9rem;
+  font-size: 1.1rem; /* 17.6px */
   font-weight: bold;
   color: #333;
+  margin: 0 0 4px 0;
+  
+  /* Agar brand ka naam lamba ho toh cut jaaye */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-category {
+  font-size: 0.85rem; /* 13.6px */
+  color: #777;
+  margin: 0 0 15px 0; /* B2B info se gap */
+}
+
+/* B2B Info (Price aur MOQ) */
+.b2b-info {
+  display: flex;
+  justify-content: space-between; /* Dono ko alag-alag corners me */
+  text-align: left;
+  border-top: 1px solid #f0f0f0; /* Upar ek line */
+  padding-top: 10px;
+}
+
+.info-left, .info-right {
+  display: flex;
+  flex-direction: column; /* Label aur value ko upar-neeche rakhega */
+}
+
+.info-right {
+  text-align: right; /* Right waale ko right align */
+}
+
+/* Labels (Price, MOQ) */
+.product-price-label, .moq-label {
+  font-size: 0.75rem; /* 12px */
+  color: #888;
+  margin-bottom: 2px;
+  text-transform: uppercase; /* Thoda professional look */
+}
+
+/* Values (₹335, 12 Pairs) */
+.product-price, .moq-value {
+  font-size: 0.9rem; /* 14.4px */
+  font-weight: bold;
+  color: #222;
+}
+
+.moq-value {
+  color: #d9534f; /* MOQ ko highlight karne ke liye */
+}
+
+/* ===== FOOTER STYLES (Mobile First) ===== */
+.site-footer {
+  background-color: #2c3e50; /* Dark Blue/Grey Background */
+  color: #bdc3c7; /* Light grey text */
+  padding: 40px 0 0 0; /* Upar 40px padding, neeche 0 */
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column; /* Mobile par sab ek ke neeche ek */
+  padding: 0 20px;
+}
+
+.footer-column {
+  margin-bottom: 30px;
+}
+
+/* Column 1: Logo aur About */
+.footer-logo {
+  font-size: 2rem; /* Logo ka text bada */
+  font-weight: bold;
+  color: #ffffff; /* White color */
+  margin-bottom: 10px;
+}
+/* Agar image logo use karein toh:
+.footer-logo-img {
+  width: 150px;
+  margin-bottom: 10px;
+}
+*/
+.footer-about-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Column 2 & 3: Links */
+.footer-column h4 {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-links ul {
+  list-style: none; /* Bullet points hatane ke liye */
+  padding: 0;
   margin: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+  color: #bdc3c7;
+  font-size: 0.95rem;
+  transition: color 0.2s; /* Hover effect */
+}
+.footer-links ul li a:hover {
+  color: #ffffff; /* Hover par white */
+}
+
+/* Column 4: Contact */
+.footer-contact p {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+.footer-contact p i {
+  width: 20px; /* Icon aur text ko align karega */
+  margin-right: 8px;
+  color: #ffffff;
+}
+
+.social-icons {
+  margin-top: 15px;
+}
+.social-icons a {
+  color: #bdc3c7;
+  font-size: 1.6rem;
+  margin-right: 15px;
+  transition: color 0.2s;
+}
+.social-icons a:hover {
+  color: #ffffff;
+}
+
+/* Footer Bottom (Copyright) */
+.footer-bottom {
+  background-color: #233140; /* Thoda aur dark */
+  color: #95a5a6;
+  text-align: center;
+  padding: 15px 20px;
+  margin-top: 20px; /* Footer content se gap */
+  font-size: 0.85rem;
 }
 
 
@@ -407,5 +584,30 @@ a {
 
   .slide {
     height: 400px; /* Desktop par banner ki height 400px */
+  }
+
+  /* ===== FOOTER RESPONSIVE ===== */
+  .footer-container {
+    flex-direction: row; /* Desktop par side-by-side */
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
+    /* Max-width ko match karne ke liye */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+  
+  .footer-column {
+    /* Har column ko space denge */
+    /* Hum 'flex-basis' use kar rahe hain width ke liye */
+    flex-basis: 22%; /* 4 column ke liye approx 22% */
+    min-width: 200px; /* Minimum width */
+    margin-bottom: 30px;
+  }
+  
+  /* Logo wale column ko thoda zyada space */
+  .footer-about {
+    flex-basis: 30%;
   }
 }
