@@ -519,6 +519,139 @@ a {
   font-size: 0.85rem;
 }
 
+/* ===== MOBILE NAV BUTTONS STYLES ===== */
+
+.nav-auth-buttons {
+  display: flex; /* Buttons ko side-by-side rakhega */
+  gap: 15px; /* Buttons ke beech me space */
+  padding: 20px; /* Container ke andar padding */
+  border-top: 1px solid #f0f0f0; /* Upar ke links se alag karne ke liye */
+}
+
+/* Dono buttons ke liye common style */
+.btn {
+  flex: 1; /* Dono buttons ko equal width dega */
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px; /* Rounded corners */
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+/* Login Button (Outline) */
+.btn-login {
+  background-color: #ffffff;
+  color: #d3a14b; /* Golden text */
+  border: 2px solid #d3a14b; /* Golden border */
+}
+.btn-login:hover {
+  background-color: #fcf8f3; /* Hover par halka color */
+}
+
+/* Register Button (Solid) */
+.btn-register {
+  background-color: #d3a14b; /* Golden background */
+  color: #ffffff; /* White text */
+  border: 2px solid #d3a14b; /* Golden border */
+}
+.btn-register:hover {
+  background-color: #c29140; /* Hover par thoda dark golden */
+}
+
+/* ===== BOTTOM SHEET STYLES ===== */
+
+/* Overlay (Background ko dim karega) */
+.overlay-modal {
+  display: none; /* By default chupa rahega */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Black 50% transparent */
+  z-index: 2000; 
+}
+.overlay-modal.active {
+  display: block; /* Active hone par dikhega */
+}
+
+/* Bottom Sheet Container */
+.bottom-sheet-container {
+  position: fixed;
+  left: 0;
+  bottom: -100%; /* By default neeche chupa rahega */
+  width: 100%;
+  background-color: #ffffff;
+  border-top-left-radius: 16px; /* Top corners rounded */
+  border-top-right-radius: 16px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2001; /* Overlay se bhi upar */
+  transition: bottom 0.3s ease-in-out; /* Smooth slide effect */
+}
+.bottom-sheet-container.active {
+  bottom: 0; /* Active hone par oopar slide hoga */
+}
+
+/* Sheet Header (Title aur Close Button) */
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.sheet-header h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.sheet-close-btn {
+  font-size: 1.1rem;
+  background-color: #f0f0f0;
+  color: #555;
+  border: none;
+  border-radius: 50%; /* Gol button */
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sheet Content (Grid) */
+.sheet-content {
+  padding: 20px;
+  max-height: 60vh; /* Screen ki 60% height tak */
+  overflow-y: auto;
+}
+
+.subcategory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 column layout */
+  gap: 20px; /* Items ke beech me space */
+}
+
+.subcategory-item {
+  text-align: center;
+}
+.subcategory-item img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%; /* Gol image */
+  border: 1px solid #e0e0e0;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+.subcategory-item p {
+  font-size: 0.85rem;
+  color: #333;
+  line-height: 1.3;
+}
+
 
 /* ===== RESPONSIVE STYLES (Tablet & Desktop) ===== */
 @media (min-width: 768px) {

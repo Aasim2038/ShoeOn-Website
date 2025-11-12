@@ -67,3 +67,40 @@ if (slideCount > 0) {
   // Har 3 second (3000ms) me slide change karo
   setInterval(moveToNextSlide, 3000);
 }
+
+/* ===== BOTTOM SHEET ("My Range") CODE ===== */
+
+// Saare elements ko select kar rahe hain
+// IMPORTANT: Humne ID change kar di hai
+const menCategoryBtn = document.getElementById('my-range-men-btn'); 
+const bottomSheet = document.getElementById('men-footwear-sheet');
+const sheetOverlay = document.getElementById('sheet-overlay');
+const sheetCloseBtn = document.getElementById('sheet-close-btn');
+
+// Function jo sheet ko kholega
+function openMenSheet() {
+  bottomSheet.classList.add('active');
+  sheetOverlay.classList.add('active');
+}
+
+// Function jo sheet ko band karega
+function closeMenSheet() {
+  bottomSheet.classList.remove('active');
+  sheetOverlay.classList.remove('active');
+}
+
+// Check karo ki elements page par hain ya nahi (error se bachne ke liye)
+if (menCategoryBtn && bottomSheet && sheetOverlay && sheetCloseBtn) {
+  
+  // "Men" category par click karne se sheet khulegi
+  menCategoryBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // Default link behaviour ko roko
+    openMenSheet();
+  });
+
+  // Close button par click karne se sheet band hogi
+  sheetCloseBtn.addEventListener('click', closeMenSheet);
+
+  // Overlay (bahar) click karne se bhi sheet band hogi
+  sheetOverlay.addEventListener('click', closeMenSheet);
+}

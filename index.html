@@ -44,8 +44,13 @@
       <li><a href="#">Kids' Footwear</a></li>
       <li><a href="#">Top Brands</a></li>
       <li><a href="#">My Account</a></li>
-      <li><a href="#">Login / Register</a></li>
-    </ul>
+      </ul>
+    
+    <div class="nav-auth-buttons">
+      <a href="/login" class="btn btn-login">Login</a>
+      <a href="/register" class="btn btn-register">Register</a>
+    </div>
+    
   </nav>
   <div class="overlay" id="overlay"></div>
 
@@ -101,10 +106,10 @@
         <h2>My Range</h2>
       </div>
       <div class="horizontal-list">
-        <div class="list-item-circle">
-          <img src="images/catogyman.png" alt="Boys Footwear">
-          <p>Mens Footwear</p>
-        </div>
+                <div class="list-item-circle" id="my-range-men-btn"> 
+          <img src="images/catogyman.png" alt="Boys Footwear">
+          <p>Mens Footwear</p>
+        </div>
         <div class="list-item-circle">
           <img src="images/catogywomen.png" alt="Girls Footwear">
           <p>womens Footwear</p>
@@ -357,6 +362,50 @@
   </div>
 </footer>
   
+
+<div class="overlay-modal" id="sheet-overlay"></div>
+
+<div class="bottom-sheet-container" id="men-footwear-sheet">
+  
+  <div class="sheet-header">
+    <h3>Men Footwear</h3>
+    <button class="sheet-close-btn" id="sheet-close-btn">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  
+  <div class="sheet-content">
+    <div class="subcategory-grid">
+      
+      <div class="subcategory-item">
+        <img src="images/sub-cat/subcat-casual.jpeg" alt="Casual Shoes">
+        <p>Casual Shoes</p>
+      </div>
+      <div class="subcategory-item">
+        <img src="images/sub-cat/subcat-chapple.jpg" alt="Chappals">
+        <p>Chappals</p>
+      </div>
+      <div class="subcategory-item">
+        <img src="images/sub-cat/subcat-flipflop.jpeg" alt="Flip Flops">
+        <p>Flip Flops & Slippers</p>
+      </div>
+      <div class="subcategory-item">
+        <img src="images/sub-cat/subcat-formal.jpeg" alt="Formal Shoes">
+        <p>Formal Shoes</p>
+      </div>
+      <div class="subcategory-item">
+        <img src="images/sub-cat/subcat-sandals.jpeg" alt="Sandals">
+        <p>Sandals</p>
+      </div>
+      <div class="subcategory-item">
+        <img src="images/sub-cat/subcat-sportsshoe.jpeg" alt="Sports Shoes">
+        <p>Sports Shoes</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
   <script src="js/script.js" defer></script>
 </body>
 </html>
