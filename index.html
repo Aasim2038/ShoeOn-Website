@@ -106,23 +106,28 @@
         <h2>My Range</h2>
       </div>
       <div class="horizontal-list">
-                <div class="list-item-circle" id="my-range-men-btn"> 
-          <img src="images/catogyman.png" alt="Boys Footwear">
+        
+        <div class="list-item-circle category-trigger" data-target="men-sheet"> 
+          <img src="images/catogyman.png" alt="Mens Footwear">
           <p>Mens Footwear</p>
         </div>
-        <div class="list-item-circle">
-          <img src="images/catogywomen.png" alt="Girls Footwear">
-          <p>womens Footwear</p>
-        </div>
-        <div class="list-item-circle">
-          <img src="images/catogyinfant.jpeg" alt="Infant Footwear">
-          <p>Infant Footwear</p>
-        </div>
-        <div class="list-item-circle">
-          <img src="images/catogyboy.jpeg" alt="Men Footwear">
-          <p>Boys Footwear</p>
-        </div>
-        <div class="list-item-circle">
+
+        <div class="list-item-circle category-trigger" data-target="women-sheet">
+          <img src="images/catogywomen.png" alt="Womens Footwear">
+          <p>womens Footwear</p>
+        </div>
+
+        <div class="list-item-circle category-trigger" data-target="infant-sheet">
+          <img src="images/catogyinfant.jpeg" alt="Infant Footwear">
+          <p>Infant Footwear</p>
+        </div>
+
+        <div class="list-item-circle category-trigger" data-target="boys-sheet">
+          <img src="images/catogyboy.jpeg" alt="Boys Footwear">
+          <p>Boys Footwear</p>
+        </div>
+
+        <div class="list-item-circle category-trigger" data-target="girl-sheet">
           <img src="images/catogygirl.jpeg" alt="Women Footwear">
           <p>Girls Footwear</p>
         </div>
@@ -365,44 +370,17 @@
 
 <div class="overlay-modal" id="sheet-overlay"></div>
 
-<div class="bottom-sheet-container" id="men-footwear-sheet">
+<div class="bottom-sheet-container" id="category-sheet-modal">
   
   <div class="sheet-header">
-    <h3>Men Footwear</h3>
-    <button class="sheet-close-btn" id="sheet-close-btn">
+    <h3 id="sheet-title">Category</h3> <button class="sheet-close-btn" id="universal-sheet-close-btn">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
   
   <div class="sheet-content">
-    <div class="subcategory-grid">
-      
-      <div class="subcategory-item">
-        <img src="images/sub-cat/subcat-casual.jpeg" alt="Casual Shoes">
-        <p>Casual Shoes</p>
+    <div class="subcategory-grid" id="sheet-grid-content">
       </div>
-      <div class="subcategory-item">
-        <img src="images/sub-cat/subcat-chapple.jpg" alt="Chappals">
-        <p>Chappals</p>
-      </div>
-      <div class="subcategory-item">
-        <img src="images/sub-cat/subcat-flipflop.jpeg" alt="Flip Flops">
-        <p>Flip Flops & Slippers</p>
-      </div>
-      <div class="subcategory-item">
-        <img src="images/sub-cat/subcat-formal.jpeg" alt="Formal Shoes">
-        <p>Formal Shoes</p>
-      </div>
-      <div class="subcategory-item">
-        <img src="images/sub-cat/subcat-sandals.jpeg" alt="Sandals">
-        <p>Sandals</p>
-      </div>
-      <div class="subcategory-item">
-        <img src="images/sub-cat/subcat-sportsshoe.jpeg" alt="Sports Shoes">
-        <p>Sports Shoe</p>
-      </div>
-
-    </div>
   </div>
 </div>
 

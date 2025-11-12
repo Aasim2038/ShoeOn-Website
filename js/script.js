@@ -70,37 +70,126 @@ if (slideCount > 0) {
 
 /* ===== BOTTOM SHEET ("My Range") CODE ===== */
 
-// Saare elements ko select kar rahe hain
-// IMPORTANT: Humne ID change kar di hai
-const menCategoryBtn = document.getElementById('my-range-men-btn'); 
-const bottomSheet = document.getElementById('men-footwear-sheet');
-const sheetOverlay = document.getElementById('sheet-overlay');
-const sheetCloseBtn = document.getElementById('sheet-close-btn');
+/* ===== DYNAMIC BOTTOM SHEET CODE (The "Brain") ===== */
 
-// Function jo sheet ko kholega
-function openMenSheet() {
+// 1. Saara Data yahaan store karenge
+// FUTURE ME AAPKO BAS YAHIN NAYI CATEGORY ADD KARNI HAI
+const allCategoryData = {
+  
+  'men-sheet': {
+    title: 'Men Footwear',
+    items: [
+      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-casual.jpeg' },
+      { name: 'Chappals', img: 'images/sub-cat/subcat-chapple.jpg' },
+      { name: 'Flip Flops', img: 'images/sub-cat/subcat-flipflop.jpeg' },
+      { name: 'Formal Shoes', img: 'images/sub-cat/subcat-formal.jpeg' },
+      { name: 'Sandals', img: 'images/sub-cat/subcat-sandals.jpeg' },
+      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+    ]
+  },
+  
+  'women-sheet': {
+    title: 'Women Footwear',
+    items: [
+      { name: 'Heels', img: 'images/sub-cat/women-heels.jpeg' },
+      { name: 'Flats', img: 'images/sub-cat/women-flats.jpeg' },
+      { name: 'Sandals', img: 'images/sub-cat/women-sandals.jpeg' },
+      { name: 'Sneakers', img: 'images/sub-cat/women-sneakers.jpeg' },
+    ]
+  },
+  
+  'infant-sheet': {
+    title: 'Infant Footwear',
+    items: [
+      { name: 'Booties', img: 'images/sub-cat/subcat-casual.jpeg' },
+      { name: 'Soft Shoes', img: 'images/sub-cat/subcat-formal.jpeg' },
+      { name: 'First Walkers', img: 'images/sub-cat/subcat-casual.jpeg' },
+    ]
+  },
+  
+  'boys-sheet': {
+    title: 'Boys Footwear',
+    items: [
+      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+      { name: 'Sandals', img: 'images/sub-cat/subcat-formal.jpeg' },
+      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+    ]
+  },
+
+  'girl-sheet': {
+    title: 'girl Footwear',
+    items: [
+      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+      { name: 'Sandals', img: 'images/sub-cat/subcat-formal.jpeg' },
+      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+    ]
+  }
+  
+  // Nayi category add karne ke liye bas yahaan copy-paste karo
+  
+};
+
+
+// 2. HTML Elements ko pakdo
+const categoryTriggers = document.querySelectorAll('.category-trigger');
+const sheetOverlay = document.getElementById('sheet-overlay');
+const bottomSheet = document.getElementById('category-sheet-modal');
+const sheetTitle = document.getElementById('sheet-title');
+const sheetGrid = document.getElementById('sheet-grid-content');
+const closeSheetBtn = document.getElementById('universal-sheet-close-btn');
+
+// 3. Function: Pop-up ko data se bharne ke liye
+function openSheet(categoryKey) {
+  // Data object se category ka data nikalo
+  const data = allCategoryData[categoryKey];
+  
+  if (!data) {
+    console.error('Data not found for category:', categoryKey);
+    return; // Agar data na mile toh ruk jao
+  }
+  
+  // 1. Title set karo
+  sheetTitle.innerText = data.title;
+  
+  // 2. Grid ko khali karo
+  sheetGrid.innerHTML = ''; 
+  
+  // 3. Grid ko naye items se bharo
+  let itemsHTML = ''; // Saare items ka HTML string
+  data.items.forEach(item => {
+    itemsHTML += `
+      <div class="subcategory-item">
+        <img src="${item.img}" alt="${item.name}">
+        <p>${item.name}</p>
+      </div>
+    `;
+  });
+  
+  sheetGrid.innerHTML = itemsHTML; // HTML ko grid me daalo
+  
+  // 4. Pop-up ko dikhao
   bottomSheet.classList.add('active');
   sheetOverlay.classList.add('active');
 }
 
-// Function jo sheet ko band karega
-function closeMenSheet() {
+// 4. Function: Pop-up ko band karne ke liye
+function closeSheet() {
   bottomSheet.classList.remove('active');
   sheetOverlay.classList.remove('active');
 }
 
-// Check karo ki elements page par hain ya nahi (error se bachne ke liye)
-if (menCategoryBtn && bottomSheet && sheetOverlay && sheetCloseBtn) {
-  
-  // "Men" category par click karne se sheet khulegi
-  menCategoryBtn.addEventListener('click', function(event) {
-    event.preventDefault(); // Default link behaviour ko roko
-    openMenSheet();
+// 5. Saare Click events
+// Har category trigger (Men, Women..) par click
+categoryTriggers.forEach(button => {
+  button.addEventListener('click', function(event) {
+    event.preventDefault();
+    const categoryKey = button.dataset.target; // 'men-sheet' ya 'women-sheet'
+    openSheet(categoryKey); // Uss key ke data se pop-up kholo
   });
+});
 
-  // Close button par click karne se sheet band hogi
-  sheetCloseBtn.addEventListener('click', closeMenSheet);
+// Close button par click
+closeSheetBtn.addEventListener('click', closeSheet);
 
-  // Overlay (bahar) click karne se bhi sheet band hogi
-  sheetOverlay.addEventListener('click', closeMenSheet);
-}
+// Overlay (bahar) par click
+sheetOverlay.addEventListener('click', closeSheet);
