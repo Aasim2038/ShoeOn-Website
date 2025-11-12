@@ -267,6 +267,14 @@ a {
 .list-item-circle {
   flex: 0 0 90px;
   text-align: center;
+  
+  /* NAYE CHANGES YAHAN SE SHURU */
+  display: flex; /* Flexbox use karo */
+  flex-direction: column; /* Items ko upar-neeche rakho */
+  align-items: center; /* Horizontally center karo */
+  justify-content: flex-start; /* Items ko container ke top se shuru karo */
+  min-height: 120px; /* Ek minimum height do taaki sabki height same rahe */
+  /* NAYE CHANGES YAHAN KHATAM */
 }
 .list-item-circle img {
   width: 80px;
@@ -275,11 +283,18 @@ a {
   background-color: #f0f0f0;
   border: 1px solid #e0e0e0;
   object-fit: cover;
+  margin-bottom: 8px; /* Image aur text ke beech ka gap */
+  flex-shrink: 0; /* Image ko chhota hone se roke */
 }
-.list-item-circle p {
+.list-item-circle   p {
   font-size: 0.85rem;
   color: #333;
-  margin-top: 8px;
+  margin-top: 0; /* Margin-top ki ab zaroorat nahi kyunki image me margin-bottom hai */
+  line-height: 1.2; /* Line height adjust karo agar text do line me aaye */
+  overflow: hidden; /* Agar text bada ho toh cut jaye */
+  text-overflow: ellipsis; /* Cut hone par '...' dikhaye */
+  display: -webkit-box; /* Multi-line ellipsis ke liye */
+  -webkit-box-orient: vertical;
 }
 
 /* ===== 4. PRODUCT CAROUSEL SECTION ===== */
