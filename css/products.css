@@ -29,6 +29,7 @@
 }
 
 /* Product Card (Compact Height) */
+/* Product Card (Ab ye <a> tag ban jayega) */
 .plp-card {
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
@@ -37,6 +38,17 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  
+  /* LINK STYLES REMOVE KARNE KE LIYE */
+  text-decoration: none; /* Underline hatayi */
+  color: inherit; /* Text color black hi rahega */
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Click karne par thoda dabne ka effect */
+.plp-card:active {
+  transform: scale(0.98);
 }
 
 /* 1. Image Box (Height Kam Ki) */

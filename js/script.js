@@ -180,13 +180,14 @@ document.addEventListener('DOMContentLoaded', function() {
       let cardsHTML = '';
       data.products.forEach(product => {
         cardsHTML += `
-          <div class="plp-card">
+          <a href="product-detail.html" class="plp-card">
+            
             <div class="plp-image-box">
-              <a href="product-detail.html">
-                <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/150'">
-              </a>
-              <a href="#" class="wishlist-icon"><i class="fa-regular fa-heart"></i></a>
+              <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/150'">
+              
+              <object><div class="wishlist-icon"><i class="fa-regular fa-heart"></i></div></object>
             </div>
+            
             <div class="plp-details">
               <h3 class="plp-brand">${product.brand}</h3>
               <p class="plp-title">${product.name}</p>
@@ -200,7 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
               </div>
               <p class="plp-price">${product.price}</p>
             </div>
-          </div>
+            
+          </a>
         `;
       });
       productGrid.innerHTML = cardsHTML;

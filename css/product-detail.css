@@ -187,12 +187,67 @@
 .pdp-specs li { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
 
 /* Fixed Bottom Action Bar */
+/* ===== FIXED BOTTOM ACTION BAR (Improved) ===== */
 .pdp-action-bar {
-  position: fixed; bottom: 0; left: 0; width: 100%;
-  background: #fff; padding: 10px 15px;
-  display: flex; gap: 10px;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  position: fixed; 
+  bottom: 0; 
+  left: 0; 
+  width: 100%;
+  background: #fff; 
+  
+  /* Padding adjust ki taaki buttons chipke na */
+  padding: 12px 15px; 
+  
+  display: flex; 
+  gap: 12px; /* Buttons ke beech gap badhaya */
+  
+  /* Upar shadow taaki content se alag dikhe */
+  box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
   z-index: 1000;
+}
+
+/* Common Button Style */
+.pdp-action-bar button {
+  height: 50px; /* FIXED HEIGHT (Bada kar diya) */
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px; /* Thoda round */
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* 1. Wishlist Button (Square) */
+.btn-wishlist {
+  width: 50px; /* Square shape */
+  background: #fff; 
+  border: 1.5px solid #e0e0e0; 
+  color: #555;
+  font-size: 1.4rem !important; /* Icon bada kiya */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2. Add to Cart Button */
+.btn-cart {
+  flex: 1; /* Jagah lega */
+  background: #ffffff; 
+  border: 1.5px solid #333; 
+  color: #333;
+}
+
+/* 3. Buy Now Button */
+.btn-buy {
+  flex: 1; /* Jagah lega */
+  background: #d3a14b; /* Theme Color */
+  border: none; 
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(211, 161, 75, 0.3); /* Glow effect */
+}
+
+/* Click Effect */
+.pdp-action-bar button:active {
+  transform: scale(0.96); /* Dabanewala effect */
 }
 .btn-wishlist {
   width: 50px; background: #fff; border: 1px solid #ddd; border-radius: 6px; font-size: 1.2rem;
