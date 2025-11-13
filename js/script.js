@@ -1,195 +1,211 @@
-// DOM elements ko select kar rahe hain
+/* =========================================
+   1. MOBILE MENU TOGGLE (Home Page)
+   ========================================= */
 const menuToggleBtn = document.getElementById('menu-toggle');
 const closeMenuBtn = document.getElementById('close-menu-btn');
 const mobileNavMenu = document.getElementById('mobile-nav-menu');
 const overlay = document.getElementById('overlay');
 
-// Function jo menu ko kholegi
-function openMenu() {
-  mobileNavMenu.classList.add('active');
-  overlay.classList.add('active');
-}
-
-// Function jo menu ko band karegi
-function closeMenu() {
-  mobileNavMenu.classList.remove('active');
-  overlay.classList.remove('active');
-}
-
-// Hamburger icon par click karne se menu khulega
-menuToggleBtn.addEventListener('click', function(event) {
-  event.preventDefault(); // Link ko follow karne se rokega
-  openMenu();
-});
-
-// Close button par click karne se menu band hoga
-closeMenuBtn.addEventListener('click', function() {
-  closeMenu();
-});
-
-// Overlay (bahar) click karne se bhi menu band hoga
-overlay.addEventListener('click', function() {
-  closeMenu();
-});
-
-/* ===== HERO BANNER SLIDER CODE ===== */
-
-// Pehle zaroori cheezein select kar lo
-const sliderTrack = document.getElementById('slider-track');
-const slides = Array.from(sliderTrack.children);
-const slideCount = slides.length;
-
-// Agar slides hain tabhi code chalao
-if (slideCount > 0) {
-  let currentSlideIndex = 0;
-
-  // Slider track ki width ko slides ke hisaab se set karo
-  // Agar 4 slides hain, toh width 400% hogi
-  sliderTrack.style.width = `${slideCount * 100}%`;
-
-  // Har slide ki width ko bhi set karo
-  slides.forEach(slide => {
-    slide.style.width = `${100 / slideCount}%`;
-  });
-
-  // Function jo slide ko change karega
-  function moveToNextSlide() {
-    // Agli slide ka index calculate karo
-    currentSlideIndex = (currentSlideIndex + 1) % slideCount;
-    
-    // Slider ko left me move karo
-    // Har slide 100% / slideCount jitni jagah leti hai
-    // To slide 2 pe jaane ke liye - (1 * (100 / slideCount))%
-    const amountToMove = currentSlideIndex * (100 / slideCount);
-    sliderTrack.style.transform = `translateX(-${amountToMove}%)`;
+if (menuToggleBtn && closeMenuBtn && mobileNavMenu && overlay) {
+  function openMenu() {
+    mobileNavMenu.classList.add('active');
+    overlay.classList.add('active');
   }
-
-  // Har 3 second (3000ms) me slide change karo
-  setInterval(moveToNextSlide, 3000);
+  function closeMenu() {
+    mobileNavMenu.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+  menuToggleBtn.addEventListener('click', (e) => { e.preventDefault(); openMenu(); });
+  closeMenuBtn.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
 }
 
-/* ===== BOTTOM SHEET ("My Range") CODE ===== */
 
-/* ===== DYNAMIC BOTTOM SHEET CODE (The "Brain") ===== */
-
-// 1. Saara Data yahaan store karenge
-// FUTURE ME AAPKO BAS YAHIN NAYI CATEGORY ADD KARNI HAI
+/* =========================================
+   2. HOME PAGE: DYNAMIC BOTTOM SHEETS
+   ========================================= */
+// Categories ka Data
 const allCategoryData = {
-  
   'men-sheet': {
     title: 'Men Footwear',
     items: [
-      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-casual.jpeg' },
-      { name: 'Chappals', img: 'images/sub-cat/subcat-chapple.jpg' },
-      { name: 'Flip Flops', img: 'images/sub-cat/subcat-flipflop.jpeg' },
-      { name: 'Formal Shoes', img: 'images/sub-cat/subcat-formal.jpeg' },
-      { name: 'Sandals', img: 'images/sub-cat/subcat-sandals.jpeg' },
-      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-casual.jpeg', url: 'products.html?category=men-casual' },
+      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg', url: 'products.html?category=men-sports' },
+      { name: 'Formal Shoes', img: 'images/sub-cat/subcat-formal.jpeg', url: 'products.html?category=men-formal' },
+      { name: 'Sandals', img: 'images/sub-cat/subcat-sandals.jpeg', url: 'products.html?category=men-sandals' },
     ]
   },
-  
   'women-sheet': {
     title: 'Women Footwear',
     items: [
-      { name: 'Heels', img: 'images/sub-cat/women-heels.jpeg' },
-      { name: 'Flats', img: 'images/sub-cat/women-flats.jpeg' },
-      { name: 'Sandals', img: 'images/sub-cat/women-sandals.jpeg' },
-      { name: 'Sneakers', img: 'images/sub-cat/women-sneakers.jpeg' },
+      { name: 'Heels', img: 'images/sub-cat/women-heels.jpeg', url: 'products.html?category=women-heels' },
+      { name: 'Flats', img: 'images/sub-cat/women-flats.jpeg', url: 'products.html?category=women-flats' },
+      { name: 'Sandals', img: 'images/sub-cat/women-sandals.jpeg', url: 'products.html?category=women-sandals' },
     ]
   },
-  
-  'infant-sheet': {
-    title: 'Infant Footwear',
-    items: [
-      { name: 'Booties', img: 'images/sub-cat/subcat-casual.jpeg' },
-      { name: 'Soft Shoes', img: 'images/sub-cat/subcat-formal.jpeg' },
-      { name: 'First Walkers', img: 'images/sub-cat/subcat-casual.jpeg' },
-    ]
-  },
-  
   'boys-sheet': {
     title: 'Boys Footwear',
     items: [
-      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
-      { name: 'Sandals', img: 'images/sub-cat/subcat-formal.jpeg' },
-      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg', url: 'products.html?category=boys-sports' },
+      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-casual.jpeg', url: 'products.html?category=boys-casual' },
     ]
   },
-
   'girl-sheet': {
     title: 'girl Footwear',
     items: [
-      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
-      { name: 'Sandals', img: 'images/sub-cat/subcat-formal.jpeg' },
-      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg' },
+      { name: 'Sports Shoes', img: 'images/sub-cat/subcat-sportsshoe.jpeg', url: 'products.html?category=boys-sports' },
+      { name: 'Casual Shoes', img: 'images/sub-cat/subcat-casual.jpeg', url: 'products.html?category=boys-casual' },
     ]
   }
-  
-  // Nayi category add karne ke liye bas yahaan copy-paste karo
-  
 };
 
-
-// 2. HTML Elements ko pakdo
+// Elements Select Karna
 const categoryTriggers = document.querySelectorAll('.category-trigger');
 const sheetOverlay = document.getElementById('sheet-overlay');
 const bottomSheet = document.getElementById('category-sheet-modal');
-const sheetTitle = document.getElementById('sheet-title');
-const sheetGrid = document.getElementById('sheet-grid-content');
-const closeSheetBtn = document.getElementById('universal-sheet-close-btn');
 
-// 3. Function: Pop-up ko data se bharne ke liye
-function openSheet(categoryKey) {
-  // Data object se category ka data nikalo
-  const data = allCategoryData[categoryKey];
+if (categoryTriggers.length > 0 && sheetOverlay && bottomSheet) {
   
-  if (!data) {
-    console.error('Data not found for category:', categoryKey);
-    return; // Agar data na mile toh ruk jao
+  const sheetTitle = document.getElementById('sheet-title');
+  const sheetGrid = document.getElementById('sheet-grid-content');
+  const closeSheetBtn = document.getElementById('universal-sheet-close-btn');
+
+  // Function: Sheet ko bharna aur kholna
+  function openSheet(categoryKey) {
+    const data = allCategoryData[categoryKey];
+    if (!data) return;
+
+    sheetTitle.innerText = data.title;
+    sheetGrid.innerHTML = ''; // Purana content saaf karo
+
+    let itemsHTML = '';
+    data.items.forEach(item => {
+      // Yahaan humne href (link) daal diya hai
+      itemsHTML += `
+        <a href="${item.url}" class="subcategory-item">
+          <img src="${item.img}" alt="${item.name}">
+          <p>${item.name}</p>
+        </a>
+      `;
+    });
+    sheetGrid.innerHTML = itemsHTML;
+
+    bottomSheet.classList.add('active');
+    sheetOverlay.classList.add('active');
   }
-  
-  // 1. Title set karo
-  sheetTitle.innerText = data.title;
-  
-  // 2. Grid ko khali karo
-  sheetGrid.innerHTML = ''; 
-  
-  // 3. Grid ko naye items se bharo
-  let itemsHTML = ''; // Saare items ka HTML string
-  data.items.forEach(item => {
-    itemsHTML += `
-      <div class="subcategory-item">
-        <img src="${item.img}" alt="${item.name}">
-        <p>${item.name}</p>
-      </div>
-    `;
+
+  // Function: Sheet band karna
+  function closeSheet() {
+    bottomSheet.classList.remove('active');
+    sheetOverlay.classList.remove('active');
+  }
+
+  // Click Listeners lagana
+  categoryTriggers.forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const categoryKey = button.dataset.target;
+      openSheet(categoryKey);
+    });
   });
-  
-  sheetGrid.innerHTML = itemsHTML; // HTML ko grid me daalo
-  
-  // 4. Pop-up ko dikhao
-  bottomSheet.classList.add('active');
-  sheetOverlay.classList.add('active');
+
+  closeSheetBtn.addEventListener('click', closeSheet);
+  sheetOverlay.addEventListener('click', closeSheet);
 }
 
-// 4. Function: Pop-up ko band karne ke liye
-function closeSheet() {
-  bottomSheet.classList.remove('active');
-  sheetOverlay.classList.remove('active');
-}
 
-// 5. Saare Click events
-// Har category trigger (Men, Women..) par click
-categoryTriggers.forEach(button => {
-  button.addEventListener('click', function(event) {
-    event.preventDefault();
-    const categoryKey = button.dataset.target; // 'men-sheet' ya 'women-sheet'
-    openSheet(categoryKey); // Uss key ke data se pop-up kholo
-  });
+/* =========================================
+   3. PRODUCT LISTING PAGE (products.html)
+   ========================================= */
+
+// Products ka Database
+const productsDatabase = {
+  'men-casual': {
+    title: "Men's Casual Shoes",
+    count: '12 Styles',
+    products: [
+      { brand: 'Liberty', name: 'Synthetic Upper Casual', price: '₹1,585', img: 'images/plp-shoe-2.jpeg', moq: '10' },
+      { brand: 'Bata', name: 'Daily Wear Loafers', price: '₹999', img: 'images/plp-shoe-1.jpeg', moq: '12' },
+      { brand: 'Sparx', name: 'Canvas Sneakers', price: '₹750', img: 'images/cartimg-spark.jpg', moq: '8' },
+      { brand: 'Adidas', name: 'Street Run', price: '₹2,100', img: 'images/cartimg-adidas.jpg', moq: '6' },
+    ]
+  },
+  'men-sports': {
+    title: "Men's Sports Shoes",
+    count: '8 Styles',
+    products: [
+      { brand: 'Nike', name: 'Air Zoom Pegasus', price: '₹4,500', img: 'images/cartimg-nike.jpg', moq: '5' },
+      { brand: 'Puma', name: 'Nitro Runner', price: '₹3,200', img: 'images/cartimg-puma.jpg', moq: '5' },
+    ]
+  },
+  'women-sandals': {
+    title: "Women's Sandals & Flats",
+    count: '20 Styles',
+    products: [
+      { brand: 'Catwalk', name: 'Golden Strap Sandals', price: '₹1,200', img: 'images/sub-cat/women-flats.jpeg', moq: '10' },
+      { brand: 'Bata', name: 'Comfy Flats', price: '₹599', img: 'images/sub-cat/women-heels.jpeg', moq: '15' },
+    ]
+  },
+  // Fallback (Agar kuch na mile)
+  'default': {
+    title: "All Products",
+    count: '0 Styles',
+    products: []
+  }
+};
+
+// Page Load hone par chalne wala logic
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Check karo ki hum 'products.html' par hain
+  const productGrid = document.getElementById('product-grid');
+  
+  if (productGrid) {
+    const pageTitle = document.getElementById('page-category-title');
+    const styleCount = document.getElementById('style-count');
+
+    // URL se category nikalo (?category=...)
+    const params = new URLSearchParams(window.location.search);
+    const categoryKey = params.get('category');
+
+    console.log("Current Category:", categoryKey); // Checking for errors
+
+    // Database se match karo, nahi toh 'men-casual' dikhao (Fallback)
+    const data = productsDatabase[categoryKey] || productsDatabase['men-casual'];
+
+    if (data) {
+      pageTitle.innerText = data.title;
+      styleCount.innerText = data.count;
+
+      let cardsHTML = '';
+      data.products.forEach(product => {
+        cardsHTML += `
+          <div class="plp-card">
+            <div class="plp-image-box">
+              <a href="product-detail.html">
+                <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/150'">
+              </a>
+              <a href="#" class="wishlist-icon"><i class="fa-regular fa-heart"></i></a>
+            </div>
+            <div class="plp-details">
+              <h3 class="plp-brand">${product.brand}</h3>
+              <p class="plp-title">${product.name}</p>
+              <div class="plp-meta-info">
+                <span><i class="fa-solid fa-palette"></i> 1 Color</span>
+                <span><i class="fa-solid fa-ruler"></i> All Sizes</span>
+              </div>
+              <div class="plp-b2b-info">
+                <span>MOQ: ${product.moq}</span>
+                <span>Margin: 25%</span>
+              </div>
+              <p class="plp-price">${product.price}</p>
+            </div>
+          </div>
+        `;
+      });
+      productGrid.innerHTML = cardsHTML;
+    } else {
+      pageTitle.innerText = "Product Not Found";
+    }
+  }
 });
-
-// Close button par click
-closeSheetBtn.addEventListener('click', closeSheet);
-
-// Overlay (bahar) par click
-sheetOverlay.addEventListener('click', closeSheet);

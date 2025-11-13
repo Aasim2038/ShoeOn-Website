@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - ShoeOn</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/product-detail.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="nav-left">
+      <a href="javascript:history.back()" class="nav-icon"><i class="fa-solid fa-arrow-left"></i></a>
+    </div>
+    <div class="nav-center" style="text-align:center; font-weight:bold;">
+      Product Details
+    </div>
+    <div class="nav-right">
+      <a href="#" class="nav-icon"><i class="fa-solid fa-bag-shopping"></i></a>
+    </div>
+  </header>
+
+  <main class="pdp-container">
+    
+    <div class="slider-container">
+      
+      <div class="slider-icons">
+        <span class="offer-badge">28% OFF</span>
+        <button class="icon-btn"><i class="fa-solid fa-share-nodes"></i></button>
+        <button class="icon-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+
+      <div class="slider-track" id="productSlider">
+        <div class="slide">
+          <img src="images/shoe1.jpg" alt="Shoe Image 1">
+        </div>
+        <div class="slide">
+          <img src="images/shoe2.jpg" alt="Shoe Image 2">
+        </div>
+        <div class="slide">
+          <img src="images/shoe3.jpg" alt="Shoe Image 3">
+        </div>
+        <div class="slide">
+          <img src="images/shoe4.jpg" alt="Shoe Image 4">
+        </div>
+      </div>
+
+      <div class="slider-dots" id="sliderDots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      
+    </div>
+
+    <div class="pdp-info">
+      <h2 class="pdp-brand">Liberty</h2>
+      <h1 class="pdp-title">Men's Synthetic Leather Formal Shoes</h1>
+      
+      <div class="b2b-price-box">
+        <div class="price-row">
+          <span class="final-price">₹1,402</span>
+          <span class="mrp">MRP: <del>₹2,299</del></span>
+        </div>
+        <div class="margin-row">
+          <span>Your Margin: <strong>₹897 (39%)</strong></span>
+        </div>
+        <div class="moq-row">
+          <i class="fa-solid fa-box"></i> MOQ: <strong>12 Pairs</strong> (1 Set)
+        </div>
+      </div>
+
+      <div class="pdp-section">
+        <h3>Size Availability (In One Set)</h3>
+        
+        <div class="size-set-info">
+          <p class="set-note">
+            <i class="fa-solid fa-circle-info"></i> 
+            This item is sold in a Set. One Set contains mixed sizes:
+          </p>
+          
+          <div class="static-size-row">
+            <span class="static-size">6</span>
+            <span class="static-size">7</span>
+            <span class="static-size">8</span>
+            <span class="static-size">9</span>
+            <span class="static-size">10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdp-section">
+        <h3>Product Details</h3>
+        <ul class="pdp-specs">
+          <li><strong>Material:</strong> Synthetic Leather</li>
+          <li><strong>Sole:</strong> PU (Polyurethane)</li>
+          <li><strong>Closure:</strong> Lace-Up</li>
+          <li><strong>Origin:</strong> Made in India</li>
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="pdp-action-bar">
+    <button class="btn-wishlist"><i class="fa-regular fa-heart"></i></button>
+    <button class="btn-cart">Add to Cart</button>
+    <button class="btn-buy">Buy Now</button>
+  </div>
+
+  <script>
+    function changeImage(element) {
+      document.getElementById('currentImg').src = element.src;
+      // Active class logic
+      document.querySelectorAll('.thumbnail-row img').forEach(img => img.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    const slider = document.getElementById('productSlider');
+    const dots = document.querySelectorAll('.dot');
+
+    // Scroll event listener
+    slider.addEventListener('scroll', () => {
+      // Pata lagao ki scroll karke hum kahan pahuche
+      const scrollPosition = slider.scrollLeft;
+      const slideWidth = slider.clientWidth;
+      
+      // Math se current slide index nikalo (0, 1, 2, 3...)
+      const activeIndex = Math.round(scrollPosition / slideWidth);
+
+      // Saare dots se 'active' class hatao
+      dots.forEach((dot, index) => {
+        if (index === activeIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,4 +1,6 @@
-/* ===== GLOBAL STYLES (Mobile First) ===== */
+/* =========================================
+   1. GLOBAL RESETS & VARIABLES
+   ========================================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,17 +8,19 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: #f4f4f4;
+  color: #333;
+  overflow-x: hidden; /* Horizontal scroll rokne ke liye */
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { cursor: pointer; }
 
-/* ===== HEADER / NAVBAR STYLES ===== */
+/* =========================================
+   2. HEADER / NAVBAR
+   ========================================= */
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -27,735 +31,264 @@ a {
   position: sticky;
   top: 0;
   z-index: 1000;
-  width: 100%;
 }
 
-.nav-left,
-.nav-right {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
+.nav-left, .nav-right { display: flex; align-items: center; flex-shrink: 0; }
+.nav-center { flex-grow: 1; padding: 0 15px; }
 
-/* Mobile par Logo hide rakhenge */
-.nav-left .logo {
-  display: none;
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-left: 10px;
-  color: #333;
-}
-
-.nav-icon {
-  font-size: 1.3rem;
-  color: #555;
-  margin-left: 15px;
-  position: relative;
-}
-
-.nav-right .nav-icon:first-child {
-  margin-left: 0;
-}
+.logo { font-size: 1.4rem; font-weight: bold; margin-left: 10px; color: #333; display: none; }
+.nav-icon { font-size: 1.3rem; color: #555; margin-left: 15px; position: relative; }
+.nav-right .nav-icon:first-child { margin-left: 0; }
 
 .cart-count {
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background-color: #d9534f;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 5px;
-  font-size: 0.7rem;
-  font-weight: bold;
-}
-
-.nav-center {
-  flex-grow: 1;
-  padding: 0 15px;
+  position: absolute; top: -5px; right: -8px;
+  background-color: #d9534f; color: white;
+  border-radius: 50%; padding: 2px 5px;
+  font-size: 0.7rem; font-weight: bold;
 }
 
 .search-bar {
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   background-color: #f5f5f5;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: 8px; padding: 8px 12px;
 }
+.search-bar input { border: none; background: transparent; width: 100%; outline: none; }
 
-.search-bar i {
-  color: #888;
-  margin-right: 8px;
-}
-
-.search-bar input {
-  border: none;
-  background: transparent;
-  width: 100%;
-  outline: none;
-  font-size: 0.9rem;
-}
-
-/* ===== MOBILE NAV MENU (Hidden by default) ===== */
+/* =========================================
+   3. MOBILE NAVIGATION (Hamburger Menu)
+   ========================================= */
 .mobile-nav {
-  position: fixed;
-  top: 0;
-  left: -280px; /* Screen ke bahar hide rakha hai */
-  width: 280px;
-  height: 100%;
-  background-color: #ffffff;
-  z-index: 2000;
+  position: fixed; top: 0; left: -280px;
+  width: 280px; height: 100%;
+  background-color: #ffffff; z-index: 2000;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  transition: left 0.3s ease-in-out; /* Smooth slide effect */
+  transition: left 0.3s ease-in-out;
 }
-.mobile-nav.active {
-  left: 0; /* 'active' class lagne par menu dikhega */
-}
+.mobile-nav.active { left: 0; }
 
 .mobile-nav-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid #e0e0e0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 20px; border-bottom: 1px solid #e0e0e0;
 }
-.mobile-nav-header h3 {
-  font-size: 1.2rem;
-}
-.close-btn {
-  font-size: 1.8rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #555;
-}
+.close-btn { font-size: 1.8rem; background: none; border: none; color: #555; }
 
-.mobile-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.mobile-nav ul li {
-  border-bottom: 1px solid #f0f0f0;
-}
-.mobile-nav ul li a {
-  display: block;
-  padding: 15px 20px;
-  font-size: 1rem;
-  color: #333;
-}
-.mobile-nav ul li a:hover {
-  background-color: #f9f9f9;
-}
+.mobile-nav ul li a { display: block; padding: 15px 20px; border-bottom: 1px solid #f0f0f0; }
 
-/* Overlay (Jab menu khulega tab background ko dark karega) */
+/* Menu Buttons (Login/Register) */
+.nav-auth-buttons { display: flex; gap: 15px; padding: 20px; border-top: 1px solid #f0f0f0; }
+.btn { flex: 1; padding: 10px; text-align: center; border-radius: 6px; font-weight: bold; }
+.btn-login { border: 2px solid #d3a14b; color: #d3a14b; }
+.btn-register { background-color: #d3a14b; color: white; border: 2px solid #d3a14b; }
+
 .overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1999;
+  display: none; position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1999;
 }
-.overlay.active {
-  display: block;
-}
+.overlay.active { display: block; }
 
 
-/* ===== MAIN CONTENT CONTAINER ===== */
-.container {
-  padding: 0;
-  background-color: #ffffff;
-}
+/* =========================================
+   4. HERO BANNER (Slider)
+   ========================================= */
+.hero-banner-slider { width: 100%; overflow: hidden; background-color: #f0f0f0; }
+.slider-track { display: flex; width: 400%; transition: transform 0.5s ease-in-out; }
+.slide { width: 100%; height: 200px; overflow: hidden; } /* Mobile Height */
+.slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* ===== 1. CATEGORY NAV SECTION ===== */
+
+/* =========================================
+   5. CATEGORY NAV (Top Icons)
+   ========================================= */
 .category-nav {
-  display: flex;
-  overflow-x: auto;
-  background-color: #fff;
-  padding: 15px 10px;
-  border-bottom: 1px solid #f0f0f0;
-  scrollbar-width: none; /* Firefox */
+  display: flex; overflow-x: auto; background-color: #fff;
+  padding: 15px 10px; border-bottom: 1px solid #f0f0f0;
+  scrollbar-width: none;
 }
-.category-nav::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
-}
-.category-item {
-  flex: 0 0 70px;
-  text-align: center;
-  margin: 0 5px;
-}
+.category-nav::-webkit-scrollbar { display: none; }
+
+.category-item { flex: 0 0 70px; text-align: center; margin: 0 5px; }
 .category-item img {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background-color: #f0f0f0; /* Placeholder color */
-  border: 1px solid #e0e0e0;
-  object-fit: cover;
+  width: 55px; height: 55px; border-radius: 50%;
+  background-color: #f0f0f0; border: 1px solid #e0e0e0; object-fit: cover;
 }
-.category-item p {
-  font-size: 0.75rem;
-  color: #333;
-  margin-top: 5px;
-  white-space: nowrap;
-}
+.category-item p { font-size: 0.75rem; margin-top: 5px; white-space: nowrap; }
 
-/* ===== 2. HERO BANNER SECTION ===== */
-.hero-banner-slider {
-  width: 100%;
-  overflow: hidden; /* IMPORTANT: Yahi magic hai, extra slides ko chupata hai */
-  background-color: #f0f0f0; /* Placeholder color */
-}
 
-.slider-track {
-  display: flex; /* Sabhi slides ko ek line me rakhta hai */
-  /* Width calculate hogi JS se, lekin default 4 slides ke liye 400% */
-  width: 400%; 
-  position: relative;
-  
-  /* IMPORTANT: Ye smooth sliding effect dega */
-  transition: transform 0.5s ease-in-out; 
-}
+/* =========================================
+   6. MY RANGE SECTION ( FIX APPLIED HERE )
+   ========================================= */
+.horizontal-list-section { padding: 20px 0; background-color: #fff; }
+.section-header { display: flex; justify-content: space-between; padding: 0 15px 15px 15px; }
 
-.slide {
-  width: 100%; /* Har slide poori screen width lega */
-  height: 200px; /* Mobile par height 200px */
-  
-  overflow: hidden; /* Extra image part ko hide karega */
-}
-
-.slide img {
-  width: 100%;
-  height: 100%; /* Image ko container ki poori height lene ko bol rahe hain */
-  display: block;
-  object-fit: cover; 
-}
-
-/* ===== 3. "MY RANGE" (HORIZONTAL LIST) SECTION ===== */
-.horizontal-list-section {
-  padding: 20px 0;
-  background-color: #fff;
-}
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
-  margin-bottom: 15px;
-}
-.section-header h2 {
-  font-size: 1.2rem;
-  color: #333;
-}
-.section-header a {
-  font-size: 0.9rem;
-  color: #007bff;
-  font-weight: bold;
-}
+/* Container */
 .horizontal-list {
-  display: flex;
-  overflow-x: auto;
+  display: flex; overflow-x: auto;
+  gap: 10px; /* Gap kam kiya */
   padding: 0 15px;
-  gap: 15px;
+  align-items: flex-start; /* IMPORTANT: Sabko Top se align karo */
   scrollbar-width: none;
 }
-.horizontal-list::-webkit-scrollbar {
-  display: none;
-}
+.horizontal-list::-webkit-scrollbar { display: none; }
+
+/* Individual Item */
 .list-item-circle {
-  flex: 0 0 90px;
+  flex: 0 0 85px; /* Fix Width */
   text-align: center;
-  
-  /* NAYE CHANGES YAHAN SE SHURU */
-  display: flex; /* Flexbox use karo */
-  flex-direction: column; /* Items ko upar-neeche rakho */
-  align-items: center; /* Horizontally center karo */
-  justify-content: flex-start; /* Items ko container ke top se shuru karo */
-  min-height: 120px; /* Ek minimum height do taaki sabki height same rahe */
-  /* NAYE CHANGES YAHAN KHATAM */
+  display: flex; flex-direction: column; align-items: center;
+  margin: 0; 
 }
+
 .list-item-circle img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  border: 1px solid #e0e0e0;
-  object-fit: cover;
-  margin-bottom: 8px; /* Image aur text ke beech ka gap */
-  flex-shrink: 0; /* Image ko chhota hone se roke */
-}
-.list-item-circle   p {
-  font-size: 0.85rem;
-  color: #333;
-  margin-top: 0; /* Margin-top ki ab zaroorat nahi kyunki image me margin-bottom hai */
-  line-height: 1.2; /* Line height adjust karo agar text do line me aaye */
-  overflow: hidden; /* Agar text bada ho toh cut jaye */
-  text-overflow: ellipsis; /* Cut hone par '...' dikhaye */
-  display: -webkit-box; /* Multi-line ellipsis ke liye */
-  -webkit-box-orient: vertical;
+  width: 75px; height: 75px;
+  border-radius: 50%; border: 1px solid #e0e0e0; object-fit: cover;
+  margin-bottom: 5px;
+  flex-shrink: 0;
 }
 
-/* ===== 4. PRODUCT CAROUSEL SECTION ===== */
-.product-carousel {
-  width: 100%;
-  padding: 20px 0;
-  background-color: #f9f9f9;
-}
-.carousel-title {
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #d3a14b; /* Golden color */
-  margin-bottom: 20px;
-  text-transform: uppercase;
-}
-.carousel-container {
-  display: flex;
-  overflow-x: auto;
-  padding: 10px 15px;
-  gap: 15px;
-  scrollbar-width: none;
-}
-.carousel-container::-webkit-scrollbar {
-  display: none;
-}
-.product-card-b2b {
-  flex: 0 0 170px; /* Card ki width 170px fix */
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px; /* Thode zyada rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden; /* Rounded corners ke liye */
-  font-family: Arial, sans-serif;
-  
-  /* Responsive ke liye, taaki cards overlap na ho */
-  margin-bottom: 25px; 
-}
-
-.card-image-container {
-  position: relative; /* Logo ko position karne ke liye */
-  height: 200px;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Image ko poora cover karega */
-  display: block;
-  background-color: #f0f0f0; /* Image load hote time */
-}
-
-/* Logo ka white circle */
-.brand-logo-container {
-  position: absolute;
-  bottom: -25px; /* Aadha image me, aadha neeche info me */
-  left: 50%; /* Center me */
-  transform: translateX(-50%); /* Exact center ke liye */
-  
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-  
-  /* Logo ko circle ke andar center karega */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  box-sizing: border-box; /* Padding ko width me include karega */
-}
-
-.brand-logo {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Neeche ka info wala hissa */
-.card-info-container {
-  padding: 15px;
-  /* Logo ke liye upar se extra space */
-  padding-top: 35px; /* (25px logo ka + 10px extra space) */
-  text-align: center;
-}
-
-.product-brand {
-  font-size: 1.1rem; /* 17.6px */
-  font-weight: bold;
-  color: #333;
-  margin: 0 0 4px 0;
-  
-  /* Agar brand ka naam lamba ho toh cut jaaye */
-  white-space: nowrap;
+/* TEXT FIX: FIXED HEIGHT FOR ALIGNMENT */
+.list-item-circle p {
+  font-size: 0.75rem; color: #333; margin: 0;
+  height: 35px; /* Fix height (approx 2 lines) */
+  line-height: 1.2;
+  display: flex; align-items: flex-start; justify-content: center;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.product-category {
-  font-size: 0.85rem; /* 13.6px */
-  color: #777;
-  margin: 0 0 15px 0; /* B2B info se gap */
+
+/* =========================================
+   7. HOME PAGE PRODUCT CARDS (B2B)
+   ========================================= */
+.product-carousel { padding: 20px 0; background-color: #f9f9f9; }
+.carousel-title { text-align: center; color: #d3a14b; margin-bottom: 20px; text-transform: uppercase; }
+.carousel-container { display: flex; overflow-x: auto; padding: 10px 15px; gap: 15px; scrollbar-width: none; }
+.carousel-container::-webkit-scrollbar { display: none; }
+
+.product-card-b2b {
+  flex: 0 0 170px; background: #fff; border: 1px solid #e0e0e0;
+  border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+.card-image-container { position: relative; height: 180px; }
+.product-image { width: 100%; height: 100%; object-fit: cover; }
+.brand-logo-container {
+  position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+  width: 40px; height: 40px; background: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.brand-logo { width: 80%; height: auto; }
+
+.card-info-container { padding: 25px 10px 10px 10px; text-align: center; }
+.product-brand { font-size: 1rem; font-weight: bold; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.product-category { font-size: 0.8rem; color: #777; margin-bottom: 10px; }
+
+.b2b-info { display: flex; justify-content: space-between; border-top: 1px solid #f0f0f0; padding-top: 8px; text-align: left; }
+.info-left, .info-right { display: flex; flex-direction: column; }
+.info-right { text-align: right; }
+.product-price-label, .moq-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+.product-price, .moq-value { font-size: 0.85rem; font-weight: bold; color: #333; }
+.moq-value { color: #d9534f; }
+
+
+/* =========================================
+   8. PRODUCT LISTING PAGE (Grid)
+   ========================================= */
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 15px; background: #fff; position: sticky; top: 0; z-index: 900;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.header-left { display: flex; align-items: center; }
+.back-arrow { font-size: 1.2rem; margin-right: 10px; }
+.page-title h3 { font-size: 1rem; margin: 0; }
+.page-title span { font-size: 0.8rem; color: #777; }
+
+.product-grid-container {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 8px; padding: 10px; background: #f4f4f4;
 }
 
-/* B2B Info (Price aur MOQ) */
-.b2b-info {
-  display: flex;
-  justify-content: space-between; /* Dono ko alag-alag corners me */
-  text-align: left;
-  border-top: 1px solid #f0f0f0; /* Upar ek line */
-  padding-top: 10px;
+.plp-card {
+  background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.plp-image-box { position: relative; border-bottom: 1px solid #f0f0f0; }
+.plp-image-box img { width: 100%; height: 125px; object-fit: cover; display: block; }
+.wishlist-icon {
+  position: absolute; top: 5px; right: 5px; width: 25px; height: 25px;
+  background: rgba(255,255,255,0.9); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: #555;
 }
 
-.info-left, .info-right {
-  display: flex;
-  flex-direction: column; /* Label aur value ko upar-neeche rakhega */
-}
+.plp-details { padding: 8px; flex-grow: 1; display: flex; flex-direction: column; }
+.plp-brand { font-size: 0.9rem; font-weight: bold; margin-bottom: 2px; }
+.plp-title { font-size: 0.75rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.plp-meta-info { font-size: 0.7rem; color: #999; margin: 5px 0; }
+.plp-b2b-info { background: #f8f8f8; font-size: 0.7rem; padding: 4px; margin-bottom: 5px; border-radius: 4px; }
+.plp-price { font-size: 0.95rem; font-weight: bold; margin-top: auto; }
 
-.info-right {
-  text-align: right; /* Right waale ko right align */
-}
 
-/* Labels (Price, MOQ) */
-.product-price-label, .moq-label {
-  font-size: 0.75rem; /* 12px */
-  color: #888;
-  margin-bottom: 2px;
-  text-transform: uppercase; /* Thoda professional look */
-}
-
-/* Values (₹335, 12 Pairs) */
-.product-price, .moq-value {
-  font-size: 0.9rem; /* 14.4px */
-  font-weight: bold;
-  color: #222;
-}
-
-.moq-value {
-  color: #d9534f; /* MOQ ko highlight karne ke liye */
-}
-
-/* ===== FOOTER STYLES (Mobile First) ===== */
-.site-footer {
-  background-color: #2c3e50; /* Dark Blue/Grey Background */
-  color: #bdc3c7; /* Light grey text */
-  padding: 40px 0 0 0; /* Upar 40px padding, neeche 0 */
-}
-
-.footer-container {
-  display: flex;
-  flex-direction: column; /* Mobile par sab ek ke neeche ek */
-  padding: 0 20px;
-}
-
-.footer-column {
-  margin-bottom: 30px;
-}
-
-/* Column 1: Logo aur About */
-.footer-logo {
-  font-size: 2rem; /* Logo ka text bada */
-  font-weight: bold;
-  color: #ffffff; /* White color */
-  margin-bottom: 10px;
-}
-/* Agar image logo use karein toh:
-.footer-logo-img {
-  width: 150px;
-  margin-bottom: 10px;
-}
-*/
-.footer-about-text {
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
-
-/* Column 2 & 3: Links */
-.footer-column h4 {
-  font-size: 1.1rem;
-  color: #ffffff;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.footer-links ul {
-  list-style: none; /* Bullet points hatane ke liye */
-  padding: 0;
-  margin: 0;
-}
-
-.footer-links ul li {
-  margin-bottom: 10px;
-}
-
-.footer-links ul li a {
-  color: #bdc3c7;
-  font-size: 0.95rem;
-  transition: color 0.2s; /* Hover effect */
-}
-.footer-links ul li a:hover {
-  color: #ffffff; /* Hover par white */
-}
-
-/* Column 4: Contact */
-.footer-contact p {
-  font-size: 0.95rem;
-  margin-bottom: 10px;
-}
-.footer-contact p i {
-  width: 20px; /* Icon aur text ko align karega */
-  margin-right: 8px;
-  color: #ffffff;
-}
-
-.social-icons {
-  margin-top: 15px;
-}
-.social-icons a {
-  color: #bdc3c7;
-  font-size: 1.6rem;
-  margin-right: 15px;
-  transition: color 0.2s;
-}
-.social-icons a:hover {
-  color: #ffffff;
-}
-
-/* Footer Bottom (Copyright) */
-.footer-bottom {
-  background-color: #233140; /* Thoda aur dark */
-  color: #95a5a6;
-  text-align: center;
-  padding: 15px 20px;
-  margin-top: 20px; /* Footer content se gap */
-  font-size: 0.85rem;
-}
-
-/* ===== MOBILE NAV BUTTONS STYLES ===== */
-
-.nav-auth-buttons {
-  display: flex; /* Buttons ko side-by-side rakhega */
-  gap: 15px; /* Buttons ke beech me space */
-  padding: 20px; /* Container ke andar padding */
-  border-top: 1px solid #f0f0f0; /* Upar ke links se alag karne ke liye */
-}
-
-/* Dono buttons ke liye common style */
-.btn {
-  flex: 1; /* Dono buttons ko equal width dega */
-  padding: 12px;
-  text-align: center;
-  border-radius: 8px; /* Rounded corners */
-  font-weight: bold;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-/* Login Button (Outline) */
-.btn-login {
-  background-color: #ffffff;
-  color: #d3a14b; /* Golden text */
-  border: 2px solid #d3a14b; /* Golden border */
-}
-.btn-login:hover {
-  background-color: #fcf8f3; /* Hover par halka color */
-}
-
-/* Register Button (Solid) */
-.btn-register {
-  background-color: #d3a14b; /* Golden background */
-  color: #ffffff; /* White text */
-  border: 2px solid #d3a14b; /* Golden border */
-}
-.btn-register:hover {
-  background-color: #c29140; /* Hover par thoda dark golden */
-}
-
-/* ===== BOTTOM SHEET STYLES ===== */
-
-/* Overlay (Background ko dim karega) */
+/* =========================================
+   9. BOTTOM SHEET (Pop-ups)
+   ========================================= */
 .overlay-modal {
-  display: none; /* By default chupa rahega */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Black 50% transparent */
-  z-index: 2000; 
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); z-index: 2000;
 }
-.overlay-modal.active {
-  display: block; /* Active hone par dikhega */
-}
+.overlay-modal.active { display: block; }
 
-/* Bottom Sheet Container */
 .bottom-sheet-container {
-  position: fixed;
-  left: 0;
-  bottom: -100%; /* By default neeche chupa rahega */
-  width: 100%;
-  background-color: #ffffff;
-  border-top-left-radius: 16px; /* Top corners rounded */
-  border-top-right-radius: 16px;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 2001; /* Overlay se bhi upar */
-  transition: bottom 0.3s ease-in-out; /* Smooth slide effect */
+  position: fixed; left: 0; bottom: -100%; width: 100%;
+  background: #fff; border-radius: 16px 16px 0 0;
+  z-index: 2001; transition: bottom 0.3s ease-in-out;
+  max-height: 80vh;
 }
-.bottom-sheet-container.active {
-  bottom: 0; /* Active hone par oopar slide hoga */
-}
+.bottom-sheet-container.active { bottom: 0; }
 
-/* Sheet Header (Title aur Close Button) */
 .sheet-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  border-bottom: 1px solid #e0e0e0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 20px; border-bottom: 1px solid #eee;
 }
-.sheet-header h3 {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-}
+.sheet-close-btn { background: #f0f0f0; border: none; border-radius: 50%; width: 30px; height: 30px; }
 
-.sheet-close-btn {
-  font-size: 1.1rem;
-  background-color: #f0f0f0;
-  color: #555;
-  border: none;
-  border-radius: 50%; /* Gol button */
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Sheet Content (Grid) */
-.sheet-content {
-  padding: 20px;
-  max-height: 60vh; /* Screen ki 60% height tak */
-  overflow-y: auto;
-}
-
-.subcategory-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 column layout */
-  gap: 20px; /* Items ke beech me space */
-}
-
-.subcategory-item {
-  text-align: center;
-}
-.subcategory-item img {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%; /* Gol image */
-  border: 1px solid #e0e0e0;
-  object-fit: cover;
-  margin-bottom: 8px;
-}
-.subcategory-item p {
-  font-size: 0.85rem;
-  color: #333;
-  line-height: 1.3;
-}
+.sheet-content { padding: 20px; overflow-y: auto; max-height: 60vh; }
+.subcategory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.subcategory-item { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.subcategory-item img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 1px solid #eee; }
+.subcategory-item p { font-size: 0.8rem; color: #333; }
 
 
-/* ===== RESPONSIVE STYLES (Tablet & Desktop) ===== */
+/* =========================================
+   10. FOOTER
+   ========================================= */
+.site-footer { background-color: #2c3e50; color: #bdc3c7; padding: 40px 0 0 0; margin-top: 30px;}
+.footer-container { padding: 0 20px; display: flex; flex-direction: column; gap: 30px; }
+.footer-logo { color: #fff; font-size: 1.8rem; margin-bottom: 10px; }
+.footer-column h4 { color: #fff; margin-bottom: 15px; text-transform: uppercase; font-size: 1rem; }
+.footer-links li { margin-bottom: 8px; font-size: 0.9rem; }
+.footer-bottom { background: #233140; text-align: center; padding: 15px; margin-top: 20px; font-size: 0.8rem; }
+
+
+/* =========================================
+   11. RESPONSIVE (Tablet & Desktop)
+   ========================================= */
 @media (min-width: 768px) {
+  body { background-color: #e9e9e9; }
+  .main-header, .container, .site-footer { max-width: 1200px; margin: 0 auto; }
   
-  body {
-    background-color: #e9e9e9;
-  }
-  .main-header,
-  .container {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-  }
-  .container {
-     padding: 10px;
-  }
+  /* Desktop Nav */
+  .nav-left .logo { display: block; }
+  #menu-toggle { display: none; }
+  .category-nav { justify-content: center; }
+  .horizontal-list { justify-content: center; }
   
-  /* Desktop par logo dikhao */
-  .nav-left .logo {
-    display: block;
-    font-size: 1.6rem;
-  }
-  /* Desktop par Hamburger menu hide karo */
-  #menu-toggle {
-    display: none;
-  }
+  /* Desktop Grid */
+  .product-grid-container { grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 20px; }
+  .plp-image-box img { height: 200px; }
   
-  .main-header {
-    padding: 15px 30px;
-  }
-  .nav-icon {
-    font-size: 1.5rem;
-    margin-left: 25px;
-  }
-  .search-bar {
-    padding: 12px 15px;
-  }
-  .category-nav {
-    justify-content: center;
-  }
-  .category-item {
-    flex: 0 0 90px;
-    margin: 0 10px;
-  }
-  .category-item img {
-    width: 70px;
-    height: 70px;
-  }
-  .category-item p {
-    font-size: 0.9rem;
-  }
-  .horizontal-list {
-     justify-content: center;
-  }
-  .product-card {
-    flex: 0 0 200px;
-  }
-  .carousel-title {
-    font-size: 1.8rem;
-  }
-
-  .slide {
-    height: 400px; /* Desktop par banner ki height 400px */
-  }
-
-  /* ===== FOOTER RESPONSIVE ===== */
-  .footer-container {
-    flex-direction: row; /* Desktop par side-by-side */
-    flex-wrap: wrap;
-    justify-content: space-between;
-    
-    /* Max-width ko match karne ke liye */
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 30px;
-  }
+  /* Slider */
+  .slide { height: 400px; }
   
-  .footer-column {
-    /* Har column ko space denge */
-    /* Hum 'flex-basis' use kar rahe hain width ke liye */
-    flex-basis: 22%; /* 4 column ke liye approx 22% */
-    min-width: 200px; /* Minimum width */
-    margin-bottom: 30px;
-  }
-  
-  /* Logo wale column ko thoda zyada space */
-  .footer-about {
-    flex-basis: 30%;
-  }
+  /* Footer */
+  .footer-container { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
+  .footer-column { flex: 1; min-width: 200px; }
 }

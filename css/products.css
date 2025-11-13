@@ -1,0 +1,140 @@
+/* ===== PRODUCT LISTING (PLP) STYLES ===== */
+
+/* Naya Page Header (Compact) */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+.header-left { display: flex; align-items: center; }
+.back-arrow { font-size: 1.1rem; color: #333; margin-right: 12px; }
+.page-title h3 { font-size: 1rem; margin: 0; color: #333; }
+.page-title span { font-size: 0.8rem; color: #777; margin-left: 5px; }
+.header-right { display: flex; align-items: center; }
+.header-icon { font-size: 1.2rem; color: #555; margin-left: 15px; position: relative; }
+
+/* Product Grid (Tight Spacing) */
+.product-grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 8px; /* Cards ke beech gap kam kiya (pehle 10px tha) */
+  padding: 10px; /* Side padding kam ki */
+  background-color: #f4f4f4;
+}
+
+/* Product Card (Compact Height) */
+.plp-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. Image Box (Height Kam Ki) */
+.plp-image-box {
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+.plp-image-box img {
+  width: 100%;
+  height: 125px; /* IMPORTANT: Height 180 se 125 kar di */
+  object-fit: cover;
+  display: block;
+}
+.wishlist-icon {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+}
+
+/* 2. Details (Padding & Spacing Kam Ki) */
+.plp-details {
+  padding: 8px; /* Padding 12 se 8 kar di */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.plp-brand {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2px; /* Gap kam kiya */
+}
+
+.plp-title {
+  font-size: 0.75rem; /* Font chota kiya */
+  color: #666;
+  margin: 0 0 4px 0;
+  
+  /* Text ko sirf 1 line me rakho, taaki height na badhe */
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Meta Info (Color/Size) - Font Chota */
+.plp-meta-info {
+  display: flex;
+  gap: 8px;
+  font-size: 0.7rem; /* Font chota */
+  color: #999;
+  margin-bottom: 4px;
+}
+
+/* B2B Info Box (Compact) */
+.plp-b2b-info {
+  font-size: 0.7rem; /* Font chota */
+  color: #555;
+  background-color: #f8f9fa;
+  padding: 4px; /* Padding kam */
+  border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap; /* Agar jagah kam ho to next line me aaye */
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.plp-b2b-info span {
+  white-space: nowrap;
+}
+
+.plp-price {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #222;
+  margin-top: auto; /* Price ko hamesha bottom me rakhega */
+}
+
+/* ===== DESKTOP / LAPTOP KE LIYE (Bada Dikhana Hai) ===== */
+@media (min-width: 768px) {
+  .product-grid-container {
+    grid-template-columns: repeat(4, 1fr); /* Desktop par 4 cards ek line me */
+    gap: 20px;
+    padding: 20px;
+  }
+  .plp-image-box img {
+    height: 200px; /* Desktop par image wapas badi */
+  }
+  .plp-title {
+    white-space: normal; /* Desktop par 2 lines allow karo */
+  }
+}
