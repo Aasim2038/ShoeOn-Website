@@ -173,18 +173,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Database se match karo, nahi toh 'men-casual' dikhao (Fallback)
     const data = productsDatabase[categoryKey] || productsDatabase['men-casual'];
 
+    // ... upar ka code waisa hi ...
+
     if (data) {
       pageTitle.innerText = data.title;
       styleCount.innerText = data.count;
 
-      let cardsHTML = '';
+      // === YEH LINE MISSING THI (ISSE ADD KARO) ===
+      let cardsHTML = ''; 
+      // ============================================
+
       data.products.forEach(product => {
+        
+        // URL banane wala logic
+        const brandParam = encodeURIComponent(product.brand);
+        const nameParam = encodeURIComponent(product.name);
+        const priceParam = encodeURIComponent(product.price);
+        const imgParam = encodeURIComponent(product.img);
+        const moqParam = encodeURIComponent(product.moq);
+        
+        const productLink = `product-detail.html?brand=${brandParam}&name=${nameParam}&price=${priceParam}&img=${imgParam}&moq=${moqParam}`;
+
         cardsHTML += `
-          <a href="product-detail.html" class="plp-card">
-            
+          <a href="${productLink}" class="plp-card">
             <div class="plp-image-box">
               <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/150'">
-              
               <object><div class="wishlist-icon"><i class="fa-regular fa-heart"></i></div></object>
             </div>
             
@@ -201,11 +214,13 @@ document.addEventListener('DOMContentLoaded', function() {
               </div>
               <p class="plp-price">${product.price}</p>
             </div>
-            
           </a>
         `;
       });
+
+      // Loop khatam hone ke baad HTML inject karo
       productGrid.innerHTML = cardsHTML;
+
     } else {
       pageTitle.innerText = "Product Not Found";
     }

@@ -32,18 +32,18 @@
         <button class="icon-btn"><i class="fa-regular fa-heart"></i></button>
       </div>
 
-      <div class="slider-track" id="productSlider">
+     <div class="slider-track" id="productSlider">
         <div class="slide">
-          <img src="images/shoe1.jpg" alt="Shoe Image 1">
+          <img src="images/plp-shoe-1.jpeg" alt="Shoe Image 1">
         </div>
         <div class="slide">
-          <img src="images/shoe2.jpg" alt="Shoe Image 2">
+          <img src="images/plp-shoe-2.jpeg" alt="Shoe Image 2">
         </div>
         <div class="slide">
-          <img src="images/shoe3.jpg" alt="Shoe Image 3">
+          <img src="images/plp-shoe-3.jpeg" alt="Shoe Image 3">
         </div>
         <div class="slide">
-          <img src="images/shoe4.jpg" alt="Shoe Image 4">
+          <img src="images/plp-shoe-4.jpeg" alt="Shoe Image 4">
         </div>
       </div>
 
@@ -57,19 +57,19 @@
     </div>
 
     <div class="pdp-info">
-      <h2 class="pdp-brand">Liberty</h2>
-      <h1 class="pdp-title">Men's Synthetic Leather Formal Shoes</h1>
+      <h2 class="pdp-brand" id="pdp-brand">Liberty</h2>
+      <h1 class="pdp-title" id="pdp-name">Men's Synthetic Leather Formal Shoes</h1>
       
       <div class="b2b-price-box">
         <div class="price-row">
-          <span class="final-price">₹1,402</span>
+          <span class="final-price" id="pdp-price">₹1,402</span>
           <span class="mrp">MRP: <del>₹2,299</del></span>
         </div>
         <div class="margin-row">
           <span>Your Margin: <strong>₹897 (39%)</strong></span>
         </div>
         <div class="moq-row">
-          <i class="fa-solid fa-box"></i> MOQ: <strong>12 Pairs</strong> (1 Set)
+          <i class="fa-solid fa-box"></i> MOQ: <strong id="pdp-moq">...</strong> (1 Set)
         </div>
       </div>
 
@@ -112,34 +112,62 @@
   </div>
 
   <script>
-    function changeImage(element) {
-      document.getElementById('currentImg').src = element.src;
-      // Active class logic
-      document.querySelectorAll('.thumbnail-row img').forEach(img => img.classList.remove('active'));
-      element.classList.add('active');
+    // 1. URL se data nikalo
+    const params = new URLSearchParams(window.location.search);
+    
+    const brand = params.get('brand');
+    const name = params.get('name');
+    const price = params.get('price');
+    const img = params.get('img');
+    const moq = params.get('moq');
+
+    // 2. Agar data hai, toh page update karo
+    if (brand && name && price && img) {
+      
+      // Text Update (Safety check ke saath)
+      const elBrand = document.getElementById('pdp-brand');
+      const elName = document.getElementById('pdp-name');
+      const elPrice = document.getElementById('pdp-price');
+      const elMoq = document.getElementById('pdp-moq');
+
+      if(elBrand) elBrand.innerText = brand;
+      if(elName) elName.innerText = name;
+      if(elPrice) elPrice.innerText = price;
+      if(elMoq) elMoq.innerText = moq + " Pairs";
+      
+      // --- SLIDER IMAGES UPDATE ---
+      // Error yahaan tha, ab humne fix kar diya.
+      // Hum seedha slider ki images ko target kar rahe hain.
+      const sliderImages = document.querySelectorAll('.slide img');
+      
+      if (sliderImages.length > 0) {
+        sliderImages.forEach(sImg => {
+          sImg.src = img; 
+        });
+      }
     }
 
+    // 3. Slider Logic (Dots Change karna)
     const slider = document.getElementById('productSlider');
     const dots = document.querySelectorAll('.dot');
 
-    // Scroll event listener
-    slider.addEventListener('scroll', () => {
-      // Pata lagao ki scroll karke hum kahan pahuche
-      const scrollPosition = slider.scrollLeft;
-      const slideWidth = slider.clientWidth;
-      
-      // Math se current slide index nikalo (0, 1, 2, 3...)
-      const activeIndex = Math.round(scrollPosition / slideWidth);
+    if(slider) {
+      slider.addEventListener('scroll', () => {
+        const scrollPosition = slider.scrollLeft;
+        const slideWidth = slider.clientWidth;
+        
+        // Math calculation to find active index
+        const activeIndex = Math.round(scrollPosition / slideWidth);
 
-      // Saare dots se 'active' class hatao
-      dots.forEach((dot, index) => {
-        if (index === activeIndex) {
-          dot.classList.add('active');
-        } else {
-          dot.classList.remove('active');
-        }
+        dots.forEach((dot, index) => {
+          if (index === activeIndex) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
       });
-    });
+    }
   </script>
 
 </body>
