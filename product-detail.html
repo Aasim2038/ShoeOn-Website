@@ -18,7 +18,10 @@
       Product Details
     </div>
     <div class="nav-right">
-      <a href="#" class="nav-icon"><i class="fa-solid fa-bag-shopping"></i></a>
+      <a href="#" class="nav-icon" id="cart-icon-btn"> 
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="cart-count" id="cart-item-count">0</span>
+      </a>
     </div>
   </header>
 
@@ -111,6 +114,44 @@
     <button class="btn-buy">Buy Now</button>
   </div>
 
+  <div class="overlay-modal" id="cart-overlay"></div>
+
+<div class="cart-drawer" id="cart-drawer">
+  
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button classs="cart-close-btn" id="cart-close-btn">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  
+  ...
+  <div class="cart-content" id="cart-content-area"> <div class="cart-empty" id="cart-empty-msg">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <p>Your cart is empty!</p>
+    </div>
+    
+    <div class="items-list-container" id="cart-items-container">
+      </div>
+    
+  </div>
+  ...
+  
+  <div class="cart-footer">
+    <div class="subtotal-row">
+      <span>Subtotal:</span>
+      <span class="subtotal-price" id="cart-subtotal">₹0.00</span>
+    </div>
+    <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+  </div>
+  
+</div>
+
+<div id="toast-popup">
+  <i class="fa-solid fa-check-circle"></i>
+  <span id="toast-message">Product added to cart!</span>
+</div>
+
   <script>
     // 1. URL se data nikalo
     const params = new URLSearchParams(window.location.search);
@@ -169,6 +210,9 @@
       });
     }
   </script>
+
+<script src="js/global.js"></script>
+  <script src="js/database.js"></script> <script src="js/detail.js"></script>
 
 </body>
 </html>

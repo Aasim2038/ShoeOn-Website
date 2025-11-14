@@ -271,6 +271,154 @@ button { cursor: pointer; }
 /* =========================================
    11. RESPONSIVE (Tablet & Desktop)
    ========================================= */
+
+   /* =========================================
+   13. CART DRAWER (Side Pop-up)
+   ========================================= */
+
+/* Overlay (Puraana wala .overlay-modal use hoga) */
+/* Humne iske liye pehle hi style likh diya hai */
+
+/* Cart Container */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%; /* Default me screen ke bahar (hidden) */
+  width: 100%;
+  max-width: 380px; /* Max width 380px, phone pe poora */
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 2002; /* Bottom sheet se bhi upar */
+  box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+  transition: right 0.3s ease-in-out; /* Smooth slide */
+  
+  /* Poore cart ko flex me baant do (Header, Content, Footer) */
+  display: flex;
+  flex-direction: column;
+}
+.cart-drawer.active {
+  right: 0; /* Active class lagne par dikhega */
+}
+
+/* 1. Cart Header */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0; /* Ye shrink nahi hoga */
+}
+.cart-header h3 { font-size: 1.2rem; }
+.cart-close-btn {
+  background: none; border: none; font-size: 1.5rem; color: #555;
+}
+
+/* 2. Cart Content (Items Area) */
+.cart-content {
+  padding: 15px;
+  overflow-y: auto; /* Agar items zyada ho toh scroll hoga */
+  flex-grow: 1; /* Beech ki poori jagah lega */
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 50px 0;
+  color: #aaa;
+}
+.cart-empty i { font-size: 3rem; margin-bottom: 15px; }
+
+/* Ek Cart Item ka Style */
+.cart-item {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.cart-item img {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  object-fit: cover;
+}
+.item-details { flex-grow: 1; }
+.item-brand { font-size: 0.8rem; color: #888; margin-bottom: 2px; }
+.item-name { font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; }
+.item-price { font-size: 1rem; font-weight: bold; color: #333; }
+.item-moq { font-size: 0.8rem; font-weight: normal; color: #d9534f; }
+.item-remove-btn {
+  background: #f8f8f8; border: 1px solid #e0e0e0;
+  width: 30px; height: 30px; border-radius: 50%;
+  color: #d9534f;
+}
+
+/* 3. Cart Footer (Checkout) */
+.cart-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  flex-shrink: 0; /* Ye shrink nahi hoga */
+}
+.subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+.subtotal-price { font-weight: bold; font-size: 1.2rem; color: #333; }
+.btn-checkout {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #d3a14b;
+  color: white;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+}
+
+/* =========================================
+   14. TOAST / SANDWICH POPUP
+   ========================================= */
+#toast-popup {
+  visibility: hidden; /* Default me chupa hua */
+  opacity: 0;
+  min-width: 250px;
+  background-color: #333; /* Dark background */
+  color: #fff; /* White text */
+  text-align: center;
+  border-radius: 8px;
+  padding: 16px;
+  position: fixed; /* Hamesha screen par fix */
+  z-index: 9999; /* Sabse upar */
+  left: 50%;
+  transform: translateX(-50%); /* Center me */
+  bottom: 30px; /* Neeche se 30px upar */
+  font-size: 1rem;
+  transition: opacity 0.3s, bottom 0.3s ease-in-out;
+  
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Jab 'show' class lagegi, tab ye dikhega */
+#toast-popup.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 50px; /* Slide hoke upar aayega */
+}
+
+#toast-popup i {
+  color: #28a745; /* Green Check */
+  font-size: 1.2rem;
+}
+
 @media (min-width: 768px) {
   body { background-color: #e9e9e9; }
   .main-header, .container, .site-footer { max-width: 1200px; margin: 0 auto; }

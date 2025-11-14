@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - ShoeOn</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <link rel="stylesheet" href="css/checkout.css">
+</head>
+<body>
+
+  <header class="checkout-header">
+    <a href="javascript:history.back()" class="back-arrow"><i class="fa-solid fa-arrow-left"></i></a>
+    <h3>Secure Checkout</h3>
+    <a href="index.html" class="home-icon"><i class="fa-solid fa-shop"></i></a>
+  </header>
+
+  <main class="checkout-container">
+    
+    <div class="checkout-form-column">
+      
+      <section class="checkout-section">
+        <h3>1. Shipping Address</h3>
+        <form class="shipping-form">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" placeholder="Enter your full name">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter your 10-digit mobile number">
+          </div>
+          <div class="form-group">
+            <label for="address">Full Address (Shop/Gala No.)</label>
+            <textarea id="address" rows="3" placeholder="Enter shop number, street name, area"></textarea>
+          </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="pincode">Pincode</label>
+              <input type="tel" id="pincode" placeholder="6-digit Pincode">
+            </div>
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" id="city" placeholder="Your City">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" id="state" placeholder="Your State">
+          </div>
+        </form>
+      </section>
+
+      <section class="checkout-section">
+        <h3>2. Payment Method</h3>
+        <div class="payment-options">
+          
+          <label class="payment-method">
+            <input type="radio" name="payment" value="online" checked>
+            <div class="payment-details">
+              <strong>Pay Online</strong>
+              <p>Pay with UPI, Cards, Netbanking (via Razorpay)</p>
+              <div class="payment-icons">
+                <img src="https://w7.pngwing.com/pngs/32/491/png-transparent-razorpay-round-icon-ecommerce-payment-gateway.png" alt="Razorpay">
+              </div>
+            </div>
+          </label>
+          
+          <label class="payment-method">
+            <input type="radio" name="payment" value="cod">
+            <div class="payment-details">
+              <strong>Cash on Delivery (COD)</strong>
+              <p>Pay in cash when your order is delivered.</p>
+            </div>
+          </label>
+
+        </div>
+      </section>
+      
+    </div>
+    
+    <div class="checkout-summary-column">
+      <section class="checkout-section order-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-items" id="summary-items-list">
+          </div>
+        <div class="summary-total">
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span id="summary-subtotal">₹0.00</span>
+          </div>
+          <div class="total-row">
+            <span>Shipping:</span>
+            <span>FREE</span>
+          </div>
+          <div class="total-row final-total">
+            <span>Grand Total:</span>
+            <span id="summary-grandtotal">₹0.00</span>
+          </div>
+        </div>
+        <button class="btn-place-order">Place Order</button>
+      </section>
+    </div>
+    
+  </main>
+
+  <div class="overlay-modal" id="cart-overlay"></div>
+  <div class="cart-drawer" id="cart-drawer"></div>
+  
+  <div id="toast-popup">...</div>
+
+  <script src="js/global.js"></script>
+  <script src="js/checkout.js"></script>
+  
+</body>
+</html>
