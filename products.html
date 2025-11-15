@@ -13,10 +13,9 @@
 </head>
 <body>
 
-  <header class="page-header">
+ <header class="page-header">
     <div class="header-left">
       <a href="index.html" class="back-arrow"><i class="fa-solid fa-arrow-left"></i></a>
-      
       <div class="page-title">
         <h3 id="page-category-title">Loading...</h3> 
         <span id="style-count">-- Styles</span>
@@ -24,11 +23,12 @@
     </div>
 
     <div class="header-right">
-      <a href="#" class="header-icon"><i class="fa-solid fa-search"></i></a>
-      <a href="#" class="header-icon"><i class="fa-regular fa-heart"></i></a>
-      <a href="#" class="header-icon" id="cart-icon-btn"> 
+      <button class="filter-btn" id="filter-open-btn">
+        <i class="fa-solid fa-filter"></i> Filters
+      </button>
+      <a href="#" class="header-icon" id="cart-icon-btn">
         <i class="fa-solid fa-bag-shopping"></i>
-        <span class="cart-count" id="cart-item-count">0</span> 
+        <span class="cart-count" id="cart-item-count">0</span>
       </a>
     </div>
   </header>
@@ -68,11 +68,62 @@
   
 </div>
 
+<div class="filter-drawer" id="filter-drawer">
+  
+  <div class="filter-header">
+    <h3>Filters</h3>
+    <button class="filter-close-btn" id="filter-close-btn">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  
+  <div class="filter-content">
+    
+    <section class="filter-section">
+      <h4>Sort By Price</h4>
+      <div class="filter-options" id="sort-options">
+        <label>
+          <input type="radio" name="sort" value="price-asc"> Low to High
+        </label>
+        <label>
+          <input type="radio" name="sort" value="price-desc"> High to Low
+        </label>
+        <label>
+          <input type="radio" name="sort" value="latest" checked> Newest First
+        </label>
+      </div>
+    </section>
+    
+    <section class="filter-section">
+      <h4>Material</h4>
+      <div class="filter-options" id="material-options">
+        <label>
+          <input type="checkbox" value="Leather"> Leather
+        </label>
+        <label>
+          <input type="checkbox" value="Canvas"> Canvas
+        </label>
+        <label>
+          <input type="checkbox" value="Synthetic"> Synthetic
+        </label>
+      </div>
+    </section>
+    
+  </div>
+  
+  <div class="filter-footer">
+    <button class="btn-filter-clear" id="filter-clear-btn">Clear All</button>
+    <button class="btn-filter-apply" id="filter-apply-btn">Apply Filters</button>
+  </div>
+  
+</div>
+
 <div id="toast-popup">
   <i class="fa-solid fa-check-circle"></i>
   <span id="toast-message">Product added to cart!</span>
 </div>
  
+
 
 <script src="js/global.js"></script>
 <script src="js/products.js"></script>

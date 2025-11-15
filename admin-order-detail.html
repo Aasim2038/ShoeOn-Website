@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Order Details</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/admin-order-detail.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    
+    <nav class="admin-nav">
+      <div class="nav-header">
+        <h3>ShoeOn Admin</h3>
+      </div>
+      <ul>
+        <li><a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
+        <li class="active"><a href="admin-orders.html"><i class="fa-solid fa-list-check"></i> Orders</a></li>
+        <li><a href="#"><i class="fa-solid fa-users"></i> Customers</a></li>
+        <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        <hr>
+        <li><a href="index.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> View Site</a></li>
+      </ul>
+    </nav>
+    
+    <main class="admin-content">
+      
+      <div class="content-header">
+        <h1>Order Details</h1>
+        <a href="admin-orders.html" class="btn-secondary">
+          <i class="fa-solid fa-arrow-left"></i> Back to All Orders
+        </a>
+      </div>
+      
+      <div class="order-details-grid">
+        
+        <div class="order-main-column">
+          
+          <div class="detail-card">
+            <h3>Items Ordered</h3>
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>MOQ</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody id="order-items-list">
+                </tbody>
+            </table>
+          </div>
+          
+          <div class="detail-card">
+            <h3>Customer Details</h3>
+            <div class="customer-info-list">
+              <div>
+                <strong>Name:</strong>
+                <span id="customer-name"></span>
+              </div>
+              <div>
+                <strong>Phone:</strong>
+                <span id="customer-phone"></span>
+              </div>
+              <div>
+                <strong>Shipping Address:</strong>
+                <span id="customer-address"></span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div class="order-sidebar-column">
+          <div class="detail-card status-card">
+            <h3>Update Status</h3>
+            <p>Order ID: <strong id="order-id"></strong></p>
+            <div class="form-group">
+              <label for="order-status">Change Status:</label>
+              <select id="order-status">
+                <option value="Pending">Pending</option>
+                <option value="Processing">Processing</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="update-status-btn">Update Status</button>
+          </div>
+        </div>
+        
+      </div>
+      
+    </main>
+    
+  </div>
+
+  <script src="js/global.js"></script>
+  <script src="js/admin-order-detail.js"></script>
+
+</body>
+</html>

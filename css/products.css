@@ -136,6 +136,122 @@
   margin-top: auto; /* Price ko hamesha bottom me rakhega */
 }
 
+/* =========================================
+   FILTER SIDEBAR (Products Page)
+   ========================================= */
+
+/* Filter button ke liye (Header me) */
+.filter-btn {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+/* Filter ka overlay (Puraana wala hi use hoga) */
+/* .overlay-modal { ... } */
+
+/* Filter ka Panel (Left se aayega) */
+.filter-drawer {
+  position: fixed;
+  top: 0;
+  left: -100%; /* Default me left me chupa hua */
+  width: 100%;
+  max-width: 320px;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 2002;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+  transition: left 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+.filter-drawer.active {
+  left: 0; /* Active hone par dikhega */
+}
+
+/* Filter Header (Title, Close) */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+.filter-header h3 { font-size: 1.2rem; margin: 0; }
+.filter-close-btn {
+  background: none; border: none; font-size: 1.5rem; color: #555;
+}
+
+/* Filter Content (Options) */
+.filter-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+.filter-section {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+.filter-section h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 15px 0;
+}
+.filter-options label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #333;
+}
+.filter-options input[type="radio"],
+.filter-options input[type="checkbox"] {
+  margin-right: 8px;
+}
+.filter-options .price-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.filter-options .price-inputs input {
+  width: 80px;
+  padding: 8px;
+  font-size: 0.9rem;
+}
+
+/* Filter Footer (Apply Button) */
+.filter-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.btn-filter-apply {
+  flex: 1;
+  padding: 12px;
+  background-color: #d3a14b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.btn-filter-clear {
+  flex: 1;
+  padding: 12px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
 /* ===== DESKTOP / LAPTOP KE LIYE (Bada Dikhana Hai) ===== */
 @media (min-width: 768px) {
   .product-grid-container {

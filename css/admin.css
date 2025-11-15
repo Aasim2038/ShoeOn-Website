@@ -1,0 +1,295 @@
+/* =========================================
+   ADMIN PANEL STYLES
+   ========================================= */
+
+/* Basic Setup */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8f9fa; /* Light grey background */
+}
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== 1. Side Navigation ===== */
+.admin-nav {
+  width: 240px;
+  background-color: #2c3e50; /* Dark Blue */
+  color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.nav-header {
+  padding: 20px;
+  text-align: center;
+  background-color: #34495e;
+}
+.nav-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.admin-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.admin-nav ul li a {
+  display: block;
+  padding: 15px 20px;
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+.admin-nav ul li a:hover {
+  background-color: #34495e;
+}
+.admin-nav ul li.active a {
+  background-color: #d3a14b; /* Active tab color */
+  color: #fff;
+  font-weight: bold;
+}
+.admin-nav ul li a i {
+  margin-right: 10px;
+  width: 20px; /* Icons ko align karega */
+}
+.admin-nav ul hr {
+  border-color: #34495e;
+}
+.logout-btn {
+  color: #e74c3c !important; /* Red */
+}
+
+/* ===== 2. Main Content ===== */
+.admin-content {
+  flex-grow: 1; /* Bachi hui poori jagah lega */
+  padding: 30px;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.content-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #333;
+}
+.btn-primary {
+  background-color: #d3a14b;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+.btn-primary:hover {
+  background-color: #c29140;
+}
+.btn-primary i {
+  margin-right: 8px;
+}
+
+/* Table Design */
+.content-table {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden; /* Taaki table rounded corners le */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Borders ko merge karega */
+}
+table th, table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+table th {
+  background-color: #f8f9fa; /* Header ko halka background */
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: #555;
+}
+table td {
+  font-size: 0.95rem;
+  color: #333;
+}
+table td img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+/* Table Buttons */
+.btn-action {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.btn-edit {
+  background-color: #3498db; /* Blue */
+  color: white;
+}
+.btn-delete {
+  background-color: #e74c3c; /* Red */
+  color: white;
+}
+
+/* =========================================
+   ADMIN FORM STYLES (Add Product)
+   ========================================= */
+
+.btn-secondary {
+  background-color: #7f8c8d;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+.btn-secondary:hover {
+  background-color: #6c7a7b;
+}
+
+.form-container {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+#add-product-form {
+  padding: 0;
+}
+
+.form-section {
+  padding: 25px 30px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.form-section:last-child {
+  border-bottom: none;
+}
+.form-section h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #555;
+}
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select { /* <-- YEH NAYA ADD HUA */
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box; 
+  background-color: #fff; /* Select ka background white rakho */
+}
+
+/* 3 column layout (Pricing) */
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+.form-row .form-group {
+  flex: 1; /* Sabko barabar space milega */
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  gap: 25px;
+}
+.checkbox-group label {
+  font-size: 1rem;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.checkbox-group input {
+  width: 16px;
+  height: 16px;
+}
+
+/* Form Submit */
+.form-actions {
+  background-color: #f8f9fa;
+  padding: 20px 30px;
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#form-response {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   ADMIN ORDER PAGE STYLES
+   ========================================= */
+
+/* Table me 'View' button ka style */
+.btn-view {
+  background-color: #1abc9c; /* Teal/Green */
+  color: white;
+}
+
+/* Order Status Badge */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+}
+.status-pending {
+  background-color: #f39c12; /* Orange */
+}
+.status-processing {
+  background-color: #3498db; /* Blue (Naya Add Kiya) */
+}
+.status-shipped {
+  background-color: #1abc9c; /* Teal/Green (Color Badla) */
+}
+.status-delivered {
+  background-color: #2ecc71; /* Green */
+}
+.status-cancelled {
+  background-color: #e74c3c; /* Red */
+}

@@ -33,8 +33,8 @@
       <p class="success-message">Your Order is Confirmed.</p>
       
       <p class="order-id">
-        Your Order ID is: <strong>#SHOEON-12345</strong>
-      </p>
+  Your Order ID is: <strong id="order-id-display">Loading...</strong>
+</p>
       
       <a href="index.html" class="btn-home">
         <i class="fa-solid fa-arrow-left"></i>
@@ -45,5 +45,21 @@
     
   </main>
   
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. URL se 'order_id' (jaise SH-123456) nikalo
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+
+    const displayEl = document.getElementById('order-id-display');
+
+    if (orderId && displayEl) {
+      // 2. Usse page par dikhao
+      displayEl.innerText = `#${orderId}`;
+    } else {
+      displayEl.innerText = 'N/A';
+    }
+  });
+</script>
 </body>
 </html>
