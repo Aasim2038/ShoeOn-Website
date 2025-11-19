@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  
+  <style>
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .stat-icon {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      color: #fff;
+    }
+    .icon-blue { background-color: #3498db; }
+    .icon-green { background-color: #2ecc71; }
+    .icon-orange { background-color: #f39c12; }
+    
+    .stat-info h3 { margin: 0; font-size: 2rem; color: #333; }
+    .stat-info p { margin: 5px 0 0; color: #777; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <nav class="admin-nav">
+      <div class="nav-header"><h3>ShoeOn Admin</h3></div>
+      <ul>
+        <li class="active"><a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
+        <li><a href="admin-orders.html"><i class="fa-solid fa-list-check"></i> Orders</a></li>
+        <li><a href="admin-customers.html"><i class="fa-solid fa-users"></i> Customers</a></li>
+        <li><a href="admin-settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        <hr>
+        <li><a href="index.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> View Site</a></li>
+      </ul>
+    </nav>
+    
+    <main class="admin-content">
+      <div class="content-header">
+        <h1>Dashboard Overview</h1>
+      </div>
+      
+      <div class="stats-grid">
+        
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          <div class="stat-info">
+            <h3 id="total-sale">₹0</h3>
+            <p>Total Revenue</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon icon-blue"><i class="fa-solid fa-bag-shopping"></i></div>
+          <div class="stat-info">
+            <h3 id="total-orders">0</h3>
+            <p>Total Orders</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon icon-orange"><i class="fa-solid fa-shoe-prints"></i></div>
+          <div class="stat-info">
+            <h3 id="total-products">0</h3>
+            <p>Total Products</p>
+          </div>
+        </div>
+        
+      </div>
+      
+      <div style="text-align:center; margin-top:50px; color:#aaa;">
+        <i class="fa-solid fa-chart-pie" style="font-size: 5rem; margin-bottom:20px;"></i>
+        <p>More charts coming soon...</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

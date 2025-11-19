@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Customers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  </head>
+<body>
+
+  <div class="admin-container">
+    
+    <nav class="admin-nav">
+      <div class="nav-header"><h3>ShoeOn Admin</h3></div>
+      <ul>
+        <li class="active"><a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
+        <li><a href="admin-orders.html"><i class="fa-solid fa-list-check"></i> Orders</a></li>
+        <li><a href="admin-customers.html"><i class="fa-solid fa-users"></i> Customers</a></li>
+        <li><a href="admin-settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        <hr>
+        <li><a href="index.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> View Site</a></li>
+      </ul>
+    </nav>
+    
+    <main class="admin-content">
+      <div class="content-header">
+        <h1>Registered Customers</h1>
+      </div>
+      
+      <div class="content-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Shop Name</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="customer-list-body">
+            </tbody>
+        </table>
+      </div>
+    </main>
+    
+  </div>
+  
+  <script src="js/admin-customers.js"></script>
+
+</body>
+</html>

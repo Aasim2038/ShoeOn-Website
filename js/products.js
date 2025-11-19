@@ -27,7 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!productGrid) return; 
 
     // 1. Query String banana
-    let query = `?category=${baseCategory}`; // Category hamesha rahegi
+    let query = `?category=${baseCategory}`; 
+    
+    // --- NAYA: Search Query Add Karo ---
+    const searchQuery = params.get('search');
+    if (searchQuery) {
+      query += `&search=${searchQuery}`;
+      // Title bhi badal do taaki user ko pata chale
+      pageTitle.innerText = `Search results for "${searchQuery}"`;
+    }
+    // -----------------------------------
     
     // Sort options add karo
     if (filters.sort) {
@@ -71,8 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3 class="plp-brand">${product.brand}</h3>
                 <p class="plp-title">${product.name}</p>
                 <div class="plp-b2b-info"><span>MOQ: ${product.moq}</span></div>
-                <p class="plp-price">₹${product.salePrice}</p> 
-              </div>
+                <div class="plp-b2b-info"><span>MOQ: ${product.moq}</span></div>
+              
+              ${isUserLoggedIn() 
+                ? `<p class="plp-price">₹${product.salePrice}</p>` 
+                : `<p class="plp-price" style="color:#d3a14b; font-size:0.8rem;">Login to View Price</p>`
+              }
+              
+            </div>
             </a>`;
         });
       })

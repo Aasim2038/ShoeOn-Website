@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Edit Product</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+  <title>Admin - Edit Product</title> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
@@ -17,11 +15,11 @@
         <h3>ShoeOn Admin</h3>
       </div>
       <ul>
-        <li><a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-        <li class="active"><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
-        <li><a href="#"><i class="fa-solid fa-list-check"></i> Orders</a></li>
-        <li><a href="#"><i class="fa-solid fa-users"></i> Customers</a></li>
-        <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        <li class="active"><a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
+        <li><a href="admin-orders.html"><i class="fa-solid fa-list-check"></i> Orders</a></li>
+        <li><a href="admin-customers.html"><i class="fa-solid fa-users"></i> Customers</a></li>
+        <li><a href="admin-settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
         <hr>
         <li><a href="index.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> View Site</a></li>
       </ul>
@@ -30,8 +28,7 @@
     <main class="admin-content">
       
       <div class="content-header">
-        <h1>Edit Product</h1>
-        <a href="admin-products.html" class="btn-secondary">
+        <h1>Edit Product</h1> <a href="admin-products.html" class="btn-secondary">
           <i class="fa-solid fa-arrow-left"></i> Back to All Products
         </a>
       </div>
@@ -55,18 +52,21 @@
             </div>
           </div>
           
-          <div class="form-row">
-            <div class="form-group">
-              <label for="mrp">MRP (₹)</label>
-              <input type="number" id="mrp" step="0.01" placeholder="e.g., 2999.50" required>
-            </div>
-            <div class="form-group">
-              <label for="discount">Discount (%)</label>
-              <input type="number" id="discount" step="0.01" placeholder="e.g., 30.5">
-            </div>
-            <div class="form-group">
-              <label for="salePrice">Sale Price (₹)</label>
-              <input type="number" id="salePrice" step="0.01" placeholder="Auto-calculated" required>
+          <div class="form-section">
+            <h3>Pricing & Discount</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="mrp">MRP (₹)</label>
+                <input type="number" id="mrp" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label for="discount">Discount (%)</label>
+                <input type="number" id="discount" step="0.01">
+              </div>
+              <div class="form-group">
+                <label for="salePrice">Sale Price (₹)</label>
+                <input type="number" id="salePrice" step="0.01" required>
+              </div>
             </div>
           </div>
 
@@ -78,27 +78,26 @@
                 <input type="number" id="moq" value="1" required>
               </div>
               <div class="form-group">
-              <label for="category">Category</label>
-              <select id="category" required>
-                <option value="">-- Select Category --</option>
-                <option value="men-casual">Men's Casual</option>
-                <option value="men-sports">Men's Sports</option>
-                <option value="women-sandals">Women's Sandals</option>
-                <option value="women-heels">Women's Heels</option>
+                <label for="category">Category</label>
+                <select id="category" required>
+                  <option value="">-- Select Category --</option>
+                  <option value="men-casual">Men's Casual</option>
+                  <option value="men-sports">Men's Sports</option>
+                  <option value="women-sandals">Women's Sandals</option>
+                  <option value="women-heels">Women's Heels</option>
                 </select>
-            </div>
+              </div>
               <div class="form-group">
-              <label for="material">Material</label>
-              <select id="material">
-                <option value="">-- Select Material --</option>
-                <option value="Leather">Leather</option>
-                <option value="Synthetic">Synthetic</option>
-                <option value="Canvas">Canvas</option>
-                <option value="Mesh">Mesh</option>
-                <option value="Poly">Poly</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
+                <label for="material">Material</label>
+                <select id="material">
+                  <option value="">-- Select Material --</option>
+                  <option value="Leather">Leather</option>
+                  <option value="Synthetic">Synthetic</option>
+                  <option value="Canvas">Canvas</option>
+                  <option value="Mesh">Mesh</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
             </div>
           </div>
           
@@ -113,19 +112,18 @@
 
           <div class="form-section">
             <h3>Product Images</h3>
-            <p>Pehli image "Main Image" hogi. Abhi ke liye image ka URL paste karein.</p>
+            <p>Image URLs yahaan dikhenge (Abhi edit nahi ho sakte). Images change karne ke liye product delete karke naya banayein.</p>
             <div class="form-group">
               <label for="image1">Image 1 URL</label>
-              <input type="text" id="image1" placeholder="https://.../shoe-image1.jpg">
-            </div>
+              <input type="text" id="image1" readonly style="background-color:#eee;"> </div>
             <div class="form-group">
               <label for="image2">Image 2 URL</label>
-              <input type="text" id="image2" placeholder="https://.../shoe-image2.jpg">
+              <input type="text" id="image2" readonly style="background-color:#eee;">
             </div>
           </div>
           
           <div class="form-actions">
-            <button type="submit" class="btn-primary">Save Product</button>
+            <button type="submit" class="btn-primary">Update Product</button>
             <div id="form-response"></div>
           </div>
           

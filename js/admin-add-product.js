@@ -1,84 +1,77 @@
 /* =========================================
-   ADMIN ADD PRODUCT.JS
+   ADMIN ADD PRODUCT.JS (File Upload Logic)
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
   
-  // --- 1. Discount Logic ---
+  // --- 1. Discount Logic (Yeh same hai) ---
   const mrpInput = document.getElementById('mrp');
   const discountInput = document.getElementById('discount');
   const salePriceInput = document.getElementById('salePrice');
 
-  // Function: % se Price calculate karna
   function calculateSalePrice() {
     const mrp = parseFloat(mrpInput.value);
     const discount = parseFloat(discountInput.value);
-    
     if (!isNaN(mrp) && !isNaN(discount)) {
       const salePrice = mrp - (mrp * (discount / 100));
       salePriceInput.value = salePrice.toFixed(2);
     }
   }
-  
-  // Function: Price se % calculate karna
   function calculateDiscount() {
     const mrp = parseFloat(mrpInput.value);
     const salePrice = parseFloat(salePriceInput.value);
-    
     if (!isNaN(mrp) && !isNaN(salePrice) && mrp > 0) {
       const discount = ((mrp - salePrice) / mrp) * 100;
       discountInput.value = discount.toFixed(2);
     }
   }
   
-  // Event Listeners: Jab koi type kare toh calculate ho
   if(mrpInput) mrpInput.addEventListener('input', calculateSalePrice);
   if(discountInput) discountInput.addEventListener('input', calculateSalePrice);
   if(salePriceInput) salePriceInput.addEventListener('input', calculateDiscount);
   
 
-  // --- 2. Form Submit Logic ---
+  // --- 2. Form Submit Logic (Yeh poora badal gaya hai) ---
   const form = document.getElementById('add-product-form');
   const responseDiv = document.getElementById('form-response');
+  const imageInput = document.getElementById('images'); // Naya file input
 
   if (form) {
     form.addEventListener('submit', (e) => {
-      e.preventDefault(); // Page reload hone se roko
-      responseDiv.innerText = 'Saving...';
+      e.preventDefault(); 
+      responseDiv.innerText = 'Uploading images and saving...';
       responseDiv.style.color = 'blue';
 
-      // 1. Saare Tags (Checkboxes) jama karo
+      // 1. Ab hum JSON nahi, FormData banayenge
+      const formData = new FormData();
+      
+      // 2. Saara text data FormData me daalo
+      formData.append('name', document.getElementById('name').value);
+      formData.append('brand', document.getElementById('brand').value);
+      formData.append('description', document.getElementById('description').value);
+      formData.append('mrp', parseFloat(mrpInput.value));
+      formData.append('salePrice', parseFloat(salePriceInput.value));
+      formData.append('moq', parseInt(document.getElementById('moq').value));
+      formData.append('category', document.getElementById('category').value);
+      formData.append('material', document.getElementById('material').value);
+
+      // 3. Saare Tags ko comma (,) se jod kar daalo
       const tags = [];
       if (document.getElementById('tag-new-arrival').checked) tags.push('New Arrival');
       if (document.getElementById('tag-top-best').checked) tags.push('Top Best');
       if (document.getElementById('tag-featured').checked) tags.push('Featured');
+      formData.append('tags', tags.join(',')); // 'New Arrival,Top Best'
+
+      // 4. Saari Files ko FormData me daalo
+      for (let i = 0; i < imageInput.files.length; i++) {
+        formData.append('images', imageInput.files[i]);
+      }
       
-      // 2. Saari Images jama karo
-      const images = [];
-      const img1 = document.getElementById('image1').value;
-      const img2 = document.getElementById('image2').value;
-      if (img1) images.push(img1); // Agar URL daala hai toh hi add karo
-      if (img2) images.push(img2);
-
-      // 3. Poora Product Data JSON banao
-      const productData = {
-        name: document.getElementById('name').value,
-        brand: document.getElementById('brand').value,
-        description: document.getElementById('description').value,
-        mrp: parseFloat(mrpInput.value),
-        salePrice: parseFloat(salePriceInput.value),
-        moq: parseInt(document.getElementById('moq').value),
-        category: document.getElementById('category').value,
-        material: document.getElementById('material').value,
-        images: images,
-        tags: tags
-      };
-
-      // 4. Server ke API ko data bhejo
+      // 5. Server ke API ko FormData bhejo
+      // (Note: Jab FormData bhejte hain, tab 'Content-Type' header NAHI lagate)
       fetch('/api/products', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData)
+        body: formData // JSON.stringify nahi, seedha formData
       })
       .then(res => res.json())
       .then(data => {

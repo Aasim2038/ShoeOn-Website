@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Settings</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    <nav class="admin-nav">
+      <div class="nav-header"><h3>ShoeOn Admin</h3></div>
+      <ul>
+        <li class="active"><a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
+        <li><a href="admin-orders.html"><i class="fa-solid fa-list-check"></i> Orders</a></li>
+        <li><a href="admin-customers.html"><i class="fa-solid fa-users"></i> Customers</a></li>
+        <li><a href="admin-settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        <hr>
+        <li><a href="index.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> View Site</a></li>
+      </ul>
+    </nav>
+    
+    <main class="admin-content">
+      <div class="content-header">
+        <h1>Site Settings</h1>
+      </div>
+      
+      <div class="form-container">
+        <form id="settings-form">
+          
+          <div class="form-section">
+            <h3>Home Page Banners</h3>
+            <p>Upload new images to replace the current slider. (Max 5)</p>
+            <div class="form-group">
+              <label>Select Images</label>
+              <input type="file" id="banners" multiple accept="image/*">
+            </div>
+            
+            <div id="current-banners" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+              </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Save Settings</button>
+            <div id="form-response"></div>
+          </div>
+          
+        </form>
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/admin-settings.js"></script>
+
+</body>
+</html>

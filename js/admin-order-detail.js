@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Page ke elements ko pakdo
   const orderIdEl = document.getElementById('order-id');
+  const paymentIdEl = document.getElementById('payment-id');
   const customerNameEl = document.getElementById('customer-name');
   const customerPhoneEl = document.getElementById('customer-phone');
   const customerAddressEl = document.getElementById('customer-address');
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // 3. Data ko HTML me bharo
       orderIdEl.innerText = `#${order.orderNumber}`;
+      paymentIdEl.innerText = order.paymentId || 'N/A';
       customerNameEl.innerText = order.customerName;
       customerPhoneEl.innerText = order.customerPhone;
       

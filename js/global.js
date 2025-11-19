@@ -5,6 +5,18 @@
 
 // --- A. UNIVERSAL HELPER FUNCTIONS ---
 
+// Check karo user logged in hai ya nahi
+function isUserLoggedIn() {
+  const user = localStorage.getItem('shoeonUser');
+  return user ? true : false; // Agar user hai to TRUE, nahi to FALSE
+}
+
+// User ko Logout karna
+function logoutUser() {
+  localStorage.removeItem('shoeonUser');
+  window.location.href = 'login.html';
+}
+
 // Browser ki memory se cart laana
 function getCart() {
   return JSON.parse(localStorage.getItem("shoeonCart")) || [];
@@ -185,3 +197,157 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. Page load hote hi Badge update karo
   updateCartBadge();
 });
+
+// --- 5. DYNAMIC MENU (Login/Logout) ---
+  function updateMenuAuth() {
+    const authContainer = document.getElementById('auth-buttons-container');
+    if (!authContainer) return;
+
+    // Check karo user login hai ya nahi
+    const user = JSON.parse(localStorage.getItem('shoeonUser'));
+
+    if (user) {
+      // Agar User Logged In hai -> "Logout" dikhao
+      authContainer.innerHTML = `
+        <div style="width: 100%; text-align: center;">
+          <p style="margin-bottom: 10px; font-weight: bold; color: #333;">Hi, ${user.name}</p>
+          <button id="btn-logout" style="width: 100%; padding: 12px; background-color: #e74c3c; color: white; border: none; border-radius: 6px; font-weight: bold;">
+            Logout
+          </button>
+        </div>
+      `;
+
+      // Logout button par click logic
+      document.getElementById('btn-logout').addEventListener('click', () => {
+        // 1. Data delete karo
+        localStorage.removeItem('shoeonUser');
+        localStorage.removeItem('shoeonCart'); // Cart bhi khaali kar do (Safety)
+        
+        // 2. Message dikhao
+        showToast('Logged out successfully');
+        
+        // 3. Page reload karo (taaki prices chup jayein)
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      });
+
+    } else {
+      // Agar User Guest hai -> Wapas Login/Register dikhao
+      authContainer.innerHTML = `
+        <a href="login.html" class="btn btn-login" style="flex:1; text-align:center; padding:12px; border:2px solid #d3a14b; color:#d3a14b; border-radius:6px; text-decoration:none; font-weight:bold;">Login</a>
+        <a href="register.html" class="btn btn-register" style="flex:1; text-align:center; padding:12px; background:#d3a14b; color:white; border:2px solid #d3a14b; border-radius:6px; text-decoration:none; font-weight:bold;">Register</a>
+      `;
+    }
+  }
+
+  // Page load hote hi menu update karo
+  updateMenuAuth();
+
+ // --- 6. SEARCH BAR & SUGGESTIONS LOGIC ---
+  const searchInput = document.getElementById('search-input');
+  const suggestionsBox = document.getElementById('suggestions-box');
+  const searchIcon = document.querySelector('.search-bar i');
+
+  function performSearch(query) {
+    if (!query) query = searchInput.value.trim();
+    if (query) {
+      window.location.href = `products.html?search=${query}`;
+    }
+  }
+
+  if (searchInput && suggestionsBox) {
+    
+    let debounceTimer; // Taaki har akshar par request na jaye (Speed badhane ke liye)
+
+    // 1. Jab user type kare
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim();
+      
+      // Purana timer clear karo
+      clearTimeout(debounceTimer);
+
+      if (query.length < 2) { 
+        suggestionsBox.classList.remove('active'); // Agar 2 letter se kam hai toh chupao
+        return;
+      }
+
+      // 300ms ruk kar server ko request bhejo (Debouncing)
+      debounceTimer = setTimeout(() => {
+        
+        fetch(`/api/suggestions?q=${query}`)
+          .then(res => res.json())
+          .then(products => {
+            
+            suggestionsBox.innerHTML = ''; // Purana list saaf karo
+            
+            if (products.length > 0) {
+              suggestionsBox.classList.add('active'); // List dikhao
+              
+              products.forEach(product => {
+                const li = document.createElement('li');
+                
+                // Text: "Nike Air Jordan" (Brand)
+                li.innerHTML = `
+                  <span>${product.name}</span>
+                  <span class="suggestion-type">${product.brand}</span>
+                `;
+                
+                // Click karne par search karo
+                li.addEventListener('click', () => {
+                  searchInput.value = product.name;
+                  performSearch(product.name);
+                });
+                
+                suggestionsBox.appendChild(li);
+              });
+            } else {
+              suggestionsBox.classList.remove('active');
+            }
+          })
+          .catch(err => console.error(err));
+          
+      }, 300); // 300ms delay
+    });
+
+    // 2. Enter dabane par search
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        suggestionsBox.classList.remove('active');
+        performSearch();
+      }
+    });
+
+    // 3. Bahar click karne par list band karo
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+        suggestionsBox.classList.remove('active');
+      }
+    });
+  }
+  
+  if (searchIcon) {
+    searchIcon.style.cursor = 'pointer';
+    searchIcon.addEventListener('click', () => performSearch());
+  }
+  // --- 7. MY ACCOUNT CLICK LOGIC ---
+function handleMyAccount(e) {
+  e.preventDefault(); // Link ko roko
+  
+  const user = JSON.parse(localStorage.getItem('shoeonUser'));
+  
+  if (user) {
+    // Agar user Login hai
+    if (user.isAdmin) {
+      // Agar Admin hai toh Admin Panel bhejo
+      window.location.href = 'admin-dashboard.html';
+    } else {
+      // Agar normal customer hai toh Order History dikhao (Future scope)
+      // Abhi ke liye ek Toast dikha dete hain
+      showToast(`Hi ${user.name}, Profile page coming soon!`);
+    }
+  } else {
+    // Agar user Guest hai toh Login page bhejo
+    window.location.href = 'login.html';
+  }
+}

@@ -18,9 +18,11 @@
     </div>
     
     <div class="nav-center">
-      <div class="search-bar">
+      <div class="search-bar" style="position: relative;">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" placeholder="Search styles, brands...">
+        <input type="text" id="search-input" placeholder="Search styles, brands..." autocomplete="off">
+        
+        <ul class="suggestions-box" id="suggestions-box"></ul>
       </div>
     </div>
     
@@ -38,16 +40,20 @@
       <button class="close-btn" id="close-menu-btn">&times;</button>
     </div>
     <ul>
-      <li><a href="#">Men's Footwear</a></li>
-      <li><a href="#">Women's Footwear</a></li>
-      <li><a href="#">Kids' Footwear</a></li>
-      <li><a href="#">Top Brands</a></li>
-      <li><a href="#">My Account</a></li>
-      </ul>
+      <li><a href="products.html?category=men-casual">Men's Footwear</a></li>
+      
+      <li><a href="products.html?category=women-sandals">Women's Footwear</a></li>
+      
+      <li><a href="products.html?category=boys-sports">Kids' Footwear</a></li>
+      
+      <li><a href="products.html?tag=Top Best">Top Brands</a></li>
+      
+      <li><a href="#" onclick="handleMyAccount(event)">My Account</a></li>
+    </ul>
     
-    <div class="nav-auth-buttons">
-      <a href="/login" class="btn btn-login">Login</a>
-      <a href="/register" class="btn btn-register">Register</a>
+    <div class="nav-auth-buttons" id="auth-buttons-container">
+      <a href="login.html" class="btn btn-login">Login</a>
+      <a href="register.html" class="btn btn-register">Register</a>
     </div>
     
   </nav>
@@ -84,21 +90,10 @@
     </section> -->
 
    <section class="hero-banner-slider">
-  <div class="slider-track" id="slider-track">
-    <div class="slide">
-      <img src="images/heroimg1.jpg" alt="Banner 1">
-    </div>
-    <div class="slide">
-      <img src="images/heroimg2.jpg" alt="Banner 2">
-    </div>
-    <div class="slide">
-      <img src="images/heroimg3.jpg" alt="Banner 3">
-    </div>
-    <div class="slide">
-      <img src="images/heroimg4.jpg" alt="Banner 4">
-    </div>
-  </div>
-</section>
+      <div class="slider-track" id="slider-track">
+        
+        </div>
+    </section>
 
     <section class="horizontal-list-section">
       <div class="section-header">
@@ -128,185 +123,28 @@
       </div>
     </section>
 
-    <section class="product-carousel">
-  <h2 class="carousel-title">TOP WISHLISTED BRANDS</h2>
-  <div class="carousel-container">
-    
-    <div class="product-card-b2b">
-      
-      <div class="card-image-container">
-        <img src="images/cartimg-adidas.jpg" alt="Product Image" class="product-image">
-        <div class="brand-logo-container">
-          <img src="images/adidas-logo.png" alt="Brand Logo" class="brand-logo">
-        </div>
-      </div>
-      
-      <div class="card-info-container">
-        <h3 class="product-brand">Adidas</h3>
-        <p class="product-category">Sneakers & More</p>
-        
-        <div class="b2b-info">
-          <div class="info-left">
-            <span class="product-price-label">Price</span>
-            <span class="product-price">₹335 / Pair</span>
-          </div>
-          <div class="info-right">
-            <span class="moq-label">MOQ</span>
-            <span class="moq-value">12 Pairs</span>
-          </div>
-        </div>
-        
-      </div>
+   <section class="product-carousel">
+  <h2 class="carousel-title">Top Wishes Brands</h2>
+  
+  <div class="carousel-container" id="top-best-container">
     </div>
-    
-    
-    <div class="product-card-b2b">
-      <div class="card-image-container">
-        <img src="images/cartimg-nike.jpg" alt="Product Image" class="product-image">
-        <div class="brand-logo-container">
-          <img src="images/nike-logo.png" alt="Brand Logo" class="brand-logo">
-        </div>
-      </div>
-      <div class="card-info-container">
-        <h3 class="product-brand">Nike</h3>
-        <p class="product-category">Running Shoes</p>
-        <div class="b2b-info">
-          <div class="info-left">
-            <span class="product-price-label">Price</span>
-            <span class="product-price">₹447 / Pair</span>
-          </div>
-          <div class="info-right">
-            <span class="moq-label">MOQ</span>
-            <span class="moq-value">10 Pairs</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card-b2b">
-      <div class="card-image-container">
-        <img src="images/cartimg-puma.jpg" alt="Product Image" class="product-image">
-        <div class="brand-logo-container">
-          <img src="images/puma-logo.png" alt="Brand Logo" class="brand-logo">
-        </div>
-      </div>
-      <div class="card-info-container">
-        <h3 class="product-brand">Puma</h3>
-        <p class="product-category">Sneakers</p>
-        <div class="b2b-info">
-          <div class="info-left">
-            <span class="product-price-label">Price</span>
-            <span class="product-price">₹658 / Pair</span>
-          </div>
-          <div class="info-right">
-            <span class="moq-label">MOQ</span>
-            <span class="moq-value">10 Pairs</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card-b2b">
-      <div class="card-image-container">
-        <img src="images/cartimg-spark.jpg" alt="Product Image" class="product-image">
-        <div class="brand-logo-container">
-          <img src="images/sparx-logo.png" alt="Brand Logo" class="brand-logo">
-        </div>
-      </div>
-      <div class="card-info-container">
-        <h3 class="product-brand">Sparx</h3>
-        <p class="product-category">Sneakers</p>
-        <div class="b2b-info">
-          <div class="info-left">
-            <span class="product-price-label">Price</span>
-            <span class="product-price">₹447 / Pair</span>
-          </div>
-          <div class="info-right">
-            <span class="moq-label">MOQ</span>
-            <span class="moq-value">10 Pairs</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
+  
 </section>
 
 <section class="product-carousel">
-  
   <h2 class="carousel-title">NEW ARRIVALS</h2>
   
-  <div class="carousel-container">
-    
-    <div class="product-card-b2b">
-      <div class="card-image-container">
-        <img src="images/cartimg-spark.jpg" alt="Product Image" loading="lazy" class="product-image">
-        <div class="brand-logo-container">
-          <img src="images/sparx-logo.png" alt="Brand Logo" loading="lazy" class="brand-logo">
-        </div>
-      </div>
-      <div class="card-info-container">
-        <h3 class="product-brand">FreshKicks</h3>
-        <p class="product-category">Casual Sneakers</p>
-        <div class="b2b-info">
-          <div class="info-left">
-            <span class="product-price-label">Price</span>
-            <span class="product-price">₹510 / Pair</span>
-          </div>
-          <div class="info-right">
-            <span class="moq-label">MOQ</span>
-            <span class="moq-value">8 Pairs</span>
-          </div>
-        </div>
-      </div>
+  <div class="carousel-container" id="new-arrival-container">
     </div>
-    
-    <div class="product-card-b2b">
-      <div class="card-image-container">
-        <img src="images/cartimg-puma.jpg" alt="Product Image" loading="lazy" class="product-image">
-        <div class="brand-logo-container">
-          <img src="images/puma-logo.png" alt="Brand Logo" loading="lazy" class="brand-logo">
-        </div>
-      </div>
-      <div class="card-info-container">
-        <h3 class="product-brand">Sporty</h3>
-        <p class="product-category">Running Shoes</p>
-        <div class="b2b-info">
-          <div class="info-left">
-            <span class="product-price-label">Price</span>
-            <span class="product-price">₹480 / Pair</span>
-          </div>
-          <div class="info-right">
-            <span class="moq-label">MOQ</span>
-            <span class="moq-value">10 Pairs</span>
-          </div>
-        </div>
-      </div>
+  
+</section>
+
+<section class="product-carousel">
+  <h2 class="carousel-title">Featured</h2>
+  
+  <div class="carousel-container" id="featured-container">
     </div>
-    
-    <div class="product-card-b2b">
-      <div class="card-image-container">
-        <img src="images/cartimg-nike.jpg" alt="Product Image" loading="lazy" class="product-image">
-        <div class="brand-logo-container">
-          <img src="images/nike-logo.png" alt="Brand Logo" loading="lazy" class="brand-logo">
-        </div>
-      </div>
-      <div class="card-info-container">
-        <h3 class="product-brand">ComfortStep</h3>
-        <p class="product-category">Sandals</p>
-        <div class="b2b-info">
-          <div class="info-left">
-            <span class="product-price-label">Price</span>
-            <span class="product-price">₹290 / Pair</span>
-          </div>
-          <div class="info-right">
-            <span class="moq-label">MOQ</span>
-            <span class="moq-value">20 Pairs</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    </div>
+  
 </section>
 
   </main>
@@ -346,13 +184,13 @@
 
     <div class="footer-column footer-contact">
       <h4>Contact Us</h4>
-      <p><i class="fa-solid fa-envelope"></i> sales@shoeon.com</p>
-      <div class="social-icons">
-        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
-        <a href="#"><i class="fa-brands fa-facebook"></i></a>
-        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <p><i class="fa-solid fa-location-dot"></i> 123 Shoe Market, Mumbai</p>
+      
+      <p><i class="fa-solid fa-envelope"></i> <span id="footer-email">sales@shoeon.com</span></p>
+      
+      <p><i class="fa-solid fa-phone"></i> <span id="footer-phone">+91 98765 43210</span></p>
+      
       </div>
-    </div>
 
   </div>
 

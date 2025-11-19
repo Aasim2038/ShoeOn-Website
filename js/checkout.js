@@ -1,16 +1,14 @@
 /* =========================================
-   CHECKOUT.JS (FIXED - Sirf 3 Fields)
+   CHECKOUT.JS (Mock Payment - Direct Success)
    ========================================= */
 
-// Is function ko global.js se access milega
 function renderCheckoutSummary() {
-  const cart = getCart(); // getCart() global.js me hai
-  
+  const cart = getCart();
   const summaryList = document.getElementById('summary-items-list');
   const summarySubtotal = document.getElementById('summary-subtotal');
   const summaryGrandTotal = document.getElementById('summary-grandtotal');
 
-  if (!summaryList) return; 
+  if (!summaryList) return;
 
   let total = 0;
   let itemsHTML = '';
@@ -20,9 +18,8 @@ function renderCheckoutSummary() {
   } else {
     cart.forEach(item => {
       const priceNumber = parseFloat(String(item.price).replace('₹', '').replace(',', ''));
-      if (!isNaN(priceNumber)) {
-        total += priceNumber;
-      }
+      if (!isNaN(priceNumber)) total += priceNumber;
+      
       itemsHTML += `
         <div class="summary-item">
           <img src="${item.img}" alt="${item.name}">
@@ -31,38 +28,51 @@ function renderCheckoutSummary() {
             <p class="item-name">${item.name}</p>
           </div>
           <p class="item-price">₹${item.price}</p>
-        </div>
-      `;
+        </div>`;
     });
     summaryList.innerHTML = itemsHTML;
   }
   
   const finalTotal = total.toFixed(2);
-  summarySubtotal.innerText = `₹${finalTotal}`;
-  summaryGrandTotal.innerText = `₹${finalTotal}`; 
+  if(summarySubtotal) summarySubtotal.innerText = `₹${finalTotal}`;
+  if(summaryGrandTotal) summaryGrandTotal.innerText = `₹${finalTotal}`;
 }
 
 
-// --- Order Place Karne Ka Logic (FIXED) ---
 document.addEventListener('DOMContentLoaded', () => {
-  
-  // 1. Page load hote hi summary update karo
   renderCheckoutSummary();
+
+  const user = JSON.parse(localStorage.getItem('shoeonUser'));
+
+  if (user) {
+    // Agar user login hai, toh fields dhoondo
+    const nameInput = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
+    const addressInput = document.getElementById('address');
+
+    // Data bharo (Agar field maujood hai)
+    if (nameInput) nameInput.value = user.name;
+    if (phoneInput) phoneInput.value = user.phone;
+    
+    // Address me hum Shop Name aur Shop Address dono mila kar daal denge
+    if (addressInput) {
+      // Example: "Aasim Footwear, Shop No 5, MG Road..."
+      addressInput.value = `${user.shopName}, ${user.shopAddress}`; 
+    }
+  }
+  // ----------------------------------
   
-  // 2. Button aur Form ke fields ko pakdo
   const placeOrderBtn = document.getElementById('place-order-btn');
   const nameEl = document.getElementById('name');
   const phoneEl = document.getElementById('phone');
   const addressEl = document.getElementById('address');
-  // Pincode aur City yahaan se hata diye
 
-  
   if (placeOrderBtn) {
-    placeOrderBtn.addEventListener('click', (e) => {
+    placeOrderBtn.addEventListener('click', async (e) => {
       e.preventDefault(); 
       
       if (!nameEl || !phoneEl || !addressEl) {
-        showToast("HTML me koi ID missing hai ('name', 'phone', 'address')");
+        showToast("Form error: ID missing");
         return;
       }
       
@@ -70,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const customerPhone = phoneEl.value;
       const shippingAddress = addressEl.value;
 
-      // Validation me se Pincode hata diya
       if (!customerName || !customerPhone || !shippingAddress) {
         showToast('Please fill all address details'); 
         return; 
@@ -82,52 +91,93 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
-      // Total amount calculate karo
       let totalAmount = 0;
       cart.forEach(item => {
         const priceNumber = parseFloat(String(item.price).replace('₹', '').replace(',', ''));
-        if (!isNaN(priceNumber)) {
-          totalAmount += priceNumber;
-        }
+        if (!isNaN(priceNumber)) totalAmount += priceNumber;
       });
-      
-      // orderData me se Pincode aur City hata diye
-      const orderData = {
-        customerName: customerName,
-        customerPhone: customerPhone,
-        shippingAddress: shippingAddress,
-        orderItems: cart, 
-        totalAmount: totalAmount,
-        paymentMethod: 'Online'
-      };
 
-      placeOrderBtn.innerText = 'Placing Order...';
+      placeOrderBtn.innerText = 'Processing Payment...';
       placeOrderBtn.style.opacity = '0.7';
 
-      // Server ke API ko data bhejo
-      fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          showToast('Error placing order. Please try again.');
+      try {
+        // --- STEP 1: CREATE ORDER (Fake/Mock) ---
+        const orderResponse = await fetch('/api/payment/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: totalAmount })
+        });
+        const orderData = await orderResponse.json();
+        
+        if (!orderData.id) {
+          showToast('Payment initiation failed');
           placeOrderBtn.innerText = 'Place Order';
           placeOrderBtn.style.opacity = '1';
-        } else {
-          showToast('Order placed successfully!');
-          localStorage.removeItem('shoeonCart'); 
-         window.location.href = `order-success.html?order_id=${data.orderNumber}`;
+          return;
         }
-      })
-      .catch(err => {
-        console.error('Fetch Error:', err);
-        showToast('Network Error. Check console.');
+
+        // --- STEP 2: MOCK PAYMENT (Direct Success) ---
+        // Hum maan lete hain ki popup khula aur payment ho gaya
+        const fakePaymentResponse = {
+          razorpay_order_id: orderData.id,
+          razorpay_payment_id: "pay_" + Math.floor(Math.random() * 1000000),
+          razorpay_signature: "fake_signature"
+        };
+
+        // --- STEP 3: VERIFY KARO ---
+        const verifyResponse = await fetch('/api/payment/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fakePaymentResponse)
+        });
+
+        const verifyData = await verifyResponse.json();
+
+        if (verifyData.status === 'success') {
+          // --- STEP 4: ORDER SAVE KARO ---
+          saveOrderToDatabase(customerName, customerPhone, shippingAddress, cart, totalAmount, fakePaymentResponse.razorpay_payment_id);
+        } else {
+          showToast('Payment Verification Failed');
+          placeOrderBtn.innerText = 'Place Order';
+          placeOrderBtn.style.opacity = '1';
+        }
+
+      } catch (err) {
+        console.error(err);
+        showToast('Error processing payment');
         placeOrderBtn.innerText = 'Place Order';
         placeOrderBtn.style.opacity = '1';
-      });
+      }
     });
   }
 });
+
+// Helper Function: Order Save Karna
+function saveOrderToDatabase(name, phone, address, cart, total, paymentId) {
+  const orderData = {
+    customerName: name,
+    customerPhone: phone,
+    shippingAddress: address,
+    orderItems: cart, 
+    totalAmount: total,
+    paymentMethod: 'Online (Mock)',
+    paymentId: paymentId 
+  };
+
+  fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderData)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      showToast('Payment hua par Order Save nahi hua!');
+    } else {
+      localStorage.removeItem('shoeonCart'); 
+      // Success Page par bhejo (Order ID ke saath)
+      window.location.href = `order-success.html?order_id=${data.orderNumber}`; 
+    }
+  })
+  .catch(err => console.error(err));
+}

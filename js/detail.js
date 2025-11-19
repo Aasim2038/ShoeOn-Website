@@ -30,7 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
           // 3. Page par details bharo
           pdpBrand.innerText = product.brand;
           pdpName.innerText = product.name;
-          pdpPrice.innerText = `₹${product.salePrice}`;
+          // Price Logic
+      if (isUserLoggedIn()) {
+         pdpPrice.innerText = `₹${product.salePrice}`;
+      } else {
+         pdpPrice.innerText = "Login to View Price";
+         pdpPrice.style.fontSize = "1rem";
+         pdpPrice.style.color = "#d3a14b";
+      }
           pdpMoq.innerText = product.moq + " Pairs";
           
           // Slider ki images update karo
