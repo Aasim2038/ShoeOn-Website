@@ -118,41 +118,54 @@ button { cursor: pointer; }
 /* =========================================
    6. MY RANGE SECTION ( FIX APPLIED HERE )
    ========================================= */
-.horizontal-list-section { padding: 20px 0; background-color: #fff; }
-.section-header { display: flex; justify-content: space-between; padding: 0 15px 15px 15px; }
-
-/* Container */
 .horizontal-list {
-  display: flex; overflow-x: auto;
-  gap: 10px; /* Gap kam kiya */
-  padding: 0 15px;
-  align-items: flex-start; /* IMPORTANT: Sabko Top se align karo */
+  display: flex;
+  overflow-x: auto;
+  gap: 10px; 
+  padding: 0 15px; 
+  align-items: flex-start !important; /* TOP alignment ko force karo */
   scrollbar-width: none;
 }
-.horizontal-list::-webkit-scrollbar { display: none; }
 
-/* Individual Item */
 .list-item-circle {
-  flex: 0 0 85px; /* Fix Width */
+  flex: 0 0 85px; 
   text-align: center;
-  display: flex; flex-direction: column; align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   margin: 0; 
+  padding-bottom: 5px; /* Neeche se halka sa padding */
 }
 
+/* IMAGE: Ensure margin is minimal */
 .list-item-circle img {
-  width: 75px; height: 75px;
-  border-radius: 50%; border: 1px solid #e0e0e0; object-fit: cover;
-  margin-bottom: 5px;
-  flex-shrink: 0;
+  width: 75px; 
+  height: 75px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  object-fit: cover;
+  margin-bottom: 4px; /* Image ke neeche ka gap */
 }
 
-/* TEXT FIX: FIXED HEIGHT FOR ALIGNMENT */
+/* TEXT: Fixed Height and Margin Reset */
 .list-item-circle p {
-  font-size: 0.75rem; color: #333; margin: 0;
-  height: 35px; /* Fix height (approx 2 lines) */
+  font-size: 0.75rem; 
+  color: #333;
   line-height: 1.2;
-  display: flex; align-items: flex-start; justify-content: center;
-  overflow: hidden;
+  
+  /* YEH HAI ULTIMATE FIX: Margin aur Padding poora hatao */
+  margin: 0 !important; 
+  padding: 0 !important;
+
+  /* Height ko fixed karo (2 lines space) */
+  height: 36px; 
+  min-height: 36px; 
+  
+  display: flex;
+  align-items: flex-start; /* Text ko box ke upar chipkao */
+  justify-content: center;
+  width: 100%;
 }
 
 

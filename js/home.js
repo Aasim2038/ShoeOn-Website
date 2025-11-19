@@ -9,6 +9,8 @@ const allCategoryData = {
     items: [
       { name: 'Casual Shoes', img: 'images/sub-cat/casual-shoes.jpeg', url: 'products.html?category=men-casual' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.jpeg', url: 'products.html?category=men-sports' },
+      { name: 'formal', img: 'images/sub-cat/formal.jpeg', url: 'products.html?category=men-formal' },
+      { name: 'sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=men-sandals' },
     ]
   },
   'women-sheet': {
@@ -18,9 +20,14 @@ const allCategoryData = {
       { name: 'Heels', img: 'images/sub-cat/women-heels.jpeg', url: 'products.html?category=women-heels' },
     ]
   },
-  'infant-sheet': { title: 'Infant Footwear', items: [] },
-  'boys-sheet': { title: 'Boys Footwear', items: [] },
-  'girls-sheet': { title: 'Girls Footwear', items: [] }
+  'boys-sheet': { title: 'Boys Footwear', items: [
+    { name: 'chapple', img: 'images/sub-cat/chapple.jpg', url: 'products.html?category=boys-chapple' },
+      { name: 'flipflop', img: 'images/sub-cat/flipflop.jpeg', url: 'products.html?category=men-flipflop' },
+  ] },
+  'girl-sheet': { title: 'Girls Footwear', items: [
+     { name: 'flats', img: 'images/sub-cat/women-flats.jpeg', url: 'products.html?category=girl-flats' },
+      { name: 'sneakers', img: 'images/sub-cat/women-sneakers.jpeg', url: 'products.html?category=girl-sneakers' },
+  ] }
 };
 
 

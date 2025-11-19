@@ -112,19 +112,17 @@
 
           <div class="form-section">
             <h3>Product Images</h3>
-            <p>Image URLs yahaan dikhenge (Abhi edit nahi ho sakte). Images change karne ke liye product delete karke naya banayein.</p>
+            <p>Upload new files to replace old images. Upload 1 file for main image.</p>
+            
+            <input type="hidden" id="existingImagesHidden">
+            
             <div class="form-group">
-              <label for="image1">Image 1 URL</label>
-              <input type="text" id="image1" readonly style="background-color:#eee;"> </div>
-            <div class="form-group">
-              <label for="image2">Image 2 URL</label>
-              <input type="text" id="image2" readonly style="background-color:#eee;">
+              <label for="images">Upload Photos (Max 5)</label>
+              <input type="file" id="images" name="images" multiple accept="image/*">
             </div>
-          </div>
-          
-          <div class="form-actions">
-            <button type="submit" class="btn-primary">Update Product</button>
-            <div id="form-response"></div>
+            
+            <div id="image-preview" style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;">
+              </div>
           </div>
           
         </form>

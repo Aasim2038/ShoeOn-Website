@@ -166,19 +166,14 @@ app.delete('/api/products/:id', (req, res) => {
  * Method: PUT
  * URL: /api/products/ID...
  */
-// Multer ko yahaan bhi use karo (5 photos tak)
 app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
   const id = req.params.id;
   
-  console.log('--- PRODUCT UPDATE REQUEST AAYA ---');
-  console.log('Text Data:', req.body);
-  console.log('File Data:', req.files);
-
   try {
     const updatedData = req.body;
     const files = req.files;
     let newImageUrls = [];
-
+    
     // 1. Agar nayi files aayi hain, toh unhe Cloudinary par upload karo
     if (files && files.length > 0) {
       for (const file of files) {
@@ -188,45 +183,29 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
         newImageUrls.push(result.secure_url);
         require('fs').unlinkSync(file.path); // Temp file delete karo
       }
-      console.log('Naye Cloudinary URLs:', newImageUrls);
+      
+      // 2. Naye URLs ko product data me daalo
+      updatedData.images = newImageUrls; 
+    } else if (updatedData.existingImages) {
+      // 3. Agar koi nayi file nahi aayi, toh purani URLs ko hi wapas bhej do
+      updatedData.images = updatedData.existingImages.split(',');
+    } else {
+      // Agar sab khaali hai, toh images array ko khaali kar do
+      updatedData.images = [];
     }
 
-    // 2. Puraana data (jo form se hidden field me aaya) aur naya data merge karo
-    // Hum maan rahe hain ki client 'existingImages' naam ki field bhejega
+    // 4. Product ko ID se dhoondo aur naye data se update karo
+    const updatedProduct = await Product.findByIdAndUpdate(id, updatedData, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
     
-    // Yahaan hum 'images' field ko text data se le rahe hain.
-    // Client ko 'images' field me purani + nayi URLs bhejni hongi.
-    // Ruko, yeh complex ho jayega. Chalo simple rakhte hain.
-    
-    // --- Naya Simple Logic ---
-    // Hum maanenge ki client 'images' field me naye URLs bhej raha hai
-    // aur purane URLs ko overwrite kar raha hai.
-    // 'admin-edit-product.js' ko thoda smart banana padega.
-    
-    // Abhi ke liye, hum sirf text data update karte hain.
-    // File upload in Edit is very complex. Chalo pehle text update fix karte hain.
-    
-    // --- RUKO: Code badal raha hoon ---
-    // File upload + Edit ek saath bohot complex hai.
-    // Hum pehle simple text edit fix karte hain.
-    
-    // Puraana code wapas daal raha hoon (bina file upload ke)
-    // Hum pehle text-data (Name, Price) ko edit karna final karte hain.
-    Product.findByIdAndUpdate(id, updatedData, { new: true })
-      .then(updatedProduct => {
-        if (!updatedProduct) {
-          return res.status(404).json({ error: 'Product not found' });
-        }
-        res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
-      })
-      .catch(err => {
-        console.log('Update error:', err);
-        res.status(500).json({ error: 'Server error while updating' });
-      });
+    res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
 
   } catch (err) {
     console.log('Update error:', err);
-    res.status(500).json({ error: 'Server error' });
+    res.status(400).json({ error: 'Failed to update product due to data validation.' });
   }
 });
 
