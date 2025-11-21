@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Query String banana
     let query = `?category=${baseCategory}`; 
-    
+    console.log('--- FETCHING URL: /api/products' + query);
     // --- NAYA: Search Query Add Karo ---
     const searchQuery = params.get('search');
     if (searchQuery) {

@@ -54,6 +54,24 @@
               <textarea id="description" rows="4"></textarea>
             </div>
           </div>
+
+          <div class="form-section">
+        <h3>Technical Specifications</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sole">Sole Material</label>
+            <input type="text" id="sole" placeholder="e.g., PU, TPR, Rubber">
+          </div>
+          <div class="form-group">
+            <label for="closure">Closure Type</label>
+            <input type="text" id="closure" placeholder="e.g., Lace-Up, Slip-On, Velcro">
+          </div>
+          <div class="form-group">
+            <label for="origin">Country of Origin</label>
+            <input type="text" id="origin" value="Made in India">
+          </div>
+        </div>
+      </div>
           
           <div class="form-row">
             <div class="form-group">
@@ -77,15 +95,24 @@
                 <label for="moq">MOQ (Pairs)</label>
                 <input type="number" id="moq" value="1" required>
               </div>
-              <div class="form-group">
-              <label for="category">Category</label>
-              <select id="category" required>
-                <option value="">-- Select Category --</option>
-                <option value="men-casual">Men's Casual</option>
-                <option value="men-sports">Men's Sports</option>
-                <option value="women-sandals">Women's Sandals</option>
-                <option value="women-heels">Women's Heels</option>
-                </select>
+              <div class="form-group-row">
+                <div class="form-group">
+                    <label for="main-category">Main Category</label>
+                    <select id="main-category" required>
+                        <option value="">-- Select Main Category --</option>
+                        <option value="men">Men's</option>
+                        <option value="women">Women's</option>
+                        <option value="boys">Boys'</option>
+                        <option value="girls">Girls'</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sub-category">Sub Category</label>
+                    <select id="sub-category" required disabled>
+                        <option value="">-- Select Sub Category --</option>
+                    </select>
+                </div>
+                <input type="hidden" id="category" name="category" required>
             </div>
               <div class="form-group">
               <label for="material">Material</label>
@@ -113,7 +140,7 @@
 
           <div class="form-section">
             <h3>Product Images</h3>
-            <p>Aap ek saath 5 photos tak select kar sakte hain. Pehli photo main image hogi.</p>
+            <p>Aap ek saath 4 photos tak select kar sakte hain. Pehli photo main image hogi.</p>
             <div class="form-group">
               <label for="images">Upload Photos</label>
               <input type="file" id="images" name="images" multiple accept="image/jpeg, image/png, image/webp">

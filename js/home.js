@@ -20,7 +20,7 @@ const allCategoryData = {
       { name: 'bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=women-bellies' },
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=women-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=women-pu-sandals' },
-      { name: 'Loose-products', img: 'images/sub-cat/women-heels.jpeg', url: 'products.html?category=women-heels' },
+      { name: 'Loose-products', img: 'images/sub-cat/women-heels.jpeg', url: 'products.html?category=women-loose-products' },
     ]
   },
   'boys-sheet': { title: 'Boys Footwear', items: [

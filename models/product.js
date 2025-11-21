@@ -51,6 +51,10 @@ const productSchema = new Schema({
   color: {
     type: String
   },
+
+  sole: { type: String },
+  closure: { type: String },
+  origin: { type: String },
   
   // Tags (New Arrival, Top Best, etc.)
   tags: [

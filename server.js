@@ -4,42 +4,31 @@ const mongoose = require('mongoose');
 require('dotenv').config(); 
 const Product = require('./models/product'); 
 const Order = require('./models/order');
-const path = require('path'); // Path handle karne ke liye
 const User = require('./models/user');
 const Setting = require('./models/setting');
-const Razorpay = require('razorpay');
-const crypto = require('crypto');
+const multer = require('multer'); // UPLOAD ke liye
+const cloudinary = require('cloudinary').v2; // UPLOAD ke liye
 
-// --- NAYE PACKAGES UPLOAD KE LIYE ---
-const multer = require('multer'); 
-const cloudinary = require('cloudinary').v2;
-
-// --- 2. APP SETUP (EXPRESS KI TAYYARI) ---
+// --- 2. APP SETUP & MIDDLEWARE ---
 const app = express();
 const PORT = 3000;
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET
-});
 
 app.use(express.json()); 
-app.use(express.static(__dirname)); // HTML/CSS/JS files ke liye
+app.use(express.static(__dirname)); 
 
-// --- 3. CLOUDINARY CONFIG (NAYA) ---
-// .env file se keys uthao aur Cloudinary se connect karo
+// --- 3. CLOUDINARY CONFIG (File Upload) ---
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET
 });
 
-// --- 4. MULTER CONFIG (NAYA) ---
-// Multer ko batao ki file ko pehle temporary (temp) kahan save karna hai
-// 'uploads/' folder me save karega
+// --- 4. MULTER CONFIG ---
 const upload = multer({ dest: 'uploads/' });
 
 // --- 5. DATABASE CONNECTION ---
 const dbURI = process.env.MONGODB_URI;
+
 mongoose.connect(dbURI)
   .then((result) => {
     app.listen(PORT, () => {
@@ -47,95 +36,96 @@ mongoose.connect(dbURI)
       console.log(`🚀 Server chalu ho gaya hai http://localhost:${PORT} par`);
     });
   })
-  .catch((err) => { console.log(err); });
+  .catch((err) => { console.log('❌ Database connection fail!'); console.log(err); });
 
-// --- 6. API ROUTES ---
+// --- 6. API ROUTES (FINAL) ---
 
-/**
- * (A) NAYA PRODUCT BANANE KA ROUTE (Ab File Upload Ke Saath!)
- * Method: POST
- * URL: /api/products
- */
-// 'upload.array('images', 5)' -> Multer ko batata hai ki 'images' field se 5 photo tak aa sakti hain
+// (A) NAYA PRODUCT BANANE KA ROUTE (File Upload Ke Saath!)
 app.post('/api/products', upload.array('images', 5), async (req, res) => {
-  
-  console.log('--- NAYA PRODUCT REQUEST AAYA (File Ke Saath) ---');
-  console.log('Text Data:', req.body); // Form ka text data
-  console.log('File Data:', req.files); // Upload hui files
-  
   try {
     const productData = req.body;
     const files = req.files;
-    let imageUrls = []; // Khaali array
+    let imageUrls = [];
 
-    // 1. Har file ko Cloudinary par upload karo
-    for (const file of files) {
-      const result = await cloudinary.uploader.upload(file.path, {
-        folder: 'shoeon-products' // Cloudinary me 'shoeon-products' folder bana dega
-      });
-      imageUrls.push(result.secure_url); // Sirf URL save karo
-      // Temporary file delete kar do
-      require('fs').unlinkSync(file.path);
+    // Nayi files Cloudinary par upload karo
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const result = await cloudinary.uploader.upload(file.path, { folder: 'shoeon-products' });
+        imageUrls.push(result.secure_url);
+        require('fs').unlinkSync(file.path);
+      }
     }
     
-    console.log('Cloudinary URLs:', imageUrls);
-
-    // 2. Naya Product banao (Database me save karne ke liye)
+    // Product create karo (Tags ko array banao)
     const product = new Product({
-      name: productData.name,
-      brand: productData.brand,
-      description: productData.description,
-      mrp: productData.mrp,
-      salePrice: productData.salePrice,
-      moq: productData.moq,
-      category: productData.category,
-      material: productData.material,
-      tags: productData.tags.split(','), // Tags ko array me badlo
-      images: imageUrls // Naye Cloudinary URLs daalo
+      ...productData,
+      tags: productData.tags.split(','), 
+      images: imageUrls 
     });
 
-    // 3. Product ko database me save karo
     const savedProduct = await product.save();
-    
     res.status(201).json(savedProduct);
 
   } catch (err) {
-    console.log('Error: Product save nahi hua:', err);
+    console.log('Error saving product:', err);
     res.status(400).json({ error: 'Failed to add product' });
   }
 });
 
 
 /**
- * (B) SAARE PRODUCTS LAANE KA ROUTE (Filter waala)
+ * (B) SAARE PRODUCTS LAANE KA ROUTE (Upgraded with all Filters!)
+ * Method: GET
+ * URL: /api/products?sort=price-asc&material=Leather
  */
 app.get('/api/products', (req, res) => {
-  // ... (Yeh code waisa hi hai jaisa pehle tha) ...
+  
   const filter = {};
-  // --- SEARCH LOGIC ---
+  
+  // 1. Search Logic
   if (req.query.search) {
-    // 'regex' ka matlab hai milti-julti spelling dhoondo (case insensitive)
-    // Ya toh Name match ho, YA Brand match ho
     filter.$or = [
       { name: { $regex: req.query.search, $options: 'i' } },
       { brand: { $regex: req.query.search, $options: 'i' } }
     ];
   }
-  // --------------------
+
+  // 2. Category Filter (products.html se aata hai)
   if (req.query.category && req.query.category !== '') {
     filter.category = req.query.category;
   }
+  
+  // 3. Material Filter (YAHAN GADBAD THI, AB FIX HOGAYI)
+  if (req.query.material) {
+    // MongoDB ko bolo ki material array me se koi bhi value match kare
+    filter.material = { $in: req.query.material.split(',') };
+  }
+  
+  // 4. Tag Filter
   if (req.query.tag) {
-    filter.tags = req.query.tag; // MongoDB array me automatically check karega
+    filter.tags = req.query.tag;
   }
+  
+  // 5. Sort Logic
   let sortOptions = { createdAt: -1 }; 
+  
   if (req.query.sort) {
-    if (req.query.sort === 'price-asc') sortOptions = { salePrice: 1 }; 
-    else if (req.query.sort === 'price-desc') sortOptions = { salePrice: -1 };
+    if (req.query.sort === 'price-asc') {
+      sortOptions = { salePrice: 1 }; 
+    } else if (req.query.sort === 'price-desc') {
+      sortOptions = { salePrice: -1 };
+    }
   }
-  Product.find(filter).sort(sortOptions)
-    .then((products) => res.status(200).json(products))
-    .catch((err) => res.status(500).json({ error: 'Could not fetch products' }));
+
+  // 6. Database Query
+  Product.find(filter) 
+    .sort(sortOptions) 
+    .then((products) => {
+      res.status(200).json(products);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: 'Could not fetch products' });
+    });
 });
 
 
