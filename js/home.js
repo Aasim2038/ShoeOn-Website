@@ -12,6 +12,7 @@ const allCategoryData = {
       { name: 'sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=men-sandals' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.jpeg', url: 'products.html?category=men-sports' },
       { name: 'Loose-products', img: 'images/sub-cat/formal.jpeg', url: 'products.html?category=men-loose-products' },
+      { name: 'crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=men-crock' },
     ]
   },
   'women-sheet': {
