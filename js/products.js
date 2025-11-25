@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <div class="plp-price-compare-info">
                     <p class="plp-mrp-line">MRP: ${displayMrp}</p>
-                    <p class="plp-your-price-line">Your Rate: <strong>${displayPrice}</strong></p>
+                    <p class="plp-your-price-line">Our Rate: <strong>${displayPrice}</strong></p>
                 </div>
 
                 <div class="plp-b2b-info">

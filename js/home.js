@@ -38,12 +38,12 @@ const allCategoryData = {
       { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
       { name: 'Loose-products', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=girl-Loose-products' }
   ] },
-  'loose-sheet': { title: 'Girls Footwear', items: [
-      { name: 'bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=girl-bellies' },     
-       { name: 'sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=boys-sandals' },
-      { name: 'School shoes', img: 'images/sub-cat/shool-shoe.jpg', url: 'products.html?category=boys-School shoes' },
-      { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
-      { name: 'Loose-products', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=girl-Loose-products' }
+  'loose-sheet': { title: 'loose Footwear', items: [
+      { name: 'Womens', img: 'images/catogywomen.png', url: 'products.html?category=Women' },     
+       { name: 'Mens', img: 'images/catogyman.png', url: 'products.html?category=Men' },
+      { name: 'Boys', img: 'images/catogyboy.png', url: 'products.html?category=Boys' },
+      { name: 'Girls', img: 'images/catogygirl.png', url: 'products.html?category=girl' },
+      { name: 'Kids', img: 'images/', url: 'products.html?category=kids' }
   ] }
 };
 
