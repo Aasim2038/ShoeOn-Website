@@ -1,68 +1,70 @@
 /* =========================================
-   PRODUCTS.JS (Full Filter Logic)
+   PRODUCTS.JS (FINAL & STABILIZED)
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
   
-  // --- 1. Page Elements ---
+  // --- 1. Variables (Sahi Scope me) ---
   const productGrid = document.getElementById('product-grid');
   const pageTitle = document.getElementById('page-category-title');
   const styleCount = document.getElementById('style-count');
+  const cartOverlay = document.getElementById('cart-overlay');
   
   // Filter Drawer Elements
-  const filterOpenBtn = document.getElementById('filter-open-btn');
+  const filterOpenBtn = document.getElementById('filter-open-btn'); // <--- YEH FIX HAI
   const filterDrawer = document.getElementById('filter-drawer');
   const filterCloseBtn = document.getElementById('filter-close-btn');
   const filterApplyBtn = document.getElementById('filter-apply-btn');
   const filterClearBtn = document.getElementById('filter-clear-btn');
-  const cartOverlay = document.getElementById('cart-overlay'); 
-
-  // --- 2. Load Products Function (Ab ye Query lega) ---
   
-  // By default, category URL se aayegi
+  // URL Params
   const params = new URLSearchParams(window.location.search);
-  const baseCategory = params.get('category') || ''; // e.g., "men-casual"
+  const categoryKey = params.get('category') || '';
+  const searchQuery = params.get('search');
+  const sortValue = params.get('sort');
+  const materialValue = params.get('material');
+  const isUserLoggedIn = localStorage.getItem('shoeonUser') ? true : false;
+
+
+  // --- 2. Load Products Function (Core Logic) ---
 
   function loadProducts(filters = {}) {
     if (!productGrid) return; 
 
-    // 1. Query String banana
-    let query = `?category=${baseCategory}`; 
-    console.log('--- FETCHING URL: /api/products' + query);
-    // --- NAYA: Search Query Add Karo ---
-    const searchQuery = params.get('search');
-    if (searchQuery) {
-      query += `&search=${searchQuery}`;
-      // Title bhi badal do taaki user ko pata chale
-      pageTitle.innerText = `Search results for "${searchQuery}"`;
-    }
-    // -----------------------------------
+    // Query String banana
+    let query = `?category=${categoryKey}`; 
     
     // Sort options add karo
-    if (filters.sort) {
-      query += `&sort=${filters.sort}`;
+    if (filters.sort || sortValue) {
+      query += `&sort=${filters.sort || sortValue}`;
     }
     
     // Material options add karo
     if (filters.materials && filters.materials.length > 0) {
-      query += `&material=${filters.materials.join(',')}`; // e.g., material=Leather,Canvas
+      query += `&material=${filters.materials.join(',')}`;
+    } else if (materialValue) {
+        query += `&material=${materialValue}`;
+    }
+    
+    // Search query add karo
+    if (searchQuery) {
+      query += `&search=${searchQuery}`;
+      pageTitle.innerText = `Search results for "${searchQuery}"`;
+    } else {
+        pageTitle.innerText = categoryKey ? categoryKey.replace('-', ' ') : "All Products";
     }
 
-    // 2. Title set karo
-    pageTitle.innerText = baseCategory ? baseCategory.replace('-', ' ') : "All Products";
-    productGrid.innerHTML = `<p style="text-align:center; color:#555;">Loading products...</p>`; // Loading message
+    productGrid.innerHTML = `<p style="text-align:center; color:#555;">Loading products...</p>`; 
 
-    // 3. Server se data fetch karo (Naye Query ke saath)
-    console.log('Fetching data from:', `/api/products${query}`);
-    
-    
+    // Server se data fetch karo
     fetch(`/api/products${query}`, { cache: 'no-store' })
       .then(response => response.json())
       .then(products => {
         
         styleCount.innerText = `${products.length} Styles`;
-        productGrid.innerHTML = ''; // Grid khaali karo
+        productGrid.innerHTML = '';
         
+        // ... (HTML rendering logic remains the same) ...
         if (products.length === 0) {
           productGrid.innerHTML = "<p style='text-align: center; color: #777; width: 100%;'>No products found matching your filters.</p>";
           return;
@@ -71,6 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
         products.forEach(product => {
           const productLink = `product-detail.html?id=${product._id}`; 
           
+          const mrp = parseFloat(product.mrp);
+          const salePrice = parseFloat(product.salePrice);
+          const marginPercent = ((mrp - salePrice) / mrp) * 100;
+          
+          const displayPrice = isUserLoggedIn 
+                               ? `₹${salePrice.toFixed(2)}` 
+                               : `<span style="color:#d3a14b; font-weight:bold;">Login to View Price</span>`;
+          
+          const displayMrp = isUserLoggedIn
+                               ? `<del>₹${mrp.toFixed(2)}</del>`
+                               : ``;
+
           productGrid.innerHTML += `
             <a href="${productLink}" class="plp-card">
               <div class="plp-image-box">
@@ -79,20 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="plp-details">
                 <h3 class="plp-brand">${product.brand}</h3>
                 <p class="plp-title">${product.name}</p>
-                <div class="plp-b2b-info"><span>MOQ: ${product.moq}</span></div>
-                <div class="plp-b2b-info"><span>MOQ: ${product.moq}</span></div>
-              
-              ${isUserLoggedIn() 
-                ? `<p class="plp-price">₹${product.salePrice}</p>` 
-                : `<p class="plp-price" style="color:#d3a14b; font-size:0.8rem;">Login to View Price</p>`
-              }
-              
-            </div>
+                
+                <div class="plp-price-compare-info">
+                    <p class="plp-mrp-line">MRP: ${displayMrp}</p>
+                    <p class="plp-your-price-line">Your Rate: <strong>${displayPrice}</strong></p>
+                </div>
+
+                <div class="plp-b2b-info">
+                    <span>MOQ: ${product.moq}</span>
+                    <span style="color: #2e7d32;">Margin: ${marginPercent.toFixed(0)}%</span>
+                </div>
+              </div>
             </a>`;
         });
       })
       .catch(err => {
         console.error('Products fetch karne me error:', err);
+        productGrid.innerHTML = "<p>Error loading products. Server se connect nahi ho raha.</p>";
       });
   }
 
@@ -114,13 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // "Apply" button par click karne se kya hoga
     filterApplyBtn.addEventListener('click', () => {
       
-      // 1. Saare selected filters ki values nikalo
       const filters = {};
       
       // Sort ki value
-      const sortValue = document.querySelector('input[name="sort"]:checked');
-      if (sortValue) {
-        filters.sort = sortValue.value;
+      const sortValueEl = document.querySelector('input[name="sort"]:checked');
+      if (sortValueEl) {
+        filters.sort = sortValueEl.value;
       }
       
       // Material ki values
@@ -131,10 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       filters.materials = materials;
 
-      // 2. Naye filters ke saath products load karo
+      // Naye filters ke saath products load karo
       loadProducts(filters);
       
-      // 3. Filter band kar do
       closeFilter();
     });
     
@@ -150,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 4. Page Load Hote Hi Products Load Karo ---
-  loadProducts(); // Pehli baar bina kisi filter ke load karo
+  // --- 4. Initial Load ---
+  loadProducts();
   
 });

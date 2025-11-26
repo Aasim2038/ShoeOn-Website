@@ -1,166 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Add Product</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <link rel="stylesheet" href="css/admin.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Add Product</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
-  <div class="admin-container">
-    
-    <nav class="admin-nav">
-      <div class="nav-header">
-        <h3>ShoeOn Admin</h3>
-      </div>
-      <ul>
-        <li class="active"><a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-        <li><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
-        <li><a href="admin-orders.html"><i class="fa-solid fa-list-check"></i> Orders</a></li>
-        <li><a href="admin-customers.html"><i class="fa-solid fa-users"></i> Customers</a></li>
-        <li><a href="admin-settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
-        <hr>
-        <li><a href="index.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> View Site</a></li>
-      </ul>
-    </nav>
-    
-    <main class="admin-content">
-      
-      <div class="content-header">
-        <h1>Add New Product</h1>
-        <a href="admin-products.html" class="btn-secondary">
-          <i class="fa-solid fa-arrow-left"></i> Back to All Products
-        </a>
-      </div>
-      
-      <div class="form-container">
-        <form id="add-product-form">
-          
-          <div class="form-section">
-            <h3>Basic Info</h3>
-            <div class="form-group">
-              <label for="name">Product Name</label>
-              <input type="text" id="name" required>
-            </div>
-            <div class="form-group">
-              <label for="brand">Brand</label>
-              <input type="text" id="brand" required>
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea id="description" rows="4"></textarea>
-            </div>
-          </div>
-
-          <div class="form-section">
-        <h3>Technical Specifications</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="sole">Sole Material</label>
-            <input type="text" id="sole" placeholder="e.g., PU, TPR, Rubber">
-          </div>
-          <div class="form-group">
-            <label for="closure">Closure Type</label>
-            <input type="text" id="closure" placeholder="e.g., Lace-Up, Slip-On, Velcro">
-          </div>
-          <div class="form-group">
-            <label for="origin">Country of Origin</label>
-            <input type="text" id="origin" value="Made in India">
-          </div>
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body>
+    <div class="admin-container">
+      <nav class="admin-nav">
+        <div class="nav-header">
+          <h3>ShoeOn Admin</h3>
         </div>
-      </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="mrp">MRP (₹)</label>
-              <input type="number" id="mrp" step="0.01" placeholder="e.g., 2999.50" required>
-            </div>
-            <div class="form-group">
-              <label for="discount">Discount (%)</label>
-              <input type="number" id="discount" step="0.01" placeholder="e.g., 30.5">
-            </div>
-            <div class="form-group">
-              <label for="salePrice">Sale Price (₹)</label>
-              <input type="number" id="salePrice" step="0.01" placeholder="Auto-calculated" required>
-            </div>
-          </div>
+        <ul>
+          <li class="active">
+            <a href="admin-dashboard.html"
+              ><i class="fa-solid fa-chart-line"></i> Dashboard</a
+            >
+          </li>
+          <li>
+            <a href="admin-products.html"
+              ><i class="fa-solid fa-box-archive"></i> Products</a
+            >
+          </li>
+          <li>
+            <a href="admin-orders.html"
+              ><i class="fa-solid fa-list-check"></i> Orders</a
+            >
+          </li>
+          <li>
+            <a href="admin-customers.html"
+              ><i class="fa-solid fa-users"></i> Customers</a
+            >
+          </li>
+          <li>
+            <a href="admin-settings.html"
+              ><i class="fa-solid fa-gear"></i> Settings</a
+            >
+          </li>
+          <hr />
+          <li>
+            <a href="index.html" class="logout-btn"
+              ><i class="fa-solid fa-right-from-bracket"></i> View Site</a
+            >
+          </li>
+        </ul>
+      </nav>
 
-          <div class="form-section">
-            <h3>Inventory & Filters</h3>
+      <main class="admin-content">
+        <div class="content-header">
+          <h1>Add New Product</h1>
+          <a href="admin-products.html" class="btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Back to All Products
+          </a>
+        </div>
+
+        <div class="form-container">
+          <form id="add-product-form">
+            <div class="form-section">
+              <h3>Basic Info</h3>
+              <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" id="name" required />
+              </div>
+              <div class="form-group">
+                <label for="brand">Brand</label>
+                <input type="text" id="brand" required />
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" rows="4"></textarea>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Technical Specifications</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="sole">Sole Material</label>
+                  <input
+                    type="text"
+                    id="sole"
+                    placeholder="e.g., PU, TPR, Rubber"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="closure">Closure Type</label>
+                  <input
+                    type="text"
+                    id="closure"
+                    placeholder="e.g., Lace-Up, Slip-On, Velcro"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="origin">Country of Origin</label>
+                  <input type="text" id="origin" value="Made in India" />
+                </div>
+              </div>
+            </div>
+            <div class="input-group">
+    <h3>Size Availability (In One Set)</h3>
+    <p class="info-text">Ek set mein kaun-kaun se mixed sizes available hain? Woh select karein.</p>
+    <div id="size-checkboxes-container" class="size-selector-group">
+        </div>
+</div>
             <div class="form-row">
               <div class="form-group">
-                <label for="moq">MOQ (Pairs)</label>
-                <input type="number" id="moq" value="1" required>
+                <label for="mrp">MRP (₹)</label>
+                <input
+                  type="number"
+                  id="mrp"
+                  step="0.01"
+                  placeholder="e.g., 2999.50"
+                  required
+                />
               </div>
-              <div class="form-group-row">
+              <div class="form-group">
+                <label for="discount">Discount (%)</label>
+                <input
+                  type="number"
+                  id="discount"
+                  step="0.01"
+                  placeholder="e.g., 30.5"
+                />
+              </div>
+              <div class="form-group">
+                <label for="salePrice">Sale Price (₹)</label>
+                <input
+                  type="number"
+                  id="salePrice"
+                  step="0.01"
+                  placeholder="Auto-calculated"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Inventory & Filters</h3>
+              <div class="form-row">
                 <div class="form-group">
+                  <label for="moq">MOQ (Pairs)</label>
+                  <input type="number" id="moq" value="1" required />
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
                     <label for="main-category">Main Category</label>
                     <select id="main-category" required>
-                        <option value="">-- Select Main Category --</option>
-                        <option value="men">Men's</option>
-                        <option value="women">Women's</option>
-                        <option value="boys">Boys'</option>
-                        <option value="girls">Girls'</option>
+                      <option value="">-- Select Main Category --</option>
+                      <option value="men">Men's</option>
+                      <option value="women">Women's</option>
+                      <option value="boys">Boys'</option>
+                      <option value="girls">Girls'</option>
                     </select>
-                </div>
-                <div class="form-group">
+                  </div>
+                  <div class="form-group">
                     <label for="sub-category">Sub Category</label>
                     <select id="sub-category" required disabled>
-                        <option value="">-- Select Sub Category --</option>
+                      <option value="">-- Select Sub Category --</option>
                     </select>
+                  </div>
+                  <input type="hidden" id="category" name="category" required />
                 </div>
-                <input type="hidden" id="category" name="category" required>
+                <div class="form-group">
+                  <label for="material">Material</label>
+                  <select id="material">
+                    <option value="">-- Select Material --</option>
+                    <option value="Leather">Leather</option>
+                    <option value="Synthetic">Synthetic</option>
+                    <option value="Canvas">Canvas</option>
+                    <option value="Mesh">Mesh</option>
+                    <option value="Poly">PU sole</option>
+                    <option value="PVC">PVC</option>
+                    <option value="Eva">Eva</option>
+                  </select>
+                </div>
+              </div>
             </div>
-              <div class="form-group">
-              <label for="material">Material</label>
-              <select id="material">
-                <option value="">-- Select Material --</option>
-                <option value="Leather">Leather</option>
-                <option value="Synthetic">Synthetic</option>
-                <option value="Canvas">Canvas</option>
-                <option value="Mesh">Mesh</option>
-                <option value="Poly">PU sole</option>
-                <option value="PVC">PVC</option>
-                <option value="Eva">Eva</option>
-              </select>
-            </div>
-            </div>
-          </div>
-          
-          <div class="form-section">
+
+            <div class="form-section">
             <h3>Product Tags</h3>
             <div class="checkbox-group">
+              
+              <label><input type="checkbox" id="isLoose" value="true"> Sold as Loose Product</label>
               <label><input type="checkbox" id="tag-new-arrival" value="New Arrival"> New Arrival</label>
               <label><input type="checkbox" id="tag-top-best" value="Top Best"> Top Best</label>
               <label><input type="checkbox" id="tag-featured" value="Featured"> Featured</label>
+              
             </div>
           </div>
 
-          <div class="form-section">
-            <h3>Product Images</h3>
-            <p>Aap ek saath 4 photos tak select kar sakte hain. Pehli photo main image hogi.</p>
-            <div class="form-group">
-              <label for="images">Upload Photos</label>
-              <input type="file" id="images" name="images" multiple accept="image/jpeg, image/png, image/webp">
+            <div class="form-section">
+              <h3>Product Images</h3>
+              <p>
+                Aap ek saath 4 photos tak select kar sakte hain. Pehli photo
+                main image hogi.
+              </p>
+              <div class="form-group">
+                <label for="images">Upload Photos</label>
+                <input
+                  type="file"
+                  id="images"
+                  name="images"
+                  multiple
+                  accept="image/jpeg, image/png, image/webp"
+                />
+              </div>
             </div>
-          </div>
-          
-          <div class="form-actions">
-            <button type="submit" class="btn-primary">Save Product</button>
-            <div id="form-response"></div>
-          </div>
-          
-        </form>
-      </div>
-      
-    </main>
-    
-  </div>
-  
-  <script src="js/admin-add-product.js"></script>
 
-</body>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Save Product</button>
+              <div id="form-response"></div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/admin-add-product.js"></script>
+  </body>
 </html>

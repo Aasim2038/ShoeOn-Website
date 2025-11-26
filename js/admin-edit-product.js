@@ -9,6 +9,8 @@ const CATEGORY_DATA = {
     "boys": ["Sports", "PU-Chappal", "Sandals" , "School-Shoes" , "Loose-products"],
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Shoes" , "Loose-products"]
 };
+
+const SIZE_OPTIONS = ['6', '7', '8', '9', '10', '11', 'S', 'M', 'L', 'XL'];
 // --------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,21 +19,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const mrpInput = document.getElementById('mrp');
     const discountInput = document.getElementById('discount');
     const salePriceInput = document.getElementById('salePrice');
-    
-    // --- 2. Category Dropdown Variables ---
-    const mainCategorySelect = document.getElementById('main-category');
-    const subCategorySelect = document.getElementById('sub-category');
-    const finalCategoryInput = document.getElementById('category'); 
-    
-    // --- 3. Form & File Variables ---
+    // ... (rest of form elements) ...
     const form = document.getElementById('add-product-form');
     const responseDiv = document.getElementById('form-response');
     const existingImagesHidden = document.getElementById('existingImagesHidden'); 
     const imagesPreview = document.getElementById('image-preview'); 
     const imagesFileInput = document.getElementById('images'); 
+    const isLooseCheckbox = document.getElementById('isLoose'); 
+    
+    // Category Elements
+    const mainCategorySelect = document.getElementById('main-category');
+    const subCategorySelect = document.getElementById('sub-category');
+    const finalCategoryInput = document.getElementById('category'); 
+    const materialInput = document.getElementById('material');
+    
+    // Size Elements (CRITICAL NEW VARIABLE)
+    const sizeCheckboxesContainer = document.getElementById('size-checkboxes-container'); 
     
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
+
+
+    // --- Discount Logic Functions (Same) ---
+    // (omitted for brevity)
+    
+    // --- 2. SIZE CHECKBOXES RENDERING (NEW) ---
+    function renderSizeCheckboxes(selectedSizes = []) {
+        if (!sizeCheckboxesContainer) return;
+        
+        // Agar selectedSizes string hai (jo database se aata hai), toh array banao
+        const sizesArray = Array.isArray(selectedSizes) ? selectedSizes : selectedSizes.split(',').map(s => s.trim());
+        
+        sizeCheckboxesContainer.innerHTML = '';
+        
+        SIZE_OPTIONS.forEach(size => {
+            const isChecked = sizesArray.includes(String(size)) ? 'checked' : ''; 
+            
+            sizeCheckboxesContainer.innerHTML += `
+                <label>
+                    <input type="checkbox" name="sizes" value="${size}" ${isChecked}>
+                    <span>${size}</span>
+                </label>
+            `;
+        });
+    }
 
 
     // --- Discount Logic Functions ---
@@ -128,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             discountInput.value = (((product.mrp - product.salePrice) / product.mrp) * 100).toFixed(2);
             document.getElementById('moq').value = product.moq;
             document.getElementById('material').value = product.material || '';
-            
+            renderSizeCheckboxes(product.sizes || []);
             // --- CATEGORY FIELD FIX: Purani value ko do dropdowns me set karna ---
             if (product.category && product.category.includes('-')) {
                 const [mainKey, subName] = product.category.split('-'); 

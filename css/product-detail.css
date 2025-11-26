@@ -151,16 +151,30 @@
 .pdp-title { font-size: 1.3rem; color: #333; margin-bottom: 15px; line-height: 1.3; }
 
 /* B2B Price Box */
-.b2b-price-box {
-  background: #fcf8e3; /* Halka yellow B2B feel ke liye */
-  border: 1px solid #faebcc;
-  padding: 15px; border-radius: 8px; margin-bottom: 20px;
+.b2b-price-box-new {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-family: sans-serif;
+  background: #fcf8e3; /* Light Yellow background */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-.price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 5px; }
-.final-price { font-size: 1.6rem; font-weight: bold; color: #333; }
-.mrp { color: #777; font-size: 0.9rem; }
-.margin-row { color: #28a745; font-weight: bold; font-size: 0.9rem; margin-bottom: 8px; }
-.moq-row { font-size: 0.9rem; color: #555; border-top: 1px solid #faebcc; padding-top: 8px; }
+.price-row-new {
+  display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px;
+}
+.price-label { font-size: 12px; color: #888; margin: 0; text-transform: uppercase; }
+.final-price-display { font-size: 24px; color: #333; margin: 5px 0 0 0; font-weight: 800; }
+.market-price-display {
+  font-size: 16px; text-decoration: line-through; color: #ef5350; margin: 5px 0 0 0; font-weight: 500;
+}
+.pricing-divider { border: 0; border-top: 1px dashed #ccc; margin: 0; }
+
+.margin-container { margin-top: 10px; }
+.margin-box {
+  background: #e8f5e9; color: #2e7d32; padding: 5px 10px; border-radius: 4px; font-weight: 600; display: inline-block;
+}
+.moq-display { font-size: 0.95rem; color: #555; margin-top: 8px; }
 
 /* Size Selection */
 .pdp-section { margin-bottom: 20px; }
@@ -285,6 +299,31 @@
   font-weight: bold; border-radius: 6px;
 }
 
+.pdp-specs {
+  list-style: none; 
+  padding: 0;
+  margin: 15px 0 0 0;
+  border-top: 1px solid #eee; 
+}
+
+/* YEH HAI FINAL FIX: Stronger Selector (Specificy badhai) */
+/* Hum .pdp-info ka use kar rahe hain taaki yeh rule override na ho */
+.pdp-info .pdp-specs li { 
+  padding: 12px 0;
+  border-bottom: 1px dashed #eee; 
+  font-size: 0.95rem;
+  color: #555;
+  
+  /* Final Alignment Fix */
+  display: flex;
+  justify-content: space-between; 
+}
+
+.pdp-info .pdp-specs li strong {
+  color: #333;
+  min-width: 140px; 
+  font-weight: 600;
+}
 /* Desktop Layout */
 @media (min-width: 768px) {
   .pdp-container {

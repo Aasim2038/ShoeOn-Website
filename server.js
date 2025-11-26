@@ -47,7 +47,7 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
     const files = req.files;
     let imageUrls = [];
 
-    // Nayi files Cloudinary par upload karo
+    // File Upload Logic (Waisa hi rahega)
     if (files && files.length > 0) {
       for (const file of files) {
         const result = await cloudinary.uploader.upload(file.path, { folder: 'shoeon-products' });
@@ -56,9 +56,25 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
       }
     }
     
-    // Product create karo (Tags ko array banao)
+    // Product create karo (Saare fields explicitly save honge)
     const product = new Product({
-      ...productData,
+      name: productData.name,
+      brand: productData.brand,
+      description: productData.description,
+      mrp: productData.mrp,
+      salePrice: productData.salePrice,
+      moq: productData.moq,
+      isLoose: productData.isLoose, 
+      category: productData.category,
+      material: productData.material,
+      
+      // --- TECHNICAL SPECS ---
+      sole: productData.sole,
+      closure: productData.closure,
+      origin: productData.origin,
+      // -----------------------
+      
+      sizes: productData.sizes ? productData.sizes.split(',') : [], // Sizes string to array
       tags: productData.tags.split(','), 
       images: imageUrls 
     });
@@ -164,28 +180,47 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
     const files = req.files;
     let newImageUrls = [];
     
-    // 1. Agar nayi files aayi hain, toh unhe Cloudinary par upload karo
+    // 1. File Upload Logic (Same)
     if (files && files.length > 0) {
       for (const file of files) {
-        const result = await cloudinary.uploader.upload(file.path, {
-          folder: 'shoeon-products'
-        });
+        const result = await cloudinary.uploader.upload(file.path, { folder: 'shoeon-products' });
         newImageUrls.push(result.secure_url);
-        require('fs').unlinkSync(file.path); // Temp file delete karo
+        require('fs').unlinkSync(file.path);
       }
-      
-      // 2. Naye URLs ko product data me daalo
       updatedData.images = newImageUrls; 
-    } else if (updatedData.existingImages) {
-      // 3. Agar koi nayi file nahi aayi, toh purani URLs ko hi wapas bhej do
-      updatedData.images = updatedData.existingImages.split(',');
     } else {
-      // Agar sab khaali hai, toh images array ko khaali kar do
-      updatedData.images = [];
+      // Purani images retain karo
+      if (updatedData.existingImages) {
+        updatedData.images = updatedData.existingImages.split(',').filter(url => url !== '');
+      } else {
+        updatedData.images = [];
+      }
     }
 
-    // 4. Product ko ID se dhoondo aur naye data se update karo
-    const updatedProduct = await Product.findByIdAndUpdate(id, updatedData, { new: true });
+    // 2. Data Update karne ke liye Model Dhoondo
+    // Naye fields ko Mongoose me update karo
+    const update = {
+        name: updatedData.name,
+        brand: updatedData.brand,
+        description: updatedData.description,
+        mrp: updatedData.mrp,
+        salePrice: updatedData.salePrice,
+        moq: updatedData.moq,
+        category: updatedData.category,
+        material: updatedData.material,
+        
+        // --- NAYE TECHNICAL SPECS FIELDS (CRITICAL) ---
+        sole: updatedData.sole,
+        closure: updatedData.closure,
+        origin: updatedData.origin,
+        // ----------------------------------------------
+        
+        tags: updatedData.tags.split(','),
+        images: updatedData.images 
+    };
+
+    // 3. Product ko ID se dhoondo aur naye data se update karo
+    const updatedProduct = await Product.findByIdAndUpdate(id, update, { new: true });
 
     if (!updatedProduct) {
       return res.status(404).json({ error: 'Product not found' });

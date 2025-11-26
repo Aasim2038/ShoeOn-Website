@@ -54,43 +54,63 @@
       <h2 class="pdp-brand" id="pdp-brand">Liberty</h2>
       <h1 class="pdp-title" id="pdp-name">Men's Synthetic Leather Formal Shoes</h1>
       
-      <div class="b2b-price-box">
-        <div class="price-row">
-          <span class="final-price" id="pdp-price">₹1,402</span>
-         <span class="mrp">MRP: <del id="pdp-mrp-display">₹2,299</del></span>
-        </div>
-        <div class="margin-row">
-          <span>Your Margin: <strong>₹897 (39%)</strong></span>
-        </div>
-        <div class="moq-row">
-          <i class="fa-solid fa-box"></i> MOQ: <strong id="pdp-moq">...</strong> (1 Set)
-        </div>
-      </div>
-
-      <div class="pdp-section">
-        <h3>Size Availability (In One Set)</h3>
+      <div class="b2b-price-box-new">
         
-        <div class="size-set-info">
-          <p class="set-note">
-            <i class="fa-solid fa-circle-info"></i> 
-            This item is sold in a Set. One Set contains mixed sizes:
-          </p>
+        <div class="price-row-new">
+          <div>
+            <p class="price-label">Market Price</p>
+            <p class="market-price-display" id="pdp-market-price">₹0.00</p>
+          </div>
           
-          <div class="static-size-row">
-            <span class="static-size">6</span>
-            <span class="static-size">7</span>
-            <span class="static-size">8</span>
-            <span class="static-size">9</span>
-            <span class="static-size">10</span>
+          <div style="text-align: right;">
+            <p class="price-label your-price-label">Ours Price</p>
+            <p class="final-price-display" id="pdp-sale-price">₹0.00</p>
           </div>
         </div>
+
+        <hr class="pricing-divider">
+
+        <div class="margin-container">
+          <p class="margin-box" id="pdp-margin-display">
+            Your Margin: ₹0 (0%)
+          </p>
+          <p class="moq-display" id="pdp-moq-display">
+            <i class=""></i> 📦MOQ: 0 Pairs (1 Set)
+          </p>
+        </div>
       </div>
 
-      <div class="pdp-section">
-    <h3>Product Details</h3>
-    <ul class="pdp-specs" id="pdp-specs-list">
-      </ul>
+      <div class="pdp-section" id="set-size-info">
+  <h3>Size Availability (In One Set)</h3>
+  
+  <div class="size-set-info">
+    <p class="set-note">
+      <i class="fa-solid fa-circle-info"></i> 
+      This item is sold in a Set. One Set contains mixed sizes:
+    </p>
+    
+    <div class="static-size-row" id="static-size-display-container">
+      </div>
   </div>
+</div>
+
+      <div class="product-info-box">
+    <h2>Product Details</h2>
+    <div class="spec-grid">
+        <div class="spec-item">
+            <strong>Sole Material:</strong>
+            <span id="spec-sole-value">N/A</span> 
+        </div>
+        <div class="spec-item">
+            <strong>Closure Type:</strong>
+            <span id="spec-closure-value">N/A</span>
+        </div>
+        <div class="spec-item">
+            <strong>Country of Origin:</strong>
+            <span id="spec-origin-value">N/A</span>
+        </div>
+    </div>
+</div>
 
     </div>
   </main>
@@ -139,67 +159,8 @@
   <span id="toast-message">Product added to cart!</span>
 </div>
 
-  <script>
-    // 1. URL se data nikalo
-    const params = new URLSearchParams(window.location.search);
-    
-    const brand = params.get('brand');
-    const name = params.get('name');
-    const price = params.get('price');
-    const img = params.get('img');
-    const moq = params.get('moq');
-
-    // 2. Agar data hai, toh page update karo
-    if (brand && name && price && img) {
-      
-      // Text Update (Safety check ke saath)
-      const elBrand = document.getElementById('pdp-brand');
-      const elName = document.getElementById('pdp-name');
-      const elPrice = document.getElementById('pdp-price');
-      const elMoq = document.getElementById('pdp-moq');
-
-      if(elBrand) elBrand.innerText = brand;
-      if(elName) elName.innerText = name;
-      if(elPrice) elPrice.innerText = price;
-      if(elMoq) elMoq.innerText = moq + " Pairs";
-      
-      // --- SLIDER IMAGES UPDATE ---
-      // Error yahaan tha, ab humne fix kar diya.
-      // Hum seedha slider ki images ko target kar rahe hain.
-      const sliderImages = document.querySelectorAll('.slide img');
-      
-      if (sliderImages.length > 0) {
-        sliderImages.forEach(sImg => {
-          sImg.src = img; 
-        });
-      }
-    }
-
-    // 3. Slider Logic (Dots Change karna)
-    const slider = document.getElementById('productSlider');
-    const dots = document.querySelectorAll('.dot');
-
-    if(slider) {
-      slider.addEventListener('scroll', () => {
-        const scrollPosition = slider.scrollLeft;
-        const slideWidth = slider.clientWidth;
-        
-        // Math calculation to find active index
-        const activeIndex = Math.round(scrollPosition / slideWidth);
-
-        dots.forEach((dot, index) => {
-          if (index === activeIndex) {
-            dot.classList.add('active');
-          } else {
-            dot.classList.remove('active');
-          }
-        });
-      });
-    }
-  </script>
-
 <script src="js/global.js"></script>
-  <script src="js/detail.js"></script>
+<script src="js/detail.js"></script>
 
 </body>
 </html>

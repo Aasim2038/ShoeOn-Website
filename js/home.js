@@ -37,6 +37,13 @@ const allCategoryData = {
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=girl-pu-sandals' },
       { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
       { name: 'Loose-products', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=girl-Loose-products' }
+  ] },
+  'loose-sheet': { title: 'Girls Footwear', items: [
+      { name: 'bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=girl-bellies' },     
+       { name: 'sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=boys-sandals' },
+      { name: 'School shoes', img: 'images/sub-cat/shool-shoe.jpg', url: 'products.html?category=boys-School shoes' },
+      { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
+      { name: 'Loose-products', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=girl-Loose-products' }
   ] }
 };
 

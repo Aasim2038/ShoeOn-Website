@@ -293,3 +293,48 @@ table td img {
 .status-cancelled {
   background-color: #e74c3c; /* Red */
 }
+
+/* Size Checkbox Group Style */
+.size-selector-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.size-selector-group label {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.size-selector-group input[type="checkbox"] {
+    margin-right: 8px;
+    /* Basic checkbox ko hide karke custom style de sakte hain, but abhi simple rakhte hain */
+}
+
+.size-selector-group input[type="checkbox"]:checked + span {
+    font-weight: bold;
+    color: #007bff; /* Ya koi bhi attractive color */
+}
+
+/* Jab label checked ho to background/border change karein */
+.size-selector-group input[type="checkbox"]:checked {
+    accent-color: var(--primary-color); /* Agar browser support karta hai */
+}
+
+.size-selector-group input[type="checkbox"]:checked:not(:disabled) {
+    border-color: var(--primary-color);
+    background-color: #e6f7ff; /* Light background for checked */
+}
+
+/* Info text ko thoda alag dikhao */
+.info-text {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
