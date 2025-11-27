@@ -477,6 +477,8 @@ button { cursor: pointer; }
   color: #999;
   text-transform: uppercase;
 }
+
+
 @media (min-width: 768px) {
   body { background-color: #e9e9e9; }
   .main-header, .container, .site-footer { max-width: 1200px; margin: 0 auto; }

@@ -324,6 +324,130 @@
   min-width: 140px; 
   font-weight: 600;
 }
+/* --- 3. PRICE BOX (FINAL SIMPLIFIED DESIGN) --- */
+.b2b-price-box-new {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-family: sans-serif;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.pdp-hot-deal {
+  background-color: #f7e6e6; /* Light red/pinkish background */
+  color: #e40046; /* Flipkart Red */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.price-line-comparison-final {
+  display: flex;
+  padding: 5px 0;
+  align-items: center;
+}
+
+.price-label { font-size: 14px; color: #555; margin: 0; }
+.your-price-label { color: #2e7d32; font-weight: 600; }
+
+/* Price Styling */
+.retail-price-display {
+  font-size: 1.1em;
+  color: #555;
+  font-weight: 500;
+}
+.market-price-display {
+  font-size: 1.1em;
+  color: #888;
+  font-weight: 400;
+}
+.market-price-display del {
+  color: #e40046; /* Red for cut-line */
+}
+
+/* Final Rate Styling */
+/* 1. MRP Label Line */
+.final-price-label-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+.retail-price-display {
+  font-size: 1.1em;
+  color: #555;
+  font-weight: 500;
+}
+
+/* 2. Comparison Line */
+.price-line-comparison-final {
+  display: flex;
+  align-items: baseline;
+  gap: 15px; /* Space between the three values */
+  margin-bottom: 15px;
+}
+
+/* 3. FINAL PRICE (Apna Price) */
+.pdp-final-rate {
+  font-size: 2em; /* Highlighted */
+  color: #333;
+  font-weight: 800; 
+}
+
+/* 4. Compare Price (Cut Line) */
+.pdp-market-rate {
+  font-size: 1.1em; /* Slightly smaller */
+  color: #888;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.pdp-market-rate del {
+  color: #e40046; /* Red for cut-line */
+}
+
+/* 5. Discount Percentage */
+.pdp-discount-percent {
+  font-size: 1.1em;
+  color: #2e7d32; /* Green for discount */
+  font-weight: 600;
+}
+
+/* 3. Discount Percentage */
+.pdp-discount-percent {
+  font-size: 1.1em;
+  color: #2e7d32; /* Green for discount */
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pricing-divider {
+  border: 0;
+  border-top: 1px dashed #ccc;
+  margin: 10px 0;
+}
+
+/* Margin and MOQ Info (Same as before) */
+.margin-container { margin-top: 10px; }
+.margin-box {
+  background: #e8f5e9;
+  color: #2e7d32; /* Margin Green */
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-block;
+}
+.moq-display {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 8px;
+}
+
 /* Desktop Layout */
 @media (min-width: 768px) {
   .pdp-container {
@@ -335,3 +459,4 @@
   
   /* Desktop ke liye 'Add to cart' wahi info me dikhana padega, abhi ke liye mobile focus hai */
 }
+

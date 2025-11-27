@@ -10,7 +10,7 @@ const CATEGORY_DATA = {
     "girls": ["Party", "Casual", "School"]
 };
 
-const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR', 'Double Density'];
+const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR','Phylon', 'Double Density'];
 const ORIGIN_OPTIONS = ['Made in India', 'Made in China'];
 
 const SIZE_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ,'11' , '12' , '13' , '14' , '15' , '16' , "17" ,"18" , "19"];
