@@ -9,9 +9,49 @@ const CATEGORY_DATA = {
     "boys": ["Sports", "PU-Chappal", "Sandals" , "School-Shoes" , "Loose-products"],
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Shoes" , "Loose-products"]
 };
+const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR', 'Double Density'];
+const ORIGIN_OPTIONS = ['Made in India', 'Made in China'];
 
-const SIZE_OPTIONS = ['6', '7', '8', '9', '10', '11', 'S', 'M', 'L', 'XL'];
+const SIZE_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ,'11' , '12' , '13' , '14' , '15' , '16' , "17" ,"18" , "19"];
 // --------------------------------------------------------
+
+// Helper: Dropdown ko array se bharna (Sole, Origin ke liye)
+function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
+    const selectEl = document.getElementById(elementId);
+    if (!selectEl) return;
+    
+    let html = '<option value="">-- Select --</option>';
+    
+    optionsArray.forEach(optionText => {
+        const value = optionText.toLowerCase().replace(/\s/g, ''); // Value ko clean karke save karna
+        const isSelected = (selectedValue === optionText || selectedValue === value) ? 'selected' : '';
+        html += `<option value="${optionText}" ${isSelected}>${optionText}</option>`;
+    });
+    
+    selectEl.innerHTML = html;
+}
+
+// Function: Update Product Details Form
+function renderSizeCheckboxes(selectedSizes = []) {
+    const sizeCheckboxesContainer = document.getElementById('size-checkboxes-container'); 
+    if (!sizeCheckboxesContainer) return;
+
+    // Agar selectedSizes string hai (jo DB se aayi hai), toh array banao
+    const sizesArray = Array.isArray(selectedSizes) ? selectedSizes : selectedSizes.split(',').map(s => s.trim());
+    
+    sizeCheckboxesContainer.innerHTML = '';
+    
+    SIZE_OPTIONS.forEach(size => {
+        const isChecked = sizesArray.includes(String(size)) ? 'checked' : ''; 
+        
+        sizeCheckboxesContainer.innerHTML += `
+            <label>
+                <input type="checkbox" name="sizes" value="${size}" ${isChecked}>
+                <span>${size}</span>
+            </label>
+        `;
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   
@@ -27,6 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const imagesFileInput = document.getElementById('images'); 
     const isLooseCheckbox = document.getElementById('isLoose'); 
     
+    // Helper: Dropdown ko array se bharna
+function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
+    const selectEl = document.getElementById(elementId);
+    if (!selectEl) return;
+    
+    // Default option
+    let html = '<option value="">-- Select --</option>';
+    
+    optionsArray.forEach(optionText => {
+        const value = optionText.toLowerCase().replace(/\s/g, ''); // Value ko clean karke save karna
+        const isSelected = (selectedValue === optionText || selectedValue === value) ? 'selected' : '';
+        html += `<option value="${optionText}" ${isSelected}>${optionText}</option>`;
+    });
+    
+    selectEl.innerHTML = html;
+}
     // Category Elements
     const mainCategorySelect = document.getElementById('main-category');
     const subCategorySelect = document.getElementById('sub-category');
@@ -47,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderSizeCheckboxes(selectedSizes = []) {
         if (!sizeCheckboxesContainer) return;
         
-        // Agar selectedSizes string hai (jo database se aata hai), toh array banao
+        // Agar selectedSizes string hai (jo DB se aayi hai), toh array banao
         const sizesArray = Array.isArray(selectedSizes) ? selectedSizes : selectedSizes.split(',').map(s => s.trim());
         
         sizeCheckboxesContainer.innerHTML = '';
@@ -160,6 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('moq').value = product.moq;
             document.getElementById('material').value = product.material || '';
             renderSizeCheckboxes(product.sizes || []);
+            renderSelectOptions('sole', SOLE_OPTIONS, product.sole);
+            renderSelectOptions('origin', ORIGIN_OPTIONS, product.origin);
             // --- CATEGORY FIELD FIX: Purani value ko do dropdowns me set karna ---
             if (product.category && product.category.includes('-')) {
                 const [mainKey, subName] = product.category.split('-'); 
@@ -206,6 +264,17 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', (e) => {
             console.log('Update Product button clicked!'); 
             e.preventDefault(); 
+
+            const selectedSizes = [];
+            document.querySelectorAll('input[name="sizes"]:checked').forEach(checkbox => {
+                selectedSizes.push(checkbox.value);
+            });
+            
+            if (selectedSizes.length === 0) {
+                responseDiv.innerText = 'Error: Please select at least one size.';
+                return;
+            }
+            
             
             // Final Category check
             if (!finalCategoryInput.value) {
@@ -227,6 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('moq', parseInt(document.getElementById('moq').value));
             formData.append('category', finalCategoryInput.value); 
             formData.append('material', document.getElementById('material').value);
+            formData.append('sole', document.getElementById('sole').value);
+            formData.append('origin', document.getElementById('origin').value); 
+            formData.append('sizes', selectedSizes.join(','));
 
             const tags = [];
             if (document.getElementById('tag-new-arrival').checked) tags.push('New Arrival');

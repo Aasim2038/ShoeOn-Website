@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const specsList = document.getElementById('pdp-specs-list'); // Specifications List ID
 
 
+
   if (!productId) { return; } 
 
   // --- 1. DATA FETCH KARO ---

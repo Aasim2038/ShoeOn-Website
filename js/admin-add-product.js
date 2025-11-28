@@ -10,7 +10,10 @@ const CATEGORY_DATA = {
     "girls": ["Party", "Casual", "School"]
 };
 
-const SIZE_OPTIONS = ['6', '7', '8', '9', '10', '11', 'S', 'M', 'L', 'XL'];
+const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR', 'Double Density'];
+const ORIGIN_OPTIONS = ['Made in India', 'Made in China'];
+
+const SIZE_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ,'11' , '12' , '13' , '14' , '15' , '16' , "17" ,"18" , "19"];
 // --------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,6 +26,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const responseDiv = document.getElementById('form-response');
     const imagesFileInput = document.getElementById('images'); 
     const isLooseCheckbox = document.getElementById('isLoose');
+
+    // Helper: Dropdown ko array se bharna
+function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
+    const selectEl = document.getElementById(elementId);
+    if (!selectEl) return;
+    
+    // Default option
+    let html = '<option value="">-- Select --</option>';
+    
+    optionsArray.forEach(optionText => {
+        const value = optionText.toLowerCase().replace(/\s/g, ''); // Value ko clean karke save karna
+        const isSelected = (selectedValue === optionText || selectedValue === value) ? 'selected' : '';
+        html += `<option value="${optionText}" ${isSelected}>${optionText}</option>`;
+    });
+    
+    selectEl.innerHTML = html;
+}
     
     // Category Elements
     const mainCategorySelect = document.getElementById('main-category');
@@ -105,6 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INITIALIZE ---
     renderSizeCheckboxes(); 
 
+    renderSelectOptions('sole', SOLE_OPTIONS);
+    renderSelectOptions('origin', ORIGIN_OPTIONS, 'Made in India');
 
     // --- 3. Form Submit Logic (FINAL SUBMISSION) ---
     if (form) {
@@ -137,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- TECHNICAL SPECIFICATIONS (THE FIX) ---
             formData.append('sole', document.getElementById('sole').value);
-            formData.append('closure', document.getElementById('closure').value);
             formData.append('origin', document.getElementById('origin').value);
             // --------------------------------------------
             
