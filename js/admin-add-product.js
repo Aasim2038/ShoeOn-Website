@@ -5,7 +5,7 @@
 // --- 0. CATEGORY & SIZE DATA STRUCTURE ---
 const CATEGORY_DATA = {
     "men": ["Casual", "Sports", "Formal", "Boots"],
-    "women": ["Sandals", "Heels", "Flats", "Wedges"],
+    "women": ["bellies", "PU-chappal", "PU-sandals", "Loose-products"],
     "boys": ["Casual", "Sports", "Sandals"],
     "girls": ["Party", "Casual", "School"]
 };
@@ -18,10 +18,13 @@ const SIZE_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ,'11' , 
 
 document.addEventListener('DOMContentLoaded', () => {
   
-    // --- 1. Variables & Elements ---
+    // --- 1. Variables & Elements (Updated for 3-Price Model) ---
     const mrpInput = document.getElementById('mrp');
-    const discountInput = document.getElementById('discount');
     const salePriceInput = document.getElementById('salePrice');
+    const comparePriceInput = document.getElementById('comparePrice'); // <--- NAYA INPUT
+    const discountInput = document.getElementById('discount'); // <--- OUTPUT FIELD
+    
+    // ... (rest of form variables) ...
     const form = document.getElementById('add-product-form');
     const responseDiv = document.getElementById('form-response');
     const imagesFileInput = document.getElementById('images'); 
@@ -58,26 +61,30 @@ function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
     const sizeCheckboxesContainer = document.getElementById('size-checkboxes-container');
 
 
-    // --- Discount Logic Functions (Same) ---
-    function calculateSalePrice() { 
-        const mrp = parseFloat(mrpInput.value);
-        const discount = parseFloat(discountInput.value);
-        if (!isNaN(mrp) && !isNaN(discount)) {
-            const salePrice = mrp - (mrp * (discount / 100));
-            salePriceInput.value = salePrice.toFixed(2);
-        }
-    }
+    // --- Discount Logic Functions (FINAL CLEANUP) ---
+    
+    // YEH FUNCTION 'calculateSalePrice' KO REPLACE KAREGA
+    // Ab hum sirf Discount calculate karenge
     function calculateDiscount() {
         const mrp = parseFloat(mrpInput.value);
         const salePrice = parseFloat(salePriceInput.value);
-        if (!isNaN(mrp) && !isNaN(salePrice) && mrp > 0) {
+        
+        // Validation: Hamesha check karo ki MRP > Sale Price ho
+        if (!isNaN(mrp) && !isNaN(salePrice) && mrp > salePrice && mrp > 0) {
+            // Discount hamesha MRP aur Final Sale Price ke beech me calculate hota hai
             const discount = ((mrp - salePrice) / mrp) * 100;
             discountInput.value = discount.toFixed(2);
+        } else {
+            // Agar Sale Price zyada hai, toh discount 0.00 set karo
+            discountInput.value = '0.00';
         }
     }
-    if(mrpInput) mrpInput.addEventListener('input', calculateSalePrice);
-    if(discountInput) discountInput.addEventListener('input', calculateSalePrice);
+    
+    // --- Event Listeners (Corrected Flow) ---
+    // Sirf Discount function ko call karo, calculateSalePrice ko nahi
+    if(mrpInput) mrpInput.addEventListener('input', calculateDiscount); 
     if(salePriceInput) salePriceInput.addEventListener('input', calculateDiscount);
+    // ------------------------------------------
 
 
     // --- 2. SIZE & CATEGORY LOGIC ---
@@ -150,6 +157,7 @@ function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
             formData.append('description', document.getElementById('description').value);
             formData.append('mrp', parseFloat(mrpInput.value));
             formData.append('salePrice', parseFloat(salePriceInput.value));
+            formData.append('comparePrice', comparePriceInput.value);
             formData.append('moq', parseInt(document.getElementById('moq').value));
             
             // --- CATEGORY & MATERIAL ---

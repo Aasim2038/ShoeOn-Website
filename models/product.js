@@ -28,11 +28,15 @@ const productSchema = new Schema(
       type: Number,
       required: true,
     },
-    salePrice: {
-      // Discounted Price
-      type: Number,
-      required: true,
-    },
+    salePrice: { // Apna Price
+    type: Number,
+    required: true
+  },
+  
+  // --- YEH NAYA FIELD ADD KARO ---
+  comparePrice: { // Jo cut-line me dikhegi (e.g., ₹300)
+    type: Number 
+  },
 
     // B2B Info
     moq: {

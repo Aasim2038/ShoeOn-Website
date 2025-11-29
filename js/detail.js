@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const pdpName = document.getElementById('pdp-name');
   const pdpPriceEl = document.getElementById('pdp-sale-price'); // Sale price display
   const pdpMrpEl = document.getElementById('pdp-market-price'); // MRP display
+  const pdpRetailPriceEl = document.getElementById('pdp-retail-price'); // Retail price display
+  const pdpDiscountEl = document.getElementById('pdp-discount-display'); // Discount display
   const pdpMarginEl = document.getElementById('pdp-margin-display'); // Margin box
   const pdpMoq = document.getElementById('pdp-moq-display'); // MOQ display
   const addToCartBtn = document.querySelector('.btn-cart');
@@ -34,23 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
       // Data ko number me convert karo
       const mrp = parseFloat(product.mrp);
       const salePrice = parseFloat(product.salePrice);
+      const comparePrice = parseFloat(product.comparePrice) || mrp;
       
       // --- 2. PRICE AND MARGIN CALCULATIONS ---
       let marginAmount = 0;
       let marginPercent = 0;
+      let discountPercent = 0;
+
       if (mrp > salePrice) {
           marginAmount = mrp - salePrice;
           marginPercent = (marginAmount / mrp) * 100;
+          discountPercent = marginPercent;
       }
-
-      // 3. Details bharo
+      
+      // 3. Details bharo (No error here as variables are defined above)
       pdpBrand.innerText = product.brand;
       pdpName.innerText = product.name;
       
-      // Price aur Margin Update
+      // Price Mapping
       if (pdpPriceEl) pdpPriceEl.innerText = `₹${salePrice.toFixed(2)}`;
-      if (pdpMrpEl) pdpMrpEl.innerText = `₹${mrp.toFixed(2)}`;
-      if (pdpMoq) pdpMoq.innerHTML = `</i>📦 MOQ: ${product.moq} Pairs (1 Set)`;
+      if (pdpMrpEl) pdpMrpEl.innerText = `₹${comparePrice.toFixed(2)}`
+      if (pdpRetailPriceEl) pdpRetailPriceEl.innerText = `₹${mrp.toFixed(2)}`;
+      if (pdpMoq) pdpMoq.innerHTML = `<i class="fa-solid fa-box"></i> MOQ: ${product.moq} Pairs (1 Set)`;
+      if (pdpDiscountEl) pdpDiscountEl.innerText = `${discountPercent.toFixed(0)}% off`; 
 
 
       if (pdpMarginEl) {

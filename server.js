@@ -47,7 +47,7 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
     const files = req.files;
     let imageUrls = [];
 
-    // File Upload Logic (Waisa hi rahega)
+    // 1. File Upload Logic (Waisa hi rahega)
     if (files && files.length > 0) {
       for (const file of files) {
         const result = await cloudinary.uploader.upload(file.path, { folder: 'shoeon-products' });
@@ -56,25 +56,26 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
       }
     }
     
-    // Product create karo (Saare fields explicitly save honge)
+    // 2. Naya Product create karo (Ab saare fields explicitly save honge)
     const product = new Product({
       name: productData.name,
       brand: productData.brand,
       description: productData.description,
       mrp: productData.mrp,
       salePrice: productData.salePrice,
+      comparePrice: productData.comparePrice,
       moq: productData.moq,
       isLoose: productData.isLoose, 
       category: productData.category,
       material: productData.material,
       
-      // --- TECHNICAL SPECS ---
+      // --- CRITICAL TECH SPECS FIELDS ADD KIYE GAYE HAIN ---
       sole: productData.sole,
       closure: productData.closure,
       origin: productData.origin,
-      // -----------------------
+      // ------------------------------------------------
       
-      sizes: productData.sizes ? productData.sizes.split(',') : [], // Sizes string to array
+      sizes: productData.sizes ? productData.sizes.split(',') : [], 
       tags: productData.tags.split(','), 
       images: imageUrls 
     });
@@ -205,6 +206,7 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
         description: updatedData.description,
         mrp: updatedData.mrp,
         salePrice: updatedData.salePrice,
+        comparePrice: productData.comparePrice,
         moq: updatedData.moq,
         category: updatedData.category,
         material: updatedData.material,
