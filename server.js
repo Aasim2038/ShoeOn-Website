@@ -111,6 +111,9 @@ app.get('/api/products', (req, res) => {
   if (req.query.category && req.query.category !== '') {
     filter.category = req.query.category;
   }
+  if (req.query.isLoose === 'true') {
+    filter.isLoose = true;
+  }
   
   // 3. Material Filter (YAHAN GADBAD THI, AB FIX HOGAYI)
   if (req.query.material) {
@@ -206,7 +209,7 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
         description: updatedData.description,
         mrp: updatedData.mrp,
         salePrice: updatedData.salePrice,
-        comparePrice: productData.comparePrice,
+        comparePrice: updatedData.comparePrice,
         moq: updatedData.moq,
         category: updatedData.category,
         material: updatedData.material,
@@ -564,6 +567,46 @@ app.post('/api/payment/verify', (req, res) => {
   // Kuch check mat karo, bas bolo "Success"
   res.json({ status: 'success' });
 });
+
+/**
+ * ============================================
+ * (AD) GET Single User (Customer Edit Page ke liye)
+ * Method: GET
+ * URL: /api/users/:id
+ * ============================================
+ */
+app.get('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error fetching user details' });
+  }
+});
+
+/**
+ * ============================================
+ * (AE) UPDATE Customer Details & Credit Terms
+ * Method: PUT
+ * URL: /api/users/:id
+ * ============================================
+ */
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    // Ye new customer details aur credit terms honge
+    const update = req.body;
+    
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, update, { new: true });
+    
+    if (!updatedUser) return res.status(404).json({ error: 'User not found for update' });
+    
+    res.status(200).json({ message: 'Customer details updated!', user: updatedUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Update failed' });
+  }
+});
 // /**
 //  * ============================================
 //  * (TEMP) RESET ALL ORDERS
@@ -581,3 +624,4 @@ app.post('/api/payment/verify', (req, res) => {
 //     res.send('Error resetting orders.');
 //   }
 // });
+

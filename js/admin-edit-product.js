@@ -7,7 +7,8 @@ const CATEGORY_DATA = {
     "men": ["Casual", "Sports", "PU-Chappal", "Sandals" , "Loose-products"],
     "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Loose-products"],
     "boys": ["Sports", "PU-Chappal", "Sandals" , "School-Shoes" , "Loose-products"],
-    "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Shoes" , "Loose-products"]
+    "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Shoes" , "Loose-products"],
+    "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
 };
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR','Phylon', 'Double Density'];
 const ORIGIN_OPTIONS = ['Made in India', 'Made in China'];

@@ -38,13 +38,18 @@ const allCategoryData = {
       { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
       { name: 'Loose-products', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=girl-Loose-products' }
   ] },
-  'loose-sheet': { title: 'loose Footwear', items: [
-      { name: 'Womens', img: 'images/catogywomen.png', url: 'products.html?category=Women' },     
-       { name: 'Mens', img: 'images/catogyman.png', url: 'products.html?category=Men' },
-      { name: 'Boys', img: 'images/catogyboy.png', url: 'products.html?category=Boys' },
-      { name: 'Girls', img: 'images/catogygirl.png', url: 'products.html?category=girl' },
-      { name: 'Kids', img: 'images/', url: 'products.html?category=kids' }
-  ] }
+ 'loose-sheet': { 
+  title: 'Loose Footwear',
+  items: [
+    // CRITICAL FIX: isLoose=true flag added to URL
+    // Hum sub-categories ko bhi 'women-loose' jaisa naam de rahe hain taaki unique rahe
+    { name: 'Womens', img: 'images/catogywomen.png', url: 'products.html?isLoose=true&category=women-loose' }, 
+    { name: 'Mens', img: 'images/catogyman.png', url: 'products.html?isLoose=true&category=men-loose' },
+    { name: 'Boys', img: 'images/catogyboy.png', url: 'products.html?isLoose=true&category=boys-loose' },
+    { name: 'Girls', img: 'images/catogygirl.png', url: 'products.html?isLoose=true&category=girls-loose' },
+    { name: 'Kids', img: 'images/catogykids.png', url: 'products.html?isLoose=true&category=kids-loose' }
+  ]
+}
 };
 
 

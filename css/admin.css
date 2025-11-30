@@ -338,3 +338,21 @@ table td img {
     color: #6c757d;
     margin-bottom: 10px;
 }
+
+/* Customer Edit Form (Specific Layout) */
+.form-row-credit {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+.form-row-credit .form-group {
+  flex: 1; /* Days and Limit ko barabar space milega */
+}
+
+/* Ensure the full form structure is clean */
+.auth-box form h3 {
+    font-size: 1.3rem;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #333;
+}

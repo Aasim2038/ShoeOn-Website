@@ -7,7 +7,8 @@ const CATEGORY_DATA = {
     "men": ["Casual", "Sports", "Formal", "Boots"],
     "women": ["bellies", "PU-chappal", "PU-sandals", "Loose-products"],
     "boys": ["Casual", "Sports", "Sandals"],
-    "girls": ["Party", "Casual", "School"]
+    "girls": ["Party", "Casual", "School"],
+    "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
 };
 
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR','Phylon', 'Double Density'];
@@ -107,6 +108,9 @@ function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
              subcategories.forEach(sub => {
                 const subKey = mainKey + '-' + sub.toLowerCase(); 
                 const option = document.createElement('option');
+                let finalKey = subKey;
+    if (sub.toLowerCase().includes('loose')) {
+    }
                 option.value = subKey;
                 option.innerText = sub;
                 subCategorySelect.appendChild(option);

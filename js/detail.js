@@ -130,6 +130,41 @@ if (originValueEl) {
         sImg.src = url;
       });
 
+      // --- BUY NOW BUTTON LOGIC ---
+  const buyNowBtn = document.querySelector('.btn-buy');
+
+  if (buyNowBtn) {
+    buyNowBtn.addEventListener('click', () => {
+      // Login check
+      if (!isUserLoggedIn()) {
+        showToast('Please Login to buy.');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+        return; 
+      }
+      
+      // Validation check: Agar loose product hai aur size select nahi kiya
+      if (product.isLoose && !selectedSize) {
+          if (sizeWarning) sizeWarning.style.display = 'block';
+          return;
+      }
+      
+      // 1. Item ko Cart me Add karo
+      // (Assuming 'product' object is available from the fetch block's scope)
+      if (typeof addItemToCart === 'function') {
+          // Temporarily set the product details for cart saving
+          const productToBuy = { ...product, id: product._id, price: product.salePrice, selectedSize: product.isLoose ? selectedSize : 'Set' };
+          addItemToCart(productToBuy);
+          
+          // 2. Turant Checkout par bhej do
+          setTimeout(() => {
+            window.location.href = 'checkout.html';
+          }, 200); // 200ms delay taaki cart save ho jaye
+          
+      } else {
+          console.error("addItemToCart function missing.");
+      }
+    });
+  }
 
       // --- 6. ADD TO CART LOGIC ---
       if (addToCartBtn) {

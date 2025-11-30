@@ -1,28 +1,18 @@
-/* =========================================
-   PRODUCTS.JS (FINAL & STABILIZED)
-   ========================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
   
-  // --- 1. Variables (Sahi Scope me) ---
+  // --- 1. Top Level Elements (Global access within DOMContentLoaded) ---
   const productGrid = document.getElementById('product-grid');
   const pageTitle = document.getElementById('page-category-title');
   const styleCount = document.getElementById('style-count');
   const cartOverlay = document.getElementById('cart-overlay');
   
   // Filter Drawer Elements
-  const filterOpenBtn = document.getElementById('filter-open-btn'); // <--- YEH FIX HAI
+  const filterOpenBtn = document.getElementById('filter-open-btn');
   const filterDrawer = document.getElementById('filter-drawer');
   const filterCloseBtn = document.getElementById('filter-close-btn');
   const filterApplyBtn = document.getElementById('filter-apply-btn');
   const filterClearBtn = document.getElementById('filter-clear-btn');
   
-  // URL Params
-  const params = new URLSearchParams(window.location.search);
-  const categoryKey = params.get('category') || '';
-  const searchQuery = params.get('search');
-  const sortValue = params.get('sort');
-  const materialValue = params.get('material');
   const isUserLoggedIn = localStorage.getItem('shoeonUser') ? true : false;
 
 
@@ -31,9 +21,30 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadProducts(filters = {}) {
     if (!productGrid) return; 
 
+    // --- CRITICAL FIX: URL variables ko function ke andar define karo ---
+    const params = new URLSearchParams(window.location.search);
+    const categoryKey = params.get('category') || '';
+    const searchQuery = params.get('search');
+    const sortValue = params.get('sort');
+    const materialValue = params.get('material');
+    // -------------------------------------------------------------------
+
+
     // Query String banana
     let query = `?category=${categoryKey}`; 
     
+    // YEH baseCategory ab categoryKey hi hai
+    pageTitle.innerText = categoryKey ? categoryKey.replace('-', ' ') : (searchQuery ? `Search results for "${searchQuery}"` : "All Products");
+    
+    // Loose product filter
+    const isLooseFilter = params.get('isLoose'); // Naya variable pakdo
+    
+    if (isLooseFilter === 'true') {
+        query += '&isLoose=true';
+        pageTitle.innerText = categoryKey ? `Loose Products / ${categoryKey.replace('-', ' ')}` : "All Loose Products";
+    }
+
+
     // Sort options add karo
     if (filters.sort || sortValue) {
       query += `&sort=${filters.sort || sortValue}`;
@@ -49,9 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Search query add karo
     if (searchQuery) {
       query += `&search=${searchQuery}`;
-      pageTitle.innerText = `Search results for "${searchQuery}"`;
-    } else {
-        pageTitle.innerText = categoryKey ? categoryKey.replace('-', ' ') : "All Products";
+      pageTitle.innerText = `Search results for "${searchQuery}"`; // Search title priority
     }
 
     productGrid.innerHTML = `<p style="text-align:center; color:#555;">Loading products...</p>`; 
@@ -61,13 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(response => response.json())
       .then(products => {
         
+        let cardsHTML = ''; 
         styleCount.innerText = `${products.length} Styles`;
         productGrid.innerHTML = '';
         
-        // ... (HTML rendering logic remains the same) ...
         if (products.length === 0) {
-          productGrid.innerHTML = "<p style='text-align: center; color: #777; width: 100%;'>No products found matching your filters.</p>";
-          return;
+          cardsHTML = "<p style='text-align: center; color: #777; width: 100%;'>No products found matching your filters.</p>";
         }
 
         products.forEach(product => {
@@ -85,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                ? `<del>₹${mrp.toFixed(2)}</del>`
                                : ``;
 
-          productGrid.innerHTML += `
+          cardsHTML += `
             <a href="${productLink}" class="plp-card">
               <div class="plp-image-box">
                 <img src="${product.images && product.images.length > 0 ? product.images[0] : 'images/placeholder.jpg'}" alt="${product.name}" loading="lazy">
@@ -96,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <div class="plp-price-compare-info">
                     <p class="plp-mrp-line">MRP: ${displayMrp}</p>
-                    <p class="plp-your-price-line">Our Rate: <strong>${displayPrice}</strong></p>
+                    <p class="plp-your-price-line">Your Rate: <strong>${displayPrice}</strong></p>
                 </div>
 
                 <div class="plp-b2b-info">
@@ -106,6 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
             </a>`;
         });
+        
+        // Final Injection
+        productGrid.innerHTML = cardsHTML;
       })
       .catch(err => {
         console.error('Products fetch karne me error:', err);
@@ -166,6 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- 4. Initial Load ---
-  loadProducts();
+  loadProducts(); // Pehli baar bina kisi filter ke load karo
   
 });

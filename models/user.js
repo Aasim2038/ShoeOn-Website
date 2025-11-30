@@ -19,7 +19,19 @@ const userSchema = new Schema({
     type: Boolean, 
     default: false 
   },
-  
+  // (B2B Credit Control)
+  isCreditApproved: { // Agar Admin ne haan kaha toh 'true' hoga
+    type: Boolean,
+    default: false
+  },
+  creditTermsDays: { // Credit period kitne din ka hai (e.g., 2, 7, 15)
+    type: Number,
+    default: 0
+  },
+  creditLimit: { // Optional: Max kitne ka udhaar de sakte hain
+    type: Number,
+    default: 0
+  },
   // 4. Role (Customer hai ya Admin)
   isAdmin: {
     type: Boolean,
