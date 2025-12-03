@@ -64,23 +64,20 @@
         </div>
       </div>
           
-          <div class="form-section">
-            <h3>Pricing & Discount</h3>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="mrp">MRP (₹)</label>
-                <input type="number" id="mrp" step="0.01" required>
-              </div>
-              <div class="form-group">
-                <label for="discount">Discount (%)</label>
-                <input type="number" id="discount" step="0.01">
-              </div>
-              <div class="form-group">
-                <label for="salePrice">Sale Price (₹)</label>
-                <input type="number" id="salePrice" step="0.01" required>
-              </div>
-            </div>
-          </div>
+          <div class="form-row">
+        <div class="form-group">
+          <label for="mrp">1. Retail Price (MRP)</label>
+          <input type="number" id="mrp" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="comparePrice">2. Compare Price (Strikethrough)</label>
+          <input type="number" id="comparePrice" step="0.01" placeholder="e.g., 300">
+        </div>
+        <div class="form-group">
+          <label for="salePrice">3. Apna Price (Final Sale Price)</label>
+          <input type="number" id="salePrice" step="0.01" required>
+        </div>
+      </div>
 
           <div class="form-section">
             <h3>Inventory & Filters</h3>

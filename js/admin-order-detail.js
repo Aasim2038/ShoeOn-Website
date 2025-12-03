@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (order.pincode) address += ` - ${order.pincode}`;
       customerAddressEl.innerText = address;
       
-      orderStatusEl.value = order.status; 
+      orderStatusEl.value = order.status;
       
       itemsTableBody.innerHTML = ''; 
       order.orderItems.forEach(item => {

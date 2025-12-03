@@ -12,10 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadSettings() {
     fetch('/api/settings')
       .then(res => res.json())
-      .then(data => {
-        // Text fields bharo
-        if (data.supportPhone) document.getElementById('supportPhone').value = data.supportPhone;
-        if (data.supportEmail) document.getElementById('supportEmail').value = data.supportEmail;
+      .then(data => { d
         
         // Images dikhao
         bannersPreview.innerHTML = '';
@@ -40,8 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
       responseDiv.style.color = 'blue';
       
       const formData = new FormData();
-      formData.append('supportPhone', document.getElementById('supportPhone').value);
-      formData.append('supportEmail', document.getElementById('supportEmail').value);
       
       const fileInput = document.getElementById('banners');
       for (let i = 0; i < fileInput.files.length; i++) {

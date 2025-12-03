@@ -9,34 +9,33 @@ const allCategoryData = {
     items: [
       { name: 'Casual Shoes', img: 'images/sub-cat/casual-shoes.jpeg', url: 'products.html?category=men-casual' },
       { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpg', url: 'products.html?category=men-pu-chappal' },
-      { name: 'sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=men-sandals' },
+      { name: 'Sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=men-sandals' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.jpeg', url: 'products.html?category=men-sports' },
-      { name: 'Loose-products', img: 'images/sub-cat/formal.jpeg', url: 'products.html?category=men-loose-products' },
-      { name: 'crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=men-crock' },
+      { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=men-crock' },
     ]
   },
   'women-sheet': {
     title: 'Women Footwear',
     items: [
-      { name: 'bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=women-bellies' },
+      { name: 'Bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=women-bellies' },
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=women-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=women-pu-sandals' },
-      { name: 'Loose-products', img: 'images/sub-cat/women-heels.jpeg', url: 'products.html?category=women-loose-products' },
+      { name: 'crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=women-crockss' },
     ]
   },
   'boys-sheet': { title: 'Boys Footwear', items: [
     { name: 'Sports-shoes', img: 'images/sub-cat/chapple.jpg', url: 'products.html?category=boys-Sports-shoes' },
       { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpg', url: 'products.html?category=boys-PU Chappals' },
-      { name: 'sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=boys-sandals' },
+      { name: 'Sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=boys-sandals' },
       { name: 'School shoes', img: 'images/sub-cat/shool-shoe.jpg', url: 'products.html?category=boys-School shoes' },
-      { name: 'Loose-products', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=boys-Loose-products' },
+      { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=boys-crocks' },
   ] },
   'girl-sheet': { title: 'Girls Footwear', items: [
-      { name: 'bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=girl-bellies' },     
+      { name: 'Bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=girl-bellies' },     
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=girl-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=girl-pu-sandals' },
       { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
-      { name: 'Loose-products', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=girl-Loose-products' }
+      { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=girl-crocks' }
   ] },
  'loose-sheet': { 
   title: 'Loose Footwear',
@@ -47,7 +46,7 @@ const allCategoryData = {
     { name: 'Mens', img: 'images/catogyman.png', url: 'products.html?isLoose=true&category=men-loose' },
     { name: 'Boys', img: 'images/catogyboy.png', url: 'products.html?isLoose=true&category=boys-loose' },
     { name: 'Girls', img: 'images/catogygirl.png', url: 'products.html?isLoose=true&category=girls-loose' },
-    { name: 'Kids', img: 'images/catogykids.png', url: 'products.html?isLoose=true&category=kids-loose' }
+    { name: 'Kids', img: 'images/sub-cat/crock.jpg', url: 'products.html?isLoose=true&category=kids-loose' }
   ]
 }
 };

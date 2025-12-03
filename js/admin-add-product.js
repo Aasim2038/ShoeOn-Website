@@ -4,10 +4,10 @@
 
 // --- 0. CATEGORY & SIZE DATA STRUCTURE ---
 const CATEGORY_DATA = {
-    "men": ["Casual", "Sports", "Formal", "Boots"],
-    "women": ["bellies", "PU-chappal", "PU-sandals", "Loose-products"],
-    "boys": ["Casual", "Sports", "Sandals"],
-    "girls": ["Party", "Casual", "School"],
+    "men": ["Casual", "PU-Chappal", "Sandals", "Sports-Shoes" , "Crocks", "Loose-products"],
+    "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Loose-products"],
+    "boys": ["Sports-Shoes", "PU-Chappal", "Sandals" , "School-Shoes" , "Crocks", "Loose-Products"],
+    "girls": ["Bellies", "PU-Chappal", "PU-Sandals" , "School-Bellies" , "Crocks", "Loose-Products"],
     "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
 };
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mrpInput = document.getElementById('mrp');
     const salePriceInput = document.getElementById('salePrice');
     const comparePriceInput = document.getElementById('comparePrice'); // <--- NAYA INPUT
-    const discountInput = document.getElementById('discount'); // <--- OUTPUT FIELD
+    // const discountInput = document.getElementById('discount'); // <--- OUTPUT FIELD
     
     // ... (rest of form variables) ...
     const form = document.getElementById('add-product-form');
@@ -71,14 +71,14 @@ function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
         const salePrice = parseFloat(salePriceInput.value);
         
         // Validation: Hamesha check karo ki MRP > Sale Price ho
-        if (!isNaN(mrp) && !isNaN(salePrice) && mrp > salePrice && mrp > 0) {
-            // Discount hamesha MRP aur Final Sale Price ke beech me calculate hota hai
-            const discount = ((mrp - salePrice) / mrp) * 100;
-            discountInput.value = discount.toFixed(2);
-        } else {
-            // Agar Sale Price zyada hai, toh discount 0.00 set karo
-            discountInput.value = '0.00';
-        }
+        // if (!isNaN(mrp) && !isNaN(salePrice) && mrp > salePrice && mrp > 0) {
+        //     // Discount hamesha MRP aur Final Sale Price ke beech me calculate hota hai
+        //     const discount = ((mrp - salePrice) / mrp) * 100;
+        //     discountInput.value = discount.toFixed(2);
+        // } else {
+        //     // Agar Sale Price zyada hai, toh discount 0.00 set karo
+        //     discountInput.value = '0.00';
+        // }
     }
     
     // --- Event Listeners (Corrected Flow) ---

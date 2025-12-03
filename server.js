@@ -505,16 +505,12 @@ app.get('/api/settings', async (req, res) => {
 // 2. UPDATE SETTINGS (File Upload ke saath)
 app.post('/api/settings', upload.array('banners', 5), async (req, res) => {
   try {
-    const { supportPhone, supportEmail } = req.body;
     const files = req.files;
     
     // Pehle purani settings dhoondo
     let settings = await Setting.findOne();
     if (!settings) settings = new Setting({});
 
-    // Text data update karo
-    settings.supportPhone = supportPhone;
-    settings.supportEmail = supportEmail;
 
     // Agar nayi photos aayi hain, toh upload karke add karo
     if (files && files.length > 0) {
