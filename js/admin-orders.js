@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tableBody.innerHTML = ''; // Table khaali karo
 
             if (orders.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Koi order nahi mila.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No Order Found.</td></tr>';
                 return;
             }
 

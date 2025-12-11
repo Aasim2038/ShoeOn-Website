@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = ''; 
 
         if (!Array.isArray(users) || users.length === 0) { // Safety check
-            tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Koi user nahi mila.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No customers found.</td></tr>';
             return;
         }
 
