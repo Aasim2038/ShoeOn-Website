@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </head>
     <body>
         <div class="header">
-            <h2 style="margin:0;">ShoeOn Wholesale</h2>
+            <h2 style="margin:0;">Shoe On</h2>
             <p style="margin:5px 0;">Invoice #SHO-${order.orderNumber}</p>
         </div>
         <div class="customer-info">

@@ -4,7 +4,7 @@
 
 // --- 0. CATEGORY & SIZE DATA STRUCTURE ---
 const CATEGORY_DATA = {
-    "men": ["Casual", "PU-Chappal", "Sandals", "Sports-Shoes" , "Crocks", "Loose-products"],
+    "men": ["Casual", "PU-Chappal", "Sandals", "Sports-Shoes" , "Crocks","Safty Shoe" ,  "Loose-products"],
     "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Loose-products"],
     "boys": ["Sports-Shoes", "PU-Chappal", "Sandals" , "School-Shoes" , "Crocks", "Loose-Products"],
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals" , "School-Bellies" , "Crocks", "Loose-Products"],

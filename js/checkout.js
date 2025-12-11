@@ -134,7 +134,7 @@ function renderCheckoutSummary() {
                         <p style="margin: 0; font-size: 0.85rem; color: #666;">
                             ₹${unitPrice.toFixed(
                     2
-                )}/pc × ${quantity} pcs (${packs} Packs)
+                )}/pc × ${quantity} pcs (${item.packs} Packs)
                         </p>
                     </div>
                     <p class="item-price" style="font-weight: bold;">₹${itemTotal.toFixed(
