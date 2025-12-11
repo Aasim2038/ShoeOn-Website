@@ -1,65 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Confirmed! - ShoeOn</title>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <link rel="stylesheet" href="css/style.css">
-  
-  <link rel="stylesheet" href="css/order-success.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful - ShoeOn</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .success-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        .icon-box { font-size: 60px; color: #27ae60; margin-bottom: 20px; }
+        h1 { margin: 0; color: #333; font-size: 24px; }
+        p { color: #666; margin: 10px 0 20px; }
+        .order-id-badge { background: #e8f5e9; color: #2e7d32; padding: 10px 20px; border-radius: 50px; font-weight: bold; display: inline-block; margin-bottom: 30px; }
+        
+        /* Button Styles */
+        .btn-primary { display: block; background: #e84c3d; color: white; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; border: none; width: 100%; cursor: pointer; margin-bottom: 10px; font-size: 16px; }
+        .btn-secondary { display: block; color: #e84c3d; text-decoration: none; font-size: 14px; margin-top: 15px; }
+        
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .success-card { padding: 20px; }
+            h1 { font-size: 20px; }
+        }
+    </style>
 </head>
 <body>
 
-  <header class="page-header">
-    <div class="header-left">
-      <div class="page-title">
-        <h3>Order Status</h3>
-      </div>
+    <div class="success-card">
+        <div class="icon-box">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h1>Order Successful!</h1>
+        <p>Aapka order mil gaya hai. Jaldi hi process hoga.</p>
+        
+        <div id="display-order-id" class="order-id-badge">Order ID: #SHO-Loading...</div>
+
+        <button id="view-invoice-btn" class="btn-primary">
+            <i class="fa-solid fa-file-invoice"></i> View & Download Invoice
+        </button>
+
+        <a href="index.html" class="btn-secondary">Go Back to Home</a>
     </div>
-  </header>
 
-  <main class="success-container">
-    
-    <div class="success-box">
-      
-      <div class="success-icon">
-        <i class="fa-solid fa-check"></i>
-      </div>
-      
-      <h1>Thank You!</h1>
-      <p class="success-message">Your Order is Confirmed.</p>
-      
-      <p class="order-id">
-  Your Order ID is: <strong id="order-id-display">Loading...</strong>
-</p>
-      
-      <a href="index.html" class="btn-home">
-        <i class="fa-solid fa-arrow-left"></i>
-        Continue Shopping
-      </a>
-      
-    </div>
-    
-  </main>
-  
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. URL se 'order_id' (jaise SH-123456) nikalo
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get('order_id');
-
-    const displayEl = document.getElementById('order-id-display');
-
-    if (orderId && displayEl) {
-      // 2. Usse page par dikhao
-      displayEl.innerText = `#${orderId}`;
-    } else {
-      displayEl.innerText = 'N/A';
-    }
-  });
-</script>
+    <script src="js/global.js"></script>
+    <script src="js/success.js"></script>
 </body>
 </html>

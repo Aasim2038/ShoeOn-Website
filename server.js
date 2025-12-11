@@ -8,6 +8,29 @@ const User = require('./models/user');
 const Setting = require('./models/setting');
 const multer = require('multer'); // UPLOAD ke liye
 const cloudinary = require('cloudinary').v2; // UPLOAD ke liye
+const jwt = require('jsonwebtoken');
+
+
+const JWT_SECRET = 'shoeon_secret_key_123';
+
+const authMiddleware = (req, res, next) => {
+    // 1. Header se token uthao
+    const authHeader = req.header('Authorization');
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ error: 'Access Denied: Login karo pehle!' });
+    }
+
+    try {
+        // 2. Token verify karo
+        const verified = jwt.verify(token, 'shoeon_secret_key_123');
+        req.user = verified; // Token se nikli user ID req.user mein daal di
+        next(); // 3. Sab sahi hai, ab aage jao final route par
+    } catch (err) {
+        res.status(400).json({ error: 'Token valid nahi hai!' });
+    }
+};
 
 // --- 2. APP SETUP & MIDDLEWARE ---
 const app = express();
@@ -95,57 +118,67 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
  * Method: GET
  * URL: /api/products?sort=price-asc&material=Leather
  */
-app.get('/api/products', (req, res) => {
-  
-  const filter = {};
-  
-  // 1. Search Logic
-  if (req.query.search) {
-    filter.$or = [
-      { name: { $regex: req.query.search, $options: 'i' } },
-      { brand: { $regex: req.query.search, $options: 'i' } }
-    ];
-  }
+app.get('/api/products', async (req, res) => { // <-- Function ko 'async' kiya
+    
+    const filter = {};
+    let searchRegex; // <-- YEH NAYA VARIABLE AB TOP PAR DEFINE HOGA!
 
-  // 2. Category Filter (products.html se aata hai)
-  if (req.query.category && req.query.category !== '') {
-    filter.category = req.query.category;
-  }
-  if (req.query.isLoose === 'true') {
-    filter.isLoose = true;
-  }
-  
-  // 3. Material Filter (YAHAN GADBAD THI, AB FIX HOGAYI)
-  if (req.query.material) {
-    // MongoDB ko bolo ki material array me se koi bhi value match kare
-    filter.material = { $in: req.query.material.split(',') };
-  }
-  
-  // 4. Tag Filter
-  if (req.query.tag) {
-    filter.tags = req.query.tag;
-  }
-  
-  // 5. Sort Logic
-  let sortOptions = { createdAt: -1 }; 
-  
-  if (req.query.sort) {
-    if (req.query.sort === 'price-asc') {
-      sortOptions = { salePrice: 1 }; 
-    } else if (req.query.sort === 'price-desc') {
-      sortOptions = { salePrice: -1 };
+    try { // <-- Naya TRY block shuru
+        
+        // --- 1. Search Logic ---
+        if (req.query.search) {
+            // FIX 1: SearchRegex ko pehle define karo
+            searchRegex = new RegExp(req.query.search, 'i');
+            
+            // FIX 2: Debug logs (Optional, but useful)
+            console.log("Searching products for:", req.query.search);
+            
+            filter.$or = [
+                { name: { $regex: searchRegex } },
+                { brand: { $regex: searchRegex } },
+                { category: { $regex: searchRegex } } 
+            ];
+        }
+
+        // --- 2. Category Filter (products.html se aata hai) ---
+        if (req.query.category && req.query.category !== '') {
+            filter.category = req.query.category;
+        }
+        if (req.query.isLoose === 'true') {
+            filter.isLoose = true;
+        }
+
+        // --- 3. Material Filter ---
+        if (req.query.material) {
+            filter.material = { $in: req.query.material.split(',') };
+        }
+
+        // --- 4. Tag Filter ---
+        if (req.query.tag) {
+            filter.tags = req.query.tag;
+        }
+
+        // --- 5. Sort Logic ---
+        let sortOptions = { createdAt: -1 }; 
+        
+        if (req.query.sort) {
+            if (req.query.sort === 'price-asc') {
+                sortOptions = { salePrice: 1 }; 
+            } else if (req.query.sort === 'price-desc') {
+                sortOptions = { salePrice: -1 };
+            }
+        }
+
+        // --- 6. Database Query (FIX: .then() ki jagah await use kiya) ---
+        const products = await Product.find(filter) 
+            .sort(sortOptions); 
+
+        res.status(200).json(products);
+        
+    } catch (err) { // <-- Naya CATCH block shuru
+        console.error("CRITICAL SERVER ERROR IN /API/PRODUCTS:", err);
+        res.status(500).json({ error: 'Could not fetch products' });
     }
-  }
-
-  // 6. Database Query
-  Product.find(filter) 
-    .sort(sortOptions) 
-    .then((products) => {
-      res.status(200).json(products);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: 'Could not fetch products' });
-    });
 });
 
 
@@ -239,29 +272,6 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
   }
 });
 
-
-/**
- * (F) NAYA ORDER BANANE KA ROUTE
- */
-app.post('/api/orders', (req, res) => {
-  // ... (Yeh code waisa hi hai) ...
-  const newOrderNumber = `SH-${Math.floor(100000 + Math.random() * 900000)}`;
-  const order = new Order({ ...req.body, orderNumber: newOrderNumber });
-  order.save()
-    .then(result => res.status(201).json(result))
-    .catch(err => res.status(400).json({ error: 'Failed to save order' }));
-});
-
-
-/**
- * (G) SAARE ORDERS LAANE KA ROUTE
- */
-app.get('/api/orders', (req, res) => {
-  // ... (Yeh code waisa hi hai) ...
-  Order.find().sort({ createdAt: -1 })
-    .then(orders => res.status(200).json(orders))
-    .catch(err => res.status(500).json({ error: 'Could not fetch orders' }));
-});
 
 
 /**
@@ -360,35 +370,47 @@ app.post('/api/auth/register', (req, res) => {
       res.status(500).json({ error: 'Server error.' });
     });
 });
-/**
- * ============================================
- * (L) ADMIN: SAARE CUSTOMERS LAANE KA ROUTE
- * Method: GET
- * URL: /api/users
- * ============================================
- */
-app.get('/api/users', (req, res) => {
-  User.find().sort({ createdAt: -1 }) // Naye customers sabse upar
-    .then(users => res.status(200).json(users))
-    .catch(err => res.status(500).json({ error: 'Failed to fetch users' }));
-});
 
 /**
  * (M) ADMIN: USER STATUS UPDATE (Approve/Block)
  * Method: PUT
  * URL: /api/users/status/:id
  */
-app.put('/api/users/status/:id', (req, res) => {
-  const userId = req.params.id;
-  const newStatus = req.body.isApproved; // true ya false aayega
+app.put('/api/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updates = req.body; // Ismein { isApproved: true/false } aata hai
+        
+        // Ensure only allowed fields are updated (safety check)
+        const updateFields = {};
+        if (updates.isApproved !== undefined) {
+            updateFields.isApproved = updates.isApproved;
+        }
+        // Agar aap creditLimit, shopName bhi update karte hain toh woh bhi yahan aayega
 
-  User.findByIdAndUpdate(userId, { isApproved: newStatus }, { new: true })
-    .then(updatedUser => {
-      if (!updatedUser) return res.status(404).json({ error: 'User not found' });
-      const msg = newStatus ? 'User Approved!' : 'User Blocked!';
-      res.status(200).json({ message: msg, user: updatedUser });
-    })
-    .catch(err => res.status(500).json({ error: 'Update failed' }));
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ error: 'No valid fields provided for update.' });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, 
+            { $set: updateFields },
+            { new: true } // Updated document wapas chahiye
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        res.status(200).json({ 
+            message: 'User status successfully updated!',
+            user: updatedUser 
+        });
+
+    } catch (err) {
+        console.error("Error updating user status:", err);
+        res.status(500).json({ error: 'Server error updating user status.' });
+    }
 });
 /*
 * ============================================
@@ -400,41 +422,47 @@ app.put('/api/users/status/:id', (req, res) => {
 app.post('/api/auth/login', (req, res) => {
   const { phone, password } = req.body;
 
-  // 1. Database me Phone Number dhoondo
   User.findOne({ phone: phone })
     .then(user => {
-      // Agar user nahi mila
       if (!user) {
-        return res.status(404).json({ error: 'User not found. Please register first.' });
+        return res.status(404).json({ error: 'User not found. Please register.' });
       }
 
-      // 2. Password check karo (Simple check)
       if (user.password !== password) {
         return res.status(401).json({ error: 'Wrong password!' });
       }
 
-      // 3. Check karo ki Admin ne Approve kiya hai ya nahi (Sabse Zaroori)
       if (user.isApproved === false) {
-        return res.status(403).json({ error: 'Account not approved by Admin yet. Please wait.' });
+        return res.status(403).json({ error: 'Account not approved yet.' });
       }
 
-      // 4. Sab sahi hai -> Login Success
-      // Hum user ka data wapas bhejenge taaki frontend usse save kar sake
+      // ✅ STEP 4: Token Generate Karna
+      // 'mySecretKey' ki jagah koi strong secret use karein
+      const token = jwt.sign(
+    { id: user._id, isAdmin: user.isAdmin }, 
+    JWT_SECRET, // <--- Wahi variable jo upar define kiya
+    { expiresIn: '7d' }
+);
+
+      // ✅ STEP 5: Token ko Response me bhejna
       res.status(200).json({ 
         message: 'Login Successful!', 
+        token: token, // <--- YE BHEJNA ZAROORI HAI
         user: { 
           id: user._id, 
           name: user.name, 
-          shopName: user.shopName,
           phone: user.phone,
           isAdmin: user.isAdmin 
         } 
       });
     })
     .catch(err => {
+      console.error(err);
       res.status(500).json({ error: 'Server error during login' });
     });
 });
+
+
 /**
  * (O) ADMIN: USER DELETE KARNA
  * Method: DELETE
@@ -581,28 +609,210 @@ app.get('/api/users/:id', async (req, res) => {
   }
 });
 
+// /**
+//  * ============================================
+//  * (AE) UPDATE Customer Details & Credit Terms
+//  * Method: PUT
+//  * URL: /api/users/:id
+//  * ============================================
+//  */
+// app.put('/api/users/:id', async (req, res) => {
+//   try {
+//     // Ye new customer details aur credit terms honge
+//     const update = req.body;
+    
+//     const updatedUser = await User.findByIdAndUpdate(req.params.id, update, { new: true });
+    
+//     if (!updatedUser) return res.status(404).json({ error: 'User not found for update' });
+    
+//     res.status(200).json({ message: 'Customer details updated!', user: updatedUser });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Update failed' });
+//   }
+// });
+
 /**
  * ============================================
- * (AE) UPDATE Customer Details & Credit Terms
- * Method: PUT
- * URL: /api/users/:id
+ * (AF) USER PROFILE DATA
+ * URL: /api/user/profile/:id
  * ============================================
  */
-app.put('/api/users/:id', async (req, res) => {
+app.get('/api/user/profile', authMiddleware, async (req, res) => {
   try {
-    // Ye new customer details aur credit terms honge
-    const update = req.body;
+    // 💡 req.params.id ki jagah req.user.id use karein
+    const user = await User.findById(req.user.id).select('-password'); 
     
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, update, { new: true });
+    if (!user) {
+        return res.status(404).json({ error: 'User not found in database' });
+    }
     
-    if (!updatedUser) return res.status(404).json({ error: 'User not found for update' });
-    
-    res.status(200).json({ message: 'Customer details updated!', user: updatedUser });
+    res.json(user);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Update failed' });
+    res.status(500).json({ error: 'Profile load nahi ho saki' });
   }
 });
+
+/**
+ * ============================================
+ * (AG) USER ORDERS DATA - FIX
+ * URL: /api/user/my-orders/:userPhone
+ * ============================================
+ */
+app.get('/api/user/my-orders/:userPhone', async (req, res) => {
+    try {
+        // FIX: userPhone se orders dhoondo, jaisa humne frontend me set kiya hai
+        const orders = await Order.find({ customerPhone: req.params.userPhone }).sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (err) {
+        console.error("Orders load error:", err);
+        res.status(500).json({ error: 'Orders load nahi ho sake' });
+    }
+});
+
+
+/**
+ * ============================================
+ * (AF) Invoice Order Save Route - CRITICAL FIX
+ * Method: POST
+ * URL: /api/orders
+ * ============================================
+ */
+app.post('/api/orders', async (req, res) => {
+    try {
+        const orderNumber = Math.floor(100000 + Math.random() * 900000); 
+        
+        const itemsToSave = Array.isArray(req.body.orderItems) ? req.body.orderItems : [];
+
+const orderData = {
+    ...req.body, 
+    orderNumber: orderNumber,
+    totalAmount: parseFloat(req.body.totalAmount) || 0,
+    orderItems: itemsToSave, // CRITICAL: itemsToSave use karo
+};
+
+        const newOrder = new Order(orderData); 
+        const savedOrder = await newOrder.save();
+        
+        // --- CRITICAL FIX: Order ko dobara fetch karke poora data lein ---
+        const finalOrderWithDetails = await Order.findById(savedOrder._id); 
+        // -----------------------------------------------------------------
+
+        // Success response
+        res.status(201).json({ 
+            message: 'Order placed successfully!', 
+            order: finalOrderWithDetails // Ab yeh object 100% poora data wapas bhejega
+        });
+    } catch (err) {
+        // ... (Error handling waisa hi rahega) ...
+        console.error("ORDER SAVE FAILED IN SERVER:", err);
+        // ...
+        res.status(500).json({ error: 'Internal Server Error. Database or connection issue.' });
+    }
+});
+
+app.get('/api/orders', async (req, res) => {
+    try {
+        const { search } = req.query; 
+        let query = {}; 
+
+        if (search && search.trim() !== '') {
+            // Step 1: Search term ko Case-Insensitive Regex banao
+            const searchRegex = new RegExp(search.trim(), 'i');
+            
+            // Step 2: Query ko robust $or condition ke saath set karo
+            query = {
+                $or: [
+                    // Order Number ko String mein convert karke search karein
+                    { orderNumber: { $regex: searchRegex } }, 
+                    { customerName: { $regex: searchRegex } },
+                    { customerPhone: { $regex: searchRegex } }, // Phone number bhi add kiya
+                    { shopName: { $regex: searchRegex } },
+                ]
+            };
+        }
+        
+        // Order.find() mein ab humara naya 'query' object use hoga
+        const orders = await Order.find(query).sort({ createdAt: -1 }); 
+        
+        res.status(200).json(orders);
+    } catch (err) {
+        console.error("Error fetching orders from DB:", err);
+        res.status(500).json({ error: 'Database error while fetching orders' });
+    }
+});
+
+// ------------------------------------------------------------
+
+
+/**
+ * ============================================
+ * (AH) Order Details Route - Safest Search Logic
+ * URL: /api/orders/details/:orderNo
+ * ============================================
+ */
+app.get('/api/orders/details/:orderNo', async (req, res) => {
+    try {
+        let rawOrderNo = req.params.orderNo;
+        
+        // Prefix hata kar sirf number nikaalo (Frontend se aa raha hai)
+        let cleanedOrderNo = rawOrderNo.replace('SH-', '').replace('#SHO-', '').trim();
+        
+        // Safest MongoDB Query: String aur Number dono se search karo
+        const query = { 
+            orderNumber: { $in: [cleanedOrderNo, parseInt(cleanedOrderNo)] } 
+        };
+
+        const order = await Order.findOne(query);
+        
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found in database.' });
+        }
+        
+        res.json({ order });
+    } catch (err) {
+        console.error("Database fetch error:", err);
+        res.status(500).json({ error: 'Server error fetching order details' });
+    }
+});
+
+app.get('/api/users', async (req, res) => {
+    try {
+        const { search } = req.query; 
+        
+        // --- DEBUG LOG 1: Search value aayi ya nahi? ---
+        console.log("Searching users for query:", search); // <--- YEH LINE ADD KAREIN
+        
+        let query = {}; 
+
+        if (search && search.trim() !== '') {
+            const searchRegex = new RegExp(search.trim(), 'i');
+            
+            query = {
+                $or: [
+                    { name: { $regex: searchRegex } },        
+                    { phone: { $regex: searchRegex } },       
+                    { shopName: { $regex: searchRegex } },    
+                    { shopAddress: { $regex: searchRegex } }, 
+                ]
+            };
+            
+            // --- DEBUG LOG 2: Final Mongoose query kya bani? ---
+            console.log("Mongoose Query:", JSON.stringify(query)); // <--- YEH LINE ADD KAREIN
+        }
+        
+        const users = await User.find(query).sort({ createdAt: -1 }); 
+        
+        res.status(200).json(users); 
+        
+    } catch (err) {
+        console.error("Error fetching users from DB:", err);
+        res.status(500).json({ error: 'Failed to fetch users' }); 
+    }
+});
+
+
 // /**
 //  * ============================================
 //  * (TEMP) RESET ALL ORDERS

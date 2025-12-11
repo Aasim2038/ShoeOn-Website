@@ -1,0 +1,148 @@
+/* =========================================
+   MY ACCOUNT CSS (FINAL MOBILE-UX OPTIMIZED)
+   ========================================= */
+
+:root {
+    --theme-color: #e84c3d; /* Brand Red */
+    --secondary-color: #333;
+    --light-bg: #f1f3f6; 
+    --border-color: #f0f0f0;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --success-color: #2ecc71;
+    --pending-color: #f39c12;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--light-bg); 
+    margin: 0;
+    padding: 0;
+}
+
+.account-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #212121;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* --- 1. NAVIGATION TABS (Vertical List Fix) --- */
+.account-nav {
+    /* Base style, jo bade screens par bhi dikhega */
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+.vertical-list-nav {
+    flex-direction: column; /* Main Fix: Horizontal ko vertical bana diya */
+    overflow-x: hidden; /* Side scroll khatam */
+}
+
+.nav-item {
+    padding: 10px 15px; 
+    border-radius: 8px;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    border-bottom: 1px solid #f9f9f9; /* List separator */
+}
+
+.nav-item.active {
+    background-color: var(--theme-color); 
+    color: white;
+    box-shadow: 0 4px 12px rgba(232, 76, 61, 0.2);
+}
+
+/* --- 2. CONTENT SECTION (Card Design) --- */
+.content-section {
+    background: white;
+    padding: 20px; 
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    display: none; 
+}
+.content-section.active { display: block; }
+.content-section h3 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: var(--theme-color);
+    font-size: 1.4rem;
+}
+
+/* Profile Data Rows (Waisa hi rahega) */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.info-label { color: #878787; font-weight: 500; }
+.info-value { color: var(--secondary-color); font-weight: 600; text-align: right; }
+
+/* Status and Buttons */
+.status-indicator { padding: 10px 0; margin-bottom: 25px; }
+.status-badge {
+    padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; color: white;
+}
+.status-delivered, .status-approved { background-color: var(--success-color); }
+.status-pending { background-color: var(--pending-color); }
+
+.edit-btn {
+    border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer;
+    margin-top: 20px; transition: 0.3s; background-color: var(--theme-color); color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); width: 100%; /* Mobile friendly full width */
+}
+
+/* --- 3. Order History Table (CRITICAL SCROLL FIX) --- */
+.table-responsive {
+    /* Isse mobile par scroll ho sakta hai, lekin hum data stacking prefer karenge */
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch; 
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+th, td {
+    padding: 12px 8px; /* Padding kam kiya */
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap; /* Taki data ek line mein rahe */
+}
+th { background-color: #fafafa; color: #666; font-weight: 600; }
+td:last-child { text-align: center; }
+
+
+/* --- 4. Mobile Breakpoint Optimization (Side Scroll Fix) --- */
+@media screen and (max-width: 600px) {
+    .account-container { padding: 10px; }
+    
+    /* CRITICAL FIX: TABLE SCROLLING - Isse table ka width kam nahi hoga, scroll ho jayega */
+    /* Agar aap stacking chahte hain, toh display:block; use karna padega, lekin woh table structure tod deta hai.
+       Isliye hum scroll (table-responsive) ko hi theek karenge. */
+
+    .info-row {
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+    .info-value { text-align: left; }
+    .nav-item { padding: 10px 10px; font-size: 0.95rem; }
+}

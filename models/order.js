@@ -42,7 +42,7 @@ const orderSchema = new Schema({
     type: String,
     required: true,
     default: 'Online'
-  },
+  }, 
   paymentId: { type: String },
   
 }, { timestamps: true }); // Order kab aaya, woh time save karega

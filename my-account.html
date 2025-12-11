@@ -3,9 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-Account</title>
+    <title>Mera Account - ShoeOn</title>
+    <link rel="stylesheet" href="css/my_account.css">
 </head>
 <body>
-    
+
+    <div class="account-container">
+    <h2>My Account</h2>
+
+    <div class="account-dashboard">
+    <div class="account-nav vertical-list-nav"> 
+        <a href="#" class="nav-item active" data-tab="profile">1. Personal Details</a>
+        <a href="#" class="nav-item" data-tab="orders">2. Mere Orders (My Orders)</a>
+    </div>
+
+        <div class="account-content-area">
+            
+            <div id="profile" class="content-section active">
+                <h3>Personal Details</h3>
+                
+                <div id="profile-status" style="margin-bottom: 20px;"></div>
+                
+                <div class="profile-details-list">
+                    <p class="info-row">
+                        <span class="info-label">Naam:</span> 
+                        <span id="profile-name" class="info-value">Loading...</span>
+                    </p>
+                    <p class="info-row">
+                        <span class="info-label">Phone:</span> 
+                        <span id="profile-phone" class="info-value">Loading...</span>
+                    </p>
+                    <p class="info-row">
+                        <span class="info-label">Shop:</span> 
+                        <span id="profile-shopname" class="info-value">Loading...</span>
+                    </p>
+                    <p class="info-row">
+                        <span class="info-label">GST:</span> 
+                        <span id="profile-gst" class="info-value">Loading...</span>
+                    </p>
+                    <p class="info-row">
+                        <span class="info-label">Address:</span> 
+                        <span id="full-address-view" class="info-value">Loading...</span>
+                    </p>
+                </div>
+                <button class="edit-btn" style="background-color: #333; color: white;">Edit Details</button>
+            </div>
+
+            <div id="orders" class="content-section">
+                <h3>(Order History)</h3>
+                <p id="no-orders-message" style="text-align:center; color:#e84c3d; display:none;"></p>
+                <div class="table-responsive"> <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-tbody">
+                             <tr><td colspan="5" style="text-align:center;">Loading orders...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script src="js/my-account.js"></script>
 </body>
 </html>

@@ -356,3 +356,18 @@ table td img {
     margin-bottom: 15px;
     color: #333;
 }
+
+tr.highlight-new-order {
+    background-color: #fff3e0; /* Light orange background */
+    border-left: 5px solid #ff9800; /* Orange bar */
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+/* Highlight for New Customers (Status: Not Approved) */
+tr.highlight-new-user {
+    background-color: #fce4ec; /* Light pink/red background */
+    border-left: 5px solid #e91e63; /* Pink/Red bar */
+    font-weight: 500;
+    transition: background-color 0.3s;
+}

@@ -1,55 +1,60 @@
 /* =========================================
-   LOGIN.JS
+   LOGIN.JS - UPDATED FIXED CODE
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-  
-  const form = document.getElementById('login-form');
-  const messageDiv = document.getElementById('login-message');
+    const form = document.getElementById('login-form');
+    const messageDiv = document.getElementById('login-message');
 
-  if(form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const loginData = {
-        phone: document.getElementById('phone').value,
-        password: document.getElementById('password').value
-      };
-      
-      messageDiv.innerText = 'Checking...';
-      messageDiv.style.color = 'blue';
-      
-      fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(loginData)
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          messageDiv.innerText = data.error;
-          messageDiv.style.color = 'red';
-        } else {
-          // Success!
-          messageDiv.innerText = 'Login Successful! Redirecting...';
-          messageDiv.style.color = 'green';
-          
-          // IMPORTANT: User ko browser me yaad rakho (Session)
-          // Hum user ka data 'shoeonUser' naam se save karenge
-          localStorage.setItem('shoeonUser', JSON.stringify(data.user));
-          
-          // Home Page par bhejo
-          setTimeout(() => {
-            window.location.href = 'index.html';
-          }, 1000);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        messageDiv.innerText = 'Server Error';
-        messageDiv.style.color = 'red';
-      });
-      
-    });
-  }
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const loginData = {
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value
+            };
+            
+            messageDiv.innerText = 'Checking...';
+            messageDiv.style.color = 'blue';
+            
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const data = await res.json();
+                
+                if (!res.ok) { 
+                    messageDiv.innerText = data.error || data.message || 'Login failed.';
+                    messageDiv.style.color = 'red';
+                    return; 
+                } 
+                
+                // data.token ka check yahan zaroori hai
+                if (data.token && data.user) {
+                    // ✅ TOKEN SAVE KARNA ZAROORI HAI
+                    localStorage.setItem('authToken', data.token); 
+                    localStorage.setItem('shoeonUser', JSON.stringify(data.user)); 
+
+                    messageDiv.innerText = 'Login Successful! Redirecting...';
+                    messageDiv.style.color = 'green';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html'; 
+                    }, 1000);
+                } else {
+                    messageDiv.innerText = 'Token not found in response!';
+                    messageDiv.style.color = 'orange';
+                }
+                
+            } catch(err) {
+                console.error("Fetch Error:", err);
+                messageDiv.innerText = 'Server Error: Connection failed.';
+                messageDiv.style.color = 'red';
+            }
+        });
+    }
 });
