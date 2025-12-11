@@ -12,6 +12,7 @@ const allCategoryData = {
       { name: 'Sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=men-sandals' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.jpeg', url: 'products.html?category=men-sports' },
       { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=men-crock' },
+      { name: 'Safty Shoe', img: '', url: 'products.html?category=men-safty' },
     ]
   },
   'women-sheet': {
@@ -35,8 +36,16 @@ const allCategoryData = {
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=girl-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=girl-pu-sandals' },
       { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
+      { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=girl-crocks' },
+      { name: 'Safty Shoe', img: '', url: 'products.html?category= -safty' },  ] },
+  
+  'girl-sheet': { title: 'Girls Footwear', items: [
+      { name: 'Bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=girl-bellies' },     
+      { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=girl-pu-chappal' },
+      { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=girl-pu-sandals' },
+      { name: 'School ballies', img: 'images/sub-cat/girl-school-ballies.jpg', url: 'products.html?category=girl-School ballies' },
       { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=girl-crocks' }
-  ] },
+   ]},
  'loose-sheet': { 
   title: 'Loose Footwear',
   items: [
