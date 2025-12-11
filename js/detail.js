@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // --- BUY NOW BUTTON LOGIC ---
-      const buyNowBtn = document.querySelector(".btn-buy");
+     const buyNowBtn = document.querySelector(".btn-buy");
 
       if (buyNowBtn) {
         buyNowBtn.addEventListener("click", () => {
@@ -156,22 +156,34 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
           }
 
-          // 1. Item ko Cart me Add karo
-          // (Assuming 'product' object is available from the fetch block's scope)
+          // --- MISSING LOGIC ADDED HERE ---
+          // 1. Pack Selector se value uthao (Jaise Add to Cart me kiya tha)
+          const packSelector = document.getElementById('pack-count');
+          const packs = packSelector ? parseInt(packSelector.value) : 1;
+          const moq = parseInt(product.moq) || 1;
+
           if (typeof addItemToCart === "function") {
-            // Temporarily set the product details for cart saving
+            // 2. Product Object banate time quantity calculate karo
             const productToBuy = {
-              ...product,
               id: product._id,
+              name: product.name,        // Name add kiya for consistency
+              brand: product.brand,      // Brand add kiya
+              img: product.images && product.images.length > 0 ? product.images[0] : "images/placeholder.jpg",
+              unitPrice: parseFloat(product.salePrice),
+              moq: moq,
+              packs: packs,
+              quantity: packs * moq,     // YEH MAIN FIX HAI (10 packs * 4 moq = 40)
               price: product.salePrice,
               selectedSize: product.isLoose ? selectedSize : "Set",
             };
+
+            // 3. Item add karo
             addItemToCart(productToBuy);
 
-            // 2. Turant Checkout par bhej do
+            // 4. Checkout page par bhejo
             setTimeout(() => {
               window.location.href = "checkout.html";
-            }, 200); // 200ms delay taaki cart save ho jaye
+            }, 200); 
           } else {
             console.error("addItemToCart function missing.");
           }
