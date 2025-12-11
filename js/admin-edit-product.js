@@ -4,10 +4,10 @@
 
 // --- 0. CATEGORY DATA STRUCTURE (Bohot Zaroori) ---
 const CATEGORY_DATA = {
-    "men": ["Casual", "Sports", "PU-Chappal", "Sandals" , "Loose-products"],
-    "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Loose-products"],
-    "boys": ["Sports", "PU-Chappal", "Sandals" , "School-Shoes" , "Loose-products"],
-    "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Shoes" , "Loose-products"],
+    "men": ["Casual", "PU-Chappal", "Sandals", "Sports-Shoes" , "Crocks", "Safty Shoe" ,  "Loose-products"],
+    "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Safty Shoe" , "Loose-products"],
+    "boys": ["Sports-Shoes", "PU-Chappal", "Sandals" , "School-Shoes" , "Crocks", "Loose-Products"],
+    "girls": ["Bellies", "PU-Chappal", "PU-Sandals" , "School-Bellies" , "Crocks", "Loose-Products"],
     "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
 };
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR','Phylon', 'Double Density'];
