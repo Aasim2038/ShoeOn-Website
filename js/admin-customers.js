@@ -43,41 +43,24 @@ document.addEventListener('DOMContentLoaded', () => {
             // ------------------------------------
             
             // Status Logic (waisa hi rahega)
-            const isApproved = user.isApproved;
-            const isCreditApproved = user.isCreditApproved;
             let statusBadge = '';
             let actionBtn = '';
 
-            // ... (Approve/Block/Status Logic waisa hi rahega) ...
-            if (isApproved) {
-                statusBadge = `<span class="status-badge status-delivered">Active</span>`;
-                actionBtn = `
-                    <button class="btn-action btn-delete btn-toggle" data-id="${user._id}" data-status="false" data-field="isApproved" style="background-color:#e74c3c;">
-                      <i class="fa-solid fa-ban"></i> Block
-                    </button>
-                `;
-            } else {
-                statusBadge = `<span class="status-badge status-cancelled">Pending</span>`;
-                actionBtn = `
-                    <button class="btn-action btn-edit btn-toggle" data-id="${user._id}" data-status="true" data-field="isApproved">
-                      <i class="fa-solid fa-check"></i> Approve
-                    </button>
-                `;
-            }
+        
             
             // Edit/Delete Buttons (waisa hi rahega)
             const editBtn = `<a href="admin-customer-edit.html?id=${user._id}" class="btn-action btn-edit" style="background-color: #3498db; color: white;"><i class="fa-solid fa-pencil"></i> Edit</a>`;
             const deleteBtn = `<button class="btn-action btn-delete btn-remove" data-id="${user._id}"><i class="fa-solid fa-trash"></i></button>`;
 
             // FINAL ROW (CRITICAL FIX: rowClass ko <tr> tag mein daala)
-            const row = `
-                <tr class="${rowClass}"> <td>${date}</td>
+           const row = `
+                <tr class="${rowClass}"> 
+                    <td>${date}</td>
                     <td>${user.name}</td>
                     <td>${user.shopName}</td>
                     <td>${user.phone}</td>
-                    <td>₹${user.creditLimit.toLocaleString('en-IN') || 0}</td>
-                    <td>${user.creditTermsDays || 0} Days</td>
-                    <td>${statusBadge}</td>
+                    
+                    
                     <td>
                         <div style="display:flex; gap:5px;">
                             ${editBtn}

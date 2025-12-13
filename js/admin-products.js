@@ -1,21 +1,20 @@
 /* =========================================
-   ADMIN-PRODUCTS.JS (FINAL CODE - SYNTAX & SEARCH FIXED)
+   ADMIN-PRODUCTS.JS (FINAL COMPLETE CODE)
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
     
     const tableBody = document.getElementById('product-list-body');
-    // Search Input field ko access karo (ID: productSearchInput)
     const searchInput = document.getElementById('productSearchInput'); 
 
-    // --- FUNCTION 1: Products laana aur table bharna (FETCH & SEARCH) ---
+    // --- FUNCTION 1: Products laana (FETCH & SEARCH) ---
     async function fetchProducts(searchTerm = "") { 
         if (!tableBody) return; 
 
         tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading Products...</td></tr>';
         
-        try { // <--- TRY BLOCK START
-            // Search term ke saath URL banao
+        try {
+            // URL banao (Search query ke sath)
             const url = searchTerm 
                 ? `/api/products?search=${encodeURIComponent(searchTerm)}` 
                 : '/api/products';
@@ -24,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const response = await fetch(url, fetchOptions); 
             
-            // Check for non-OK status (e.g., 404 or 500)
             if (!response.ok) {
                 throw new Error(`Server returned status: ${response.status}`);
             }
@@ -33,15 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             tableBody.innerHTML = ''; // Table khaali karo
             
+            // Agar products nahi mile
             if (!Array.isArray(products) || products.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No products found.</td></tr>';
-                // Agar search ke baad koi product nahi milta
                 if (searchTerm) {
-                     tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Search results not found.</td></tr>';
+                     tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No search results found.</td></tr>';
+                } else {
+                     tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No products available.</td></tr>';
                 }
                 return;
             }
 
+            // Table Rows Generate karo
             products.forEach(product => {
                 const row = `
                     <tr>
@@ -62,31 +62,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 tableBody.innerHTML += row;
             });
             
+            // Row banne ke baad hi buttons par logic lagayenge
             addDeleteListeners(); 
-            addEditListeners();   
+            addEditListeners();   
             
-        } catch (err) { // <--- CATCH BLOCK START (Ln 64 - Syntax Error Fix)
+        } catch (err) {
             console.error('Error fetching products:', err);
-            // Display error to the user
             tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error loading products. Check console.</td></tr>';
-        } // <--- CATCH BLOCK END
+        }
     }
 
-    // --- FUNCTION 2: DELETE LOGIC (Waisa hi rahega) ---
-    function addDeleteListeners() { /* ... (Logic) ... */ }
+    // --- FUNCTION 2: DELETE LOGIC (FULL CODE ADDED) ---
+    function addDeleteListeners() {
+        const deleteBtns = document.querySelectorAll('.btn-delete');
+        
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                // Button ke andar icon bhi ho sakta hai, isliye closest button dhundo
+                const targetBtn = e.target.closest('.btn-delete');
+                const productId = targetBtn.getAttribute('data-id');
 
-    // --- FUNCTION 3: EDIT LOGIC (Waisa hi rahega) ---
-    function addEditListeners() { /* ... (Logic) ... */ }
+                // Confirmation mango
+                if (confirm('Are you sure you want to delete this product?')) {
+                    try {
+                        const res = await fetch(`/api/products/${productId}`, {
+                            method: 'DELETE'
+                        });
+
+                        if (res.ok) {
+                            alert('Product Deleted Successfully!');
+                            fetchProducts(); // Table refresh karo
+                        } else {
+                            alert('Failed to delete product');
+                        }
+                    } catch (error) {
+                        console.error('Delete Error:', error);
+                        alert('Error deleting product');
+                    }
+                }
+            });
+        });
+    }
+
+    // --- FUNCTION 3: EDIT LOGIC (FULL CODE ADDED) ---
+    function addEditListeners() {
+        const editBtns = document.querySelectorAll('.btn-edit');
+
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetBtn = e.target.closest('.btn-edit');
+                const productId = targetBtn.getAttribute('data-id');
+
+                // User ko Edit page par bhejo (ID ke sath)
+                // Note: Make sure tumhare page ka naam 'add-product.html' hi ho
+                window.location.href = `admin-edit-product.html?id=${productId}`;
+            });
+        });
+    }
   
     // --- FUNCTION 4: SEARCH BAR EVENT LISTENER ---
     if (searchInput) {
         let timeout = null;
         searchInput.addEventListener('keyup', () => {
             clearTimeout(timeout);
+            // Debounce: User ke rukne ke 500ms baad search karega
             timeout = setTimeout(() => {
                 const searchTerm = searchInput.value.trim(); 
-                fetchProducts(searchTerm); // Search term ke saath call karo
-            }, 500); // 500 milliseconds ka delay
+                fetchProducts(searchTerm); 
+            }, 500); 
         });
     }
 

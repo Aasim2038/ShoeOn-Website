@@ -131,120 +131,123 @@ function generateDigitalInvoice(order) {
         const invoiceWindow = window.open('', '_blank');
         if (!invoiceWindow) return;
 
-        const invoiceHTML = `
-        <html>
-        <head>
-            <title>Invoice #${order.orderNumber}</title>
-            <style>
-                body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px; color: #333; max-width: 850px; margin: auto; }
-                .invoice-container { border: 1px solid #000; padding: 0; }
-                
-                .header-box { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #000; }
-                .company-details h2 { margin: 0 0 5px 0; font-size: 22px; text-transform: uppercase; font-weight: 800; }
-                
-                .address-grid { display: flex; border-bottom: 1px solid #000; }
-                .address-col { width: 50%; padding: 10px; font-size: 13px; border-right: 1px solid #000; }
-                .address-col:last-child { border-right: none; }
+       const invoiceHTML = `
+    <html>
+    <head>
+        <title>Invoice #${order.orderNumber}</title>
+        <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px; color: #333; max-width: 850px; margin: auto; }
+            .invoice-container { border: 1px solid #000; padding: 0; }
+            
+            .header-box { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #000; }
+            
+            /* FIX: Margin aur Line Height control kiya */
+            .company-details h2 { margin: 0; font-size: 24px; text-transform: uppercase; font-weight: 800; line-height: 1; }
+            .company-details p { margin: 2px 0; line-height: 1.2; }
+            
+            .address-grid { display: flex; border-bottom: 1px solid #000; }
+            .address-col { width: 50%; padding: 10px; font-size: 13px; border-right: 1px solid #000; }
+            .address-col:last-child { border-right: none; }
 
-                table { width: 100%; border-collapse: collapse; }
-                th { background: #f0f0f0; border-bottom: 1px solid #000; padding: 8px; text-align: left; font-size: 12px; border-right: 1px solid #ccc; }
-                th:last-child { border-right: none; text-align: right; }
-                td { border-right: 1px solid #eee; }
-                td:last-child { border-right: none; }
-                
-                .totals-container { display: flex; justify-content: flex-end; border-top: 1px solid #000; }
-                .totals-table { width: 55%; border-collapse: collapse; }
-                .totals-table td { padding: 4px 10px; text-align: right; font-size: 13px; }
-                
-                .grand-total-row td { 
-                    border-top: 1px solid #000; font-weight: bold; font-size: 16px; padding: 10px; background: #f9f9f9;
-                }
-                .btn-print { background: #333; color: white; padding: 10px 20px; border: none; cursor: pointer; margin: 20px auto; display: block; }
-                @media print { .btn-print { display: none; } }
-            </style>
-        </head>
-        <body>
+            table { width: 100%; border-collapse: collapse; }
+            th { background: #f0f0f0; border-bottom: 1px solid #000; padding: 8px; text-align: left; font-size: 12px; border-right: 1px solid #ccc; }
+            th:last-child { border-right: none; text-align: right; }
+            td { border-right: 1px solid #eee; }
+            td:last-child { border-right: none; }
+            
+            .totals-container { display: flex; justify-content: flex-end; border-top: 1px solid #000; }
+            .totals-table { width: 55%; border-collapse: collapse; }
+            .totals-table td { padding: 4px 10px; text-align: right; font-size: 13px; }
+            
+            .grand-total-row td { 
+                border-top: 1px solid #000; font-weight: bold; font-size: 16px; padding: 10px; background: #f9f9f9;
+            }
+            .btn-print { background: #333; color: white; padding: 10px 20px; border: none; cursor: pointer; margin: 20px auto; display: block; }
+            @media print { .btn-print { display: none; } }
+        </style>
+    </head>
+    <body>
 
-            <div class="invoice-container">
-                <div class="header-box">
-                    <div class="company-details">
-                        <h2>ShoeOn Wholesale</h2>
-                        <p style="font-size:12px;">Shop 2, Main Market, Aurangabad<br>GSTIN: 27ABCDE1234F1Z5</p>
-                    </div>
-                    <div style="text-align: right;">
-                        <h3>TAX INVOICE</h3>
-                        <p style="font-size:12px;">No: #SHO-${order.orderNumber}<br>Date: ${new Date().toLocaleDateString('en-IN')}</p>
-                    </div>
+        <div class="invoice-container">
+            <div class="header-box">
+                <div class="company-details">
+                    <h2>ShoeOn</h2>
+                    <p style="font-size: 14px; font-weight: bold; color: #555;">We Connects You</p>
                 </div>
-
-                <div class="address-grid">
-                    <div class="address-col">
-                        <strong>Billed To:</strong><br>${order.customerName}<br>Ph: ${order.customerPhone}
-                    </div>
-                    <div class="address-col">
-                        <strong>Shipped To:</strong><br>${order.shippingAddress || 'Same as Billing'}<br>State: 27 (MH)
-                    </div>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:5%">SN</th>
-                            <th style="width:40%">Description</th>
-                            <th style="width:10%">HSN</th>
-                            <th style="width:15%">Qty</th>
-                            <th style="width:15%; text-align:right;">Rate</th>
-                            <th style="width:15%; text-align:right;">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody style="min-height: 200px;">
-                        ${itemsRows}
-                        <tr><td colspan="6" style="height: 40px;"></td></tr>
-                    </tbody>
-                </table>
-
-                <div class="totals-container">
-                    <table class="totals-table">
-                        <tr>
-                            <td></td>
-                            <td>₹${d_Gross.toFixed(2)}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Discount (4.76%):</td>
-                            <td>- ₹${d_Discount.toFixed(2)}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Add: CGST (2.5%):</td>
-                            <td>+ ₹${d_CGST.toFixed(2)}</td>
-                        </tr>
-                        <tr>
-                            <td>Add: SGST (2.5%):</td>
-                            <td>+ ₹${d_SGST.toFixed(2)}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Round Off:</td>
-                            <td>${roundOffDiff > 0 ? '+' : ''}${roundOffDiff.toFixed(2)}</td>
-                        </tr>
-
-                        <tr class="grand-total-row">
-                            <td>Grand Total:</td>
-                            <td>₹${grandTotalRounded.toFixed(2)}</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div style="padding:10px; font-size:11px; border-top:1px solid #000;">
-                    <strong>Amount in Words:</strong> ₹${grandTotalRounded} Only.
+                <div style="text-align: right;">
+                    <h3>TAX INVOICE</h3>
+                    <p style="font-size:12px;">No: #SHO-${order.orderNumber}<br>Date: ${new Date().toLocaleDateString('en-IN')}</p>
                 </div>
             </div>
 
-            <button class="btn-print" onclick="window.print()">Print Invoice</button>
+            <div class="address-grid">
+                <div class="address-col">
+                    <strong>Billed To:</strong><br>${order.customerName}<br>Ph: ${order.customerPhone}
+                </div>
+                <div class="address-col">
+                    <strong>Shipped To:</strong><br>${order.shippingAddress || 'Same as Billing'}<br>State: 27 (MH)
+                </div>
+            </div>
 
-        </body>
-        </html>`;
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:5%">SN</th>
+                        <th style="width:40%">Description</th>
+                        <th style="width:10%">HSN</th>
+                        <th style="width:15%">Qty</th>
+                        <th style="width:15%; text-align:right;">Rate</th>
+                        <th style="width:15%; text-align:right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody style="min-height: 200px;">
+                    ${itemsRows}
+                    <tr><td colspan="6" style="height: 40px;"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="totals-container">
+                <table class="totals-table">
+                    <tr>
+                        <td>Total Amount:</td>
+                        <td>₹${d_Gross.toFixed(2)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Less: Discount (4.76%):</td>
+                        <td>- ₹${d_Discount.toFixed(2)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Add: CGST (2.5%):</td>
+                        <td>+ ₹${d_CGST.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td>Add: SGST (2.5%):</td>
+                        <td>+ ₹${d_SGST.toFixed(2)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Round Off:</td>
+                        <td>${roundOffDiff > 0 ? '+' : ''}${roundOffDiff.toFixed(2)}</td>
+                    </tr>
+
+                    <tr class="grand-total-row">
+                        <td>Grand Total:</td>
+                        <td>₹${grandTotalRounded.toFixed(2)}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="padding:10px; font-size:11px; border-top:1px solid #000;">
+                <strong>Amount in Words:</strong> ₹${grandTotalRounded} Only.
+            </div>
+        </div>
+
+        <button class="btn-print" onclick="window.print()">Print Invoice</button>
+
+    </body>
+    </html>`;
 
         invoiceWindow.document.write(invoiceHTML);
         invoiceWindow.document.close();

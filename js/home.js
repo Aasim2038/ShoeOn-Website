@@ -12,7 +12,7 @@ const allCategoryData = {
       { name: 'Sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=men-sandals' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.jpeg', url: 'products.html?category=men-sports' },
       { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=men-crock' },
-      { name: 'Safty Shoe', img: '', url: 'products.html?category=men-safty' },
+      { name: 'Safty Shoe', img: 'images/sub-cat/msafety-shoes.jpeg', url: 'products.html?category=men-safty' },
     ]
   },
   'women-sheet': {
@@ -22,6 +22,7 @@ const allCategoryData = {
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=women-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=women-pu-sandals' },
       { name: 'crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=women-crockss' },
+      { name: 'Safty Shoe', img: 'images/sub-cat/wsafety-shoes.jpeg', url: 'products.html?category=women-safty' },
     ]
   },
   'boys-sheet': { title: 'Boys Footwear', items: [
