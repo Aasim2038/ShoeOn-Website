@@ -9,10 +9,10 @@ const allCategoryData = {
     items: [
       { name: 'Casual Shoes', img: 'images/sub-cat/casual-shoes.jpeg', url: 'products.html?category=men-casual' },
       { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpg', url: 'products.html?category=men-pu-chappal' },
-      { name: 'Sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=men-sandals' },
+      { name: 'Sandals', img: 'images/sub-cat/sandals.png', url: 'products.html?category=men-sandals' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.jpeg', url: 'products.html?category=men-sports' },
       { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=men-crock' },
-      { name: 'Safty Shoe', img: 'images/sub-cat/msafety-shoes.jpeg', url: 'products.html?category=men-safty' },
+      { name: ' Safety Shoe', img: 'images/sub-cat/msafety-shoes.jpeg', url: 'products.html?category=men-safty' },
     ]
   },
   'women-sheet': {
@@ -22,13 +22,13 @@ const allCategoryData = {
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=women-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=women-pu-sandals' },
       { name: 'crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=women-crockss' },
-      { name: 'Safty Shoe', img: 'images/sub-cat/wsafety-shoes.png', url: 'products.html?category=women-safty' },
+      { name: 'Safety Shoe', img: 'images/sub-cat/wsafety-shoes.png', url: 'products.html?category=women-safty' },
     ]
   },
   'boys-sheet': { title: 'Boys Footwear', items: [
     { name: 'Sports-shoes', img: 'images/sub-cat/chapple.jpg', url: 'products.html?category=boys-Sports-shoes' },
       { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpg', url: 'products.html?category=boys-PU Chappals' },
-      { name: 'Sandals', img: 'images/sub-cat/sandals.jpeg', url: 'products.html?category=boys-sandals' },
+      { name: 'Sandals', img: 'images/sub-cat/sandals.png', url: 'products.html?category=boys-sandals' },
       { name: 'School shoes', img: 'images/sub-cat/shool-shoe.jpg', url: 'products.html?category=boys-School shoes' },
       { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=boys-crocks' },
   ] },
@@ -50,7 +50,6 @@ const allCategoryData = {
  'loose-sheet': { 
   title: 'Loose Footwear',
   items: [
-    // CRITICAL FIX: isLoose=true flag added to URL
     // Hum sub-categories ko bhi 'women-loose' jaisa naam de rahe hain taaki unique rahe
     { name: 'Womens', img: 'images/catogywomen.png', url: 'products.html?isLoose=true&category=women-loose' }, 
     { name: 'Mens', img: 'images/catogyman.png', url: 'products.html?isLoose=true&category=men-loose' },
