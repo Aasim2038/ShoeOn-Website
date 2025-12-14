@@ -22,7 +22,7 @@ const allCategoryData = {
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=women-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=women-pu-sandals' },
       { name: 'crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=women-crockss' },
-      { name: 'Safty Shoe', img: 'images/sub-cat/wsafety-shoes.jpeg', url: 'products.html?category=women-safty' },
+      { name: 'Safty Shoe', img: 'images/sub-cat/wsafety-shoes.png', url: 'products.html?category=women-safty' },
     ]
   },
   'boys-sheet': { title: 'Boys Footwear', items: [
