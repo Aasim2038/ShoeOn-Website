@@ -37,9 +37,7 @@ button { cursor: pointer; }
 .nav-left, .nav-right { display: flex; align-items: center; flex-shrink: 0; }
 .nav-center { flex-grow: 1; padding: 0 15px; }
 .nav-left p{
-  font-size: 0.85rem;
-    margin-top: -5px;
-    margin-left: -1px;
+  display: none;
 }
 .logo { font-size: 2.4rem; font-weight: bold; margin-left: 1px; color: #333; display: none; }
 .nav-icon { font-size: 1.3rem; color: #555; margin-left: 15px; position: relative; }
@@ -483,13 +481,38 @@ button { cursor: pointer; }
   text-transform: uppercase;
 }
 
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 10px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1000; /* Taaki ye sabse upar dikhe */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    background-color: #128c7e; /* Hover karne par thoda dark hoga */
+    transform: scale(1.1); /* Thoda bada hoga */
+    color: white;
+}
 
 @media (min-width: 768px) {
   body { background-color: #e9e9e9; }
   .main-header, .container, .site-footer { max-width: 1200px; margin: 0 auto; }
   
   /* Desktop Nav */
-  .nav-left .logo { display: block; font-size: 2.1rem; }
+  .nav-left .logo{ display: block; font-size: 2.1rem; }
   #menu-toggle { display: none; }
   .category-nav { justify-content: center; }
   .horizontal-list { justify-content: center; }
@@ -500,6 +523,14 @@ button { cursor: pointer; }
   
   /* Slider */
   .slide { height: 400px; }
+
+  .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 25px;
+    }
   
   /* Footer */
   .footer-container { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }

@@ -56,6 +56,32 @@
         </section>
 
         <section class="checkout-section">
+    <h3>2. Payment Method</h3>
+
+    <div class="qr-payment-container" style="text-align: center; border: 1px solid #ddd; padding: 20px; border-radius: 8px; background: #f9f9f9;">
+        
+        <p style="margin-bottom: 15px; font-weight: bold; color: #333;">Scan QR Code to Pay</p>
+        
+        <div class="qr-wrapper" style="cursor: pointer;" onclick="openQrModal()">
+            <img src="https://www.imgonline.com.ua/examples/qr-code-url.png" alt="Payment QR Code" id="myQrImage" 
+                 style="width: 150px; height: 150px; object-fit: contain; border: 2px solid #333; border-radius: 8px;">
+            <p style="font-size: 12px; color: #666; margin-top: 5px;">(Click to Zoom)</p>
+        </div>
+
+        <p style="margin-top: 15px; font-size: 14px; color: #555;">
+            After payment, please click "Place Order".
+        </p>
+
+    </div>
+</section>
+
+<div id="qrModal" class="qr-modal" onclick="closeQrModal()">
+    <span class="close-qr">&times;</span>
+    <img class="qr-modal-content" id="img01">
+    <div id="caption">Tap anywhere to close</div>
+</div>
+
+        <!-- <section class="checkout-section">
           <h3>2. Payment Method</h3>
 
           <div class="payment-method-static">
@@ -70,7 +96,7 @@
               <img src="images/razorpay-icon.png" alt="Razorpay" />
             </div>
           </div>
-        </section>
+        </section> -->
       </div>
 
       <div class="checkout-summary-column">

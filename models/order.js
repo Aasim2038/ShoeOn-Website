@@ -22,7 +22,10 @@ const orderSchema = new Schema({
       name: { type: String },
       brand: { type: String },
       price: { type: Number },
-      moq: { type: Number }
+      moq: { type: Number, default: 1 },
+      packs: { type: Number, default: 1 },  
+      quantity: { type: Number, required: true }, 
+      img: { type: String }
     }
   ],
   

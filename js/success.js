@@ -84,7 +84,7 @@ function generateDigitalInvoice(order) {
                     </td>
                     <td style="padding:8px; border-bottom:1px solid #eee; text-align:center; font-size:12px;">${hsn}</td>
                     <td style="padding:8px; border-bottom:1px solid #eee; text-align:center; font-size:12px;">
-                        ${qty} Pairs<br>
+                        ${qty} piece<br>
                         <span style="color:#555; font-size:11px;">(${packs} Sets)</span>
                     </td>
                     <td style="padding:8px; border-bottom:1px solid #eee; text-align:right; font-size:12px;">₹${unitPrice.toFixed(2)}</td>

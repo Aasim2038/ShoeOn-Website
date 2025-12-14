@@ -37,35 +37,47 @@ document.addEventListener('DOMContentLoaded', () => {
             users.forEach(user => {
             const date = new Date(user.createdAt).toLocaleDateString('en-GB');
             
-            // --- NEW CUSTOMER HIGHLIGHT LOGIC ---
-            const isPending = user.isApproved === false; // isApproved false hai toh pending
-            const rowClass = isPending ? 'highlight-new-user' : ''; // <--- rowClass mein value aayegi
-            // ------------------------------------
-            
-            // Status Logic (waisa hi rahega)
-            let statusBadge = '';
-            let actionBtn = '';
+            // New User Highlight Logic
+            const isPending = user.isApproved === false;
+            const rowClass = isPending ? 'highlight-new-user' : ''; 
 
-        
-            
-            // Edit/Delete Buttons (waisa hi rahega)
+            // --- 1. STATUS BADGE LOGIC (RESTORED) ---
+            let statusBadge = '';
+            if (user.isApproved) {
+                statusBadge = '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px; font-size: 12px;">Active</span>';
+            } else {
+                statusBadge = '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px; font-size: 12px;">Pending</span>';
+            }
+
+            // --- 2. APPROVE / BLOCK BUTTON LOGIC (RESTORED) ---
+            let actionBtn = '';
+            if (user.isApproved) {
+                // Agar user Active hai -> BLOCK button dikhao
+                actionBtn = `<button class="btn-action btn-toggle" data-id="${user._id}" data-status="false" style="background-color: #e74c3c; color: white;">
+                                <i class="fa-solid fa-ban"></i> Block
+                             </button>`;
+            } else {
+                // Agar user Pending hai -> APPROVE button dikhao
+                actionBtn = `<button class="btn-action btn-toggle" data-id="${user._id}" data-status="true" style="background-color: #27ae60; color: white;">
+                                <i class="fa-solid fa-check"></i> Approve
+                             </button>`;
+            }
+
+            // Edit/Delete Buttons
             const editBtn = `<a href="admin-customer-edit.html?id=${user._id}" class="btn-action btn-edit" style="background-color: #3498db; color: white;"><i class="fa-solid fa-pencil"></i> Edit</a>`;
             const deleteBtn = `<button class="btn-action btn-delete btn-remove" data-id="${user._id}"><i class="fa-solid fa-trash"></i></button>`;
 
-            // FINAL ROW (CRITICAL FIX: rowClass ko <tr> tag mein daala)
+            // FINAL ROW (Credit Columns Hatane ke baad)
            const row = `
                 <tr class="${rowClass}"> 
                     <td>${date}</td>
                     <td>${user.name}</td>
                     <td>${user.shopName}</td>
                     <td>${user.phone}</td>
-                    
-                    
-                    <td>
+                    <td>${statusBadge}</td> <td>
                         <div style="display:flex; gap:5px;">
                             ${editBtn}
-                            ${actionBtn}
-                            ${deleteBtn}
+                            ${actionBtn} ${deleteBtn}
                         </div>
                     </td>
                 </tr>
