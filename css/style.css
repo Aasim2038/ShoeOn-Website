@@ -507,6 +507,45 @@ button { cursor: pointer; }
     color: white;
 }
 
+/* --- INTRO VIDEO OVERLAY --- */
+#intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #fff; /* Background color peeche ka */
+    z-index: 99999; /* Sabse upar dikhana hai */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#intro-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Video puri screen bharega bina stretch huye */
+}
+
+/* Skip Button (Optional) */
+#skip-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid white;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 20px;
+    z-index: 100000;
+}
+
+#skip-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 @media (min-width: 768px) {
   body { background-color: #e9e9e9; }
   .main-header, .container, .site-footer { max-width: 1200px; margin: 0 auto; }
