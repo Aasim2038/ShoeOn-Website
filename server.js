@@ -316,31 +316,28 @@ app.put('/api/orders/status/:id', (req, res) => {
  * ============================================
  */
 app.get('/api/dashboard-stats', async (req, res) => {
-  try {
-    // 1. Total Products gino
-    const productCount = await Product.countDocuments();
-    
-    // 2. Total Orders gino
-    const orderCount = await Order.countDocuments();
-    
-    // 3. Total Sale calculate karo (Saare orders ka totalAmount jodo)
-    // MongoDB ka 'aggregate' function use karenge
-    const totalSaleResult = await Order.aggregate([
-      { $group: { _id: null, total: { $sum: "$totalAmount" } } }
-    ]);
-    const totalSale = totalSaleResult.length > 0 ? totalSaleResult[0].total : 0;
+    try {
+        // 1. Saare Orders nikalo
+        const orders = await Order.find();
+        
+        // 2. Total Products count karo
+        const productCount = await Product.countDocuments();
+        
+        // 3. Total Sale calculate karo
+        // (Har order ka 'totalAmount' jodte jao)
+        const totalSale = orders.reduce((acc, order) => acc + (order.totalAmount || 0), 0);
+        
+        // 4. Data bhejo
+        res.json({
+            totalSale: totalSale,
+            orderCount: orders.length,
+            productCount: productCount
+        });
 
-    // 4. Data bhejo
-    res.status(200).json({
-      productCount,
-      orderCount,
-      totalSale
-    });
-    
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Stats load nahi hue' });
-  }
+    } catch (err) {
+        console.error("Dashboard Stats Error:", err);
+        res.status(500).json({ error: "Failed to fetch stats" });
+    }
 });
 /**
  * ============================================

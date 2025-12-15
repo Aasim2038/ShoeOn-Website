@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadSettings() {
     fetch('/api/settings')
       .then(res => res.json())
-      .then(data => { d
+      .then(data => { 
         
         // Images dikhao
         bannersPreview.innerHTML = '';
