@@ -26,7 +26,7 @@ const allCategoryData = {
     ]
   },
   'boys-sheet': { title: 'Boys Footwear', items: [
-    { name: 'Sports-shoes', img: 'images/sub-cat/chapple.jpg', url: 'products.html?category=boys-Sports-shoes' },
+    { name: 'Sports-shoes', img: 'images/sub-cat/boyssportsshoe.png', url: 'products.html?category=boys-Sports-shoes' },
       { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpg', url: 'products.html?category=boys-PU Chappals' },
       { name: 'Sandals', img: 'images/sub-cat/sandals.png', url: 'products.html?category=boys-sandals' },
       { name: 'School shoes', img: 'images/sub-cat/shool-shoe.jpg', url: 'products.html?category=boys-School shoes' },
