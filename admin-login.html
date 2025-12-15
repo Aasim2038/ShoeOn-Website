@@ -46,9 +46,8 @@
             const pass = document.getElementById('adminPass').value;
             const errorMsg = document.getElementById('errorMsg');
 
-            // --- PASSWORD YAHA CHANGE KARO ---
-            // "admin123" ki jagah apna strong password likh do
-            if (pass === 'admin123') { 
+            // --- PASSWORD YAHA CHANGE HONGA ---
+            if (pass === 'shoeon@123') { 
                 sessionStorage.setItem('shoeonAdminLoggedIn', 'true');
                 window.location.href = 'admin-dashboard.html';
             } else {

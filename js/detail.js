@@ -136,12 +136,12 @@ document.addEventListener("DOMContentLoaded", () => {
         sImg.src = url;
       });
 
-      // --- BUY NOW BUTTON LOGIC ---
-     const buyNowBtn = document.querySelector(".btn-buy");
+      // --- UPDATED BUY NOW BUTTON LOGIC (With Stock Check) ---
+      const buyNowBtn = document.querySelector(".btn-buy");
 
       if (buyNowBtn) {
         buyNowBtn.addEventListener("click", () => {
-          // Login check
+          // 1. Login check
           if (!isUserLoggedIn()) {
             showToast("Please Login to buy.");
             setTimeout(() => {
@@ -150,20 +150,32 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
           }
 
-          // Validation check: Agar loose product hai aur size select nahi kiya
+          // 2. Loose Product Size Validation
           if (product.isLoose && !selectedSize) {
             if (sizeWarning) sizeWarning.style.display = "block";
             return;
           }
 
-          // --- MISSING LOGIC ADDED HERE ---
-          // 1. Pack Selector se value uthao (Jaise Add to Cart me kiya tha)
+          // 3. Calculation & Stock Check
           const packSelector = document.getElementById('pack-count');
           const packs = packSelector ? parseInt(packSelector.value) : 1;
           const moq = parseInt(product.moq) || 1;
+          const requiredQty = packs * moq; // Customer ko total kitne pairs chahiye
+          const currentStock = parseInt(product.stock) || 0; // Abhi stock kitna hai
+
+          // --- STOCK CHECK ---
+          if (currentStock === 0) {
+              alert("Sorry, this product is currently Out of Stock.");
+              return;
+          }
+          if (requiredQty > currentStock) {
+              alert(`Insufficient Stock! We only have ${currentStock} pairs available, but you requested ${requiredQty}.`);
+              return; // Yahi rok do
+          }
+          // -------------------
 
           if (typeof addItemToCart === "function") {
-            // 2. Product Object banate time quantity calculate karo
+            // 4. Product Object Creation
             const productToBuy = {
               id: product._id,
               name: product.name,        
@@ -172,15 +184,14 @@ document.addEventListener("DOMContentLoaded", () => {
               unitPrice: parseFloat(product.salePrice),
               moq: moq,
               packs: packs,
-              quantity: packs * moq,     
+              quantity: requiredQty,     
               price: product.salePrice,
               selectedSize: product.isLoose ? selectedSize : "Set",
             };
 
-            // 3. Item add karo
+            // 5. Add & Redirect
             addItemToCart(productToBuy);
 
-            // 4. Checkout page par bhejo
             setTimeout(() => {
               window.location.href = "checkout.html";
             }, 200); 
@@ -190,43 +201,63 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // --- 6. ADD TO CART LOGIC ---
+      // --- UPDATED ADD TO CART LOGIC (With Stock Check) ---
       if (addToCartBtn) {
-    addToCartBtn.addEventListener('click', () => {
-        if (!isUserLoggedIn()) { 
-            showToast('Please Login to order'); 
-            return; 
-        }
+        addToCartBtn.addEventListener('click', () => {
+            // 1. Login Check
+            if (!isUserLoggedIn()) { 
+                showToast('Please Login to order'); 
+                return; 
+            }
 
-        // 1. Pack Selector se value uthao
-        const packSelector = document.getElementById('pack-count');
-        const packs = packSelector ? parseInt(packSelector.value) : 1;
-        const moq = parseInt(product.moq) || 1;
+            // 2. Loose Product Size Validation (Agar loose hai to size zaroori hai)
+            if (product.isLoose && !selectedSize) {
+                if (sizeWarning) sizeWarning.style.display = "block";
+                return;
+            }
 
-        // 2. Naya "Cart Ready" product object banao
-        const productToCart = {
-            id: product._id,
-            name: product.name,
-            brand: product.brand,
-            img: product.images[0],
-            unitPrice: parseFloat(product.salePrice), // Ek jodi ka rate
-            moq: moq,
-            packs: packs,
-            quantity: packs * moq, // Total pieces (E.g. 10 packs * 4 moq = 40)
-            price: product.salePrice // Compatibility ke liye original price field
-        };
+            // 3. Calculation & Stock Check
+            const packSelector = document.getElementById('pack-count');
+            const packs = packSelector ? parseInt(packSelector.value) : 1;
+            const moq = parseInt(product.moq) || 1;
+            const requiredQty = packs * moq;
+            const currentStock = parseInt(product.stock) || 0;
 
-        // 3. Cart mein add karo aur UI update karo
-        addItemToCart(productToCart); 
-        renderCartDrawerItems(); 
+            // --- STOCK CHECK ---
+            if (currentStock === 0) {
+                showToast("Product is Out of Stock!");
+                return;
+            }
+            if (requiredQty > currentStock) {
+                 alert(`Insufficient Stock! Available: ${currentStock}, Required: ${requiredQty}`);
+                 return; 
+            }
+            // -------------------
 
-        // 4. Drawer kholo
-        const cartDrawer = document.getElementById('cart-drawer');
-        const cartOverlay = document.getElementById('cart-overlay');
-        if (cartDrawer) cartDrawer.classList.add('active');
-        if (cartOverlay) cartOverlay.classList.add('active');
-    });
-}
+            // 4. Product Object Creation
+            const productToCart = {
+                id: product._id,
+                name: product.name,
+                brand: product.brand,
+                img: product.images[0],
+                unitPrice: parseFloat(product.salePrice), 
+                moq: moq,
+                packs: packs,
+                quantity: requiredQty, 
+                price: product.salePrice,
+                selectedSize: product.isLoose ? selectedSize : "Set" // Loose product ke liye size save karo
+            };
+
+            // 5. Cart me Add aur Drawer Open
+            addItemToCart(productToCart); 
+            renderCartDrawerItems(); 
+
+            const cartDrawer = document.getElementById('cart-drawer');
+            const cartOverlay = document.getElementById('cart-overlay');
+            if (cartDrawer) cartDrawer.classList.add('active');
+            if (cartOverlay) cartOverlay.classList.add('active');
+        });
+    }
     })
     .catch((err) => {
       // YEH ERROR HAI JO AAPKO DIKH RAHA HAI

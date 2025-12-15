@@ -690,35 +690,50 @@ app.get('/api/user/my-orders/:userPhone', async (req, res) => {
  * URL: /api/orders
  * ============================================
  */
+
 app.post('/api/orders', async (req, res) => {
     try {
         const orderNumber = Math.floor(100000 + Math.random() * 900000); 
         
+        // Items ensure kar rahe hain
         const itemsToSave = Array.isArray(req.body.orderItems) ? req.body.orderItems : [];
 
-const orderData = {
-    ...req.body, 
-    orderNumber: orderNumber,
-    totalAmount: parseFloat(req.body.totalAmount) || 0,
-    orderItems: itemsToSave, // CRITICAL: itemsToSave use karo
-};
+        const orderData = {
+            ...req.body, 
+            orderNumber: orderNumber,
+            totalAmount: parseFloat(req.body.totalAmount) || 0,
+            orderItems: itemsToSave, 
+        };
 
+        // 1. Order Save Karo
         const newOrder = new Order(orderData); 
         const savedOrder = await newOrder.save();
         
-        // --- CRITICAL FIX: Order ko dobara fetch karke poora data lein ---
+        // ====================================================
+        // --- 2. STOCK UPDATE LOGIC (YEH NAYA ADD KIYA HAI) ---
+        // ====================================================
+        if (itemsToSave && itemsToSave.length > 0) {
+            for (const item of itemsToSave) {
+                // Hum database ko bol rahe hain: "Is Product ka stock 'quantity' jitna kam kar do"
+                await Product.findByIdAndUpdate(
+                    item.productId, 
+                    { $inc: { stock: -item.quantity } } 
+                );
+            }
+        }
+        // ====================================================
+
+        // 3. Order ko dobara fetch karke poora data lein
         const finalOrderWithDetails = await Order.findById(savedOrder._id); 
-        // -----------------------------------------------------------------
 
         // Success response
         res.status(201).json({ 
             message: 'Order placed successfully!', 
-            order: finalOrderWithDetails // Ab yeh object 100% poora data wapas bhejega
+            order: finalOrderWithDetails 
         });
+
     } catch (err) {
-        // ... (Error handling waisa hi rahega) ...
         console.error("ORDER SAVE FAILED IN SERVER:", err);
-        // ...
         res.status(500).json({ error: 'Internal Server Error. Database or connection issue.' });
     }
 });

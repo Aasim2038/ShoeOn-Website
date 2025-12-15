@@ -163,6 +163,7 @@ function renderSelectOptions(elementId, optionsArray, selectedValue = null) {
             formData.append('salePrice', parseFloat(salePriceInput.value));
             formData.append('comparePrice', comparePriceInput.value);
             formData.append('moq', parseInt(document.getElementById('moq').value));
+            formData.append('stock', parseInt(document.getElementById('stock').value));
             
             // --- CATEGORY & MATERIAL ---
             formData.append('category', finalCategoryInput.value); 

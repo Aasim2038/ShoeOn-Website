@@ -7,18 +7,18 @@ const orderSchema = new Schema({
   orderNumber: {
     type: String,
     required: true,
-    unique: true // Taaki do order ka same number na ho
+    unique: true
   },
   customerName: { type: String, required: true },
   customerPhone: { type: String, required: true },
   shippingAddress: { type: String, required: true },
-  pincode: { type: String},
-  city: { type: String},
+  pincode: { type: String },
+  city: { type: String },
 
   // 2. Order ki Details
   orderItems: [
     {
-      productId: { type: String }, // Hum product ki ID save karenge
+      productId: { type: String }, 
       name: { type: String },
       brand: { type: String },
       price: { type: Number },
@@ -29,6 +29,8 @@ const orderSchema = new Schema({
     }
   ],
   
+  // (Yahan se wo galat ProductSchema hata diya hai)
+
   totalAmount: {
     type: Number,
     required: true
@@ -38,7 +40,7 @@ const orderSchema = new Schema({
   status: {
     type: String,
     required: true,
-    default: 'Pending' // Naya order hamesha Pending rahega
+    default: 'Pending'
   },
   
   paymentMethod: {
@@ -48,8 +50,7 @@ const orderSchema = new Schema({
   }, 
   paymentId: { type: String },
   
-}, { timestamps: true }); // Order kab aaya, woh time save karega
-
+}, { timestamps: true });
 
 const Order = mongoose.model('ShoeonOrder', orderSchema);
 
