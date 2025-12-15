@@ -21,23 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadProducts(filters = {}) {
     if (!productGrid) return; 
 
-    // --- CRITICAL FIX: URL variables ko function ke andar define karo ---
     const params = new URLSearchParams(window.location.search);
     const categoryKey = params.get('category') || '';
     const searchQuery = params.get('search');
     const sortValue = params.get('sort');
     const materialValue = params.get('material');
-    // -------------------------------------------------------------------
 
 
-    // Query String banana
+    // Query String banana start karo
     let query = `?category=${categoryKey}`; 
     
-    // YEH baseCategory ab categoryKey hi hai
+    // Page Title Logic
     pageTitle.innerText = categoryKey ? categoryKey.replace('-', ' ') : (searchQuery ? `Search results for "${searchQuery}"` : "All Products");
     
-    // Loose product filter
-    const isLooseFilter = params.get('isLoose'); // Naya variable pakdo
+    // Loose product filter logic
+    const isLooseFilter = params.get('isLoose'); 
     
     if (isLooseFilter === 'true') {
         query += '&isLoose=true';
@@ -45,22 +43,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Sort options add karo
+    // --- SORT FILTER ---
     if (filters.sort || sortValue) {
       query += `&sort=${filters.sort || sortValue}`;
     }
     
-    // Material options add karo
+    // --- NEW: PRICE RANGE FILTER ---
+    if (filters.minPrice) {
+      query += `&minPrice=${filters.minPrice}`;
+    }
+    if (filters.maxPrice) {
+      query += `&maxPrice=${filters.maxPrice}`;
+    }
+    // -----------------------------
+
+    // --- MATERIAL FILTER ---
     if (filters.materials && filters.materials.length > 0) {
       query += `&material=${filters.materials.join(',')}`;
     } else if (materialValue) {
         query += `&material=${materialValue}`;
     }
     
-    // Search query add karo
+    // --- SEARCH QUERY ---
     if (searchQuery) {
       query += `&search=${searchQuery}`;
-      pageTitle.innerText = `Search results for "${searchQuery}"`; // Search title priority
+      pageTitle.innerText = `Search results for "${searchQuery}"`; 
     }
 
     productGrid.innerHTML = `<p style="text-align:center; color:#555;">Loading products...</p>`; 
@@ -150,6 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
         filters.sort = sortValueEl.value;
       }
       
+      // --- NEW: Price Range Values Uthao ---
+      const minVal = document.getElementById('min-price').value;
+      const maxVal = document.getElementById('max-price').value;
+      
+      if(minVal) filters.minPrice = minVal;
+      if(maxVal) filters.maxPrice = maxVal;
+      // -------------------------------------
+
       // Material ki values
       const materials = [];
       const materialCheckboxes = document.querySelectorAll('#material-options input:checked');
@@ -166,8 +181,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // "Clear" button ka logic
     filterClearBtn.addEventListener('click', () => {
+      // Checkboxes clear karo
       document.querySelectorAll('#sort-options input').forEach(input => input.checked = false);
       document.querySelectorAll('#material-options input').forEach(input => input.checked = false);
+      
+      // --- NEW: Price Inputs Empty karo ---
+      const minInput = document.getElementById('min-price');
+      const maxInput = document.getElementById('max-price');
+      if(minInput) minInput.value = '';
+      if(maxInput) maxInput.value = '';
+      // ------------------------------------
+
       // Default (Newest) ko wapas check kar do
       document.querySelector('input[value="latest"]').checked = true;
       

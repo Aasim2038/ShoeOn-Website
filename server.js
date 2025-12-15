@@ -118,21 +118,16 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
  * Method: GET
  * URL: /api/products?sort=price-asc&material=Leather
  */
-app.get('/api/products', async (req, res) => { // <-- Function ko 'async' kiya
+app.get('/api/products', async (req, res) => {
     
     const filter = {};
-    let searchRegex; // <-- YEH NAYA VARIABLE AB TOP PAR DEFINE HOGA!
+    let searchRegex; 
 
-    try { // <-- Naya TRY block shuru
+    try { 
         
         // --- 1. Search Logic ---
         if (req.query.search) {
-            // FIX 1: SearchRegex ko pehle define karo
             searchRegex = new RegExp(req.query.search, 'i');
-            
-            // FIX 2: Debug logs (Optional, but useful)
-            console.log("Searching products for:", req.query.search);
-            
             filter.$or = [
                 { name: { $regex: searchRegex } },
                 { brand: { $regex: searchRegex } },
@@ -140,42 +135,61 @@ app.get('/api/products', async (req, res) => { // <-- Function ko 'async' kiya
             ];
         }
 
-        // --- 2. Category Filter (products.html se aata hai) ---
+        // --- 2. Category Filter ---
         if (req.query.category && req.query.category !== '') {
             filter.category = req.query.category;
         }
+
+        // --- 3. Loose Product Filter ---
         if (req.query.isLoose === 'true') {
             filter.isLoose = true;
         }
 
-        // --- 3. Material Filter ---
+        // --- 4. Material Filter ---
         if (req.query.material) {
             filter.material = { $in: req.query.material.split(',') };
         }
 
-        // --- 4. Tag Filter ---
+        // --- 5. Tag Filter ---
         if (req.query.tag) {
             filter.tags = req.query.tag;
         }
 
-        // --- 5. Sort Logic ---
+        // =========================================================
+        // --- 6. NEW: Price Range Filter (Min & Max) ---
+        // =========================================================
+        if (req.query.minPrice || req.query.maxPrice) {
+            filter.salePrice = {}; // Hum 'salePrice' (Your Rate) par filter lagayenge
+
+            if (req.query.minPrice) {
+                // $gte matlab "Greater Than or Equal" (Isse bada ya barabar)
+                filter.salePrice.$gte = Number(req.query.minPrice);
+            }
+            
+            if (req.query.maxPrice) {
+                // $lte matlab "Less Than or Equal" (Isse chhota ya barabar)
+                filter.salePrice.$lte = Number(req.query.maxPrice);
+            }
+        }
+        // =========================================================
+
+        // --- 7. Sort Logic (Already Correct: Uses salePrice) ---
         let sortOptions = { createdAt: -1 }; 
         
         if (req.query.sort) {
             if (req.query.sort === 'price-asc') {
-                sortOptions = { salePrice: 1 }; 
+                sortOptions = { salePrice: 1 }; // Low to High (Your Rate)
             } else if (req.query.sort === 'price-desc') {
-                sortOptions = { salePrice: -1 };
+                sortOptions = { salePrice: -1 }; // High to Low (Your Rate)
             }
         }
 
-        // --- 6. Database Query (FIX: .then() ki jagah await use kiya) ---
-        const products = await Product.find(filter) 
-            .sort(sortOptions); 
+        // --- 8. Execute Database Query ---
+        const products = await Product.find(filter).sort(sortOptions); 
 
         res.status(200).json(products);
         
-    } catch (err) { // <-- Naya CATCH block shuru
+    } catch (err) { 
         console.error("CRITICAL SERVER ERROR IN /API/PRODUCTS:", err);
         res.status(500).json({ error: 'Could not fetch products' });
     }
