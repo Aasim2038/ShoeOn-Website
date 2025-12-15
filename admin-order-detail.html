@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+  if (sessionStorage.getItem('shoeonAdminLoggedIn') !== 'true') {
+    window.location.href = 'admin-login.html';
+  }
+</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Order Details</title>
   
@@ -94,6 +99,9 @@
             </div>
             <button class="btn-primary" id="update-status-btn">Update Status</button>
           </div>
+          <button id="print-invoice-btn" class="btn-action" style="background-color: #333; color: white; margin-left: 10px;">
+    <i class="fa-solid fa-print"></i> Print Invoice
+</button>
         </div>
         
       </div>

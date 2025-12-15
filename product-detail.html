@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="css/product-detail.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
   <header class="main-header">
@@ -18,7 +20,7 @@
       Product Details
     </div>
     <div class="nav-right">
-      <a href="#" class="nav-icon" id="cart-icon-btn"> 
+      <a href="#" class="nav-icon" id="cart-icon-btn">
         <i class="fa-solid fa-bag-shopping"></i>
         <span class="cart-count" id="cart-item-count">0</span>
       </a>
@@ -26,9 +28,9 @@
   </header>
 
   <main class="pdp-container">
-    
+
     <div class="slider-container">
-      
+
       <div class="slider-icons">
         <button class="icon-btn"><i class="fa-solid fa-share-nodes"></i></button>
         <button class="icon-btn"><i class="fa-regular fa-heart"></i></button>
@@ -47,30 +49,30 @@
         <div class="dot"></div>
         <div class="dot"></div>
       </div>
-      
+
     </div>
 
     <div class="pdp-info">
       <h2 class="pdp-brand" id="pdp-brand">Liberty</h2>
       <h1 class="pdp-title" id="pdp-name">Men's Synthetic Leather Formal Shoes</h1>
-      
-       <div class="b2b-price-box-new">
-        
-        <p class="pdp-hot-deal">Hot Deal</p> 
+
+      <div class="b2b-price-box-new">
+
+        <p class="pdp-hot-deal">Hot Deal</p>
 
         <div class="final-price-label-row">
-            <span class="price-label">MRP:</span>
-            <span class="retail-price-display" id="pdp-retail-price">₹0.00</span> 
+          <span class="price-label">MRP:</span>
+          <span class="retail-price-display" id="pdp-retail-price">₹0.00</span>
         </div>
 
         <div class="price-line-comparison-final">
-          
+
           <span class="pdp-market-rate">
             <del id="pdp-market-price">₹0.00</del>
           </span>
-          
+
           <span class="pdp-final-rate" id="pdp-sale-price">₹0.00</span>
-          
+
           <span class="pdp-discount-percent" id="pdp-discount-display">0% off</span>
         </div>
 
@@ -83,50 +85,50 @@
       </div>
 
       <div class="pdp-section" id="set-size-info">
-  <h3>Size Availability (In One Set)</h3>
-  
-  <div class="size-set-info">
-    <p class="set-note">
-      <i class="fa-solid fa-circle-info"></i> 
-      This item is sold in a Set. One Set contains mixed sizes:
-    </p>
-    
-    <div class="static-size-row" id="static-size-display-container">
+        <h3>Size Availability (In One Set)</h3>
+
+        <div class="size-set-info">
+          <p class="set-note">
+            <i class="fa-solid fa-circle-info"></i>
+            This item is sold in a Set. One Set contains mixed sizes:
+          </p>
+
+          <div class="static-size-row" id="static-size-display-container">
+          </div>
+        </div>
       </div>
-  </div>
-</div>
 
       <div class="product-info-box">
-    <h2>Product Details</h2>
-    <div class="spec-grid">
-        <div class="spec-item">
+        <h2>Product Details</h2>
+        <div class="spec-grid">
+          <div class="spec-item">
             <strong>Sole Material:</strong>
-            <span id="spec-sole-value">N/A</span> 
-        </div>
-        <div class="spec-item">
+            <span id="spec-sole-value">N/A</span>
+          </div>
+          <div class="spec-item">
             <strong>Country of Origin:</strong>
             <span id="spec-origin-value">N/A</span>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
 
     </div>
 
     <div class="pack-selector" style="margin-bottom: 15px;">
-  <label for="pack-count">Select Quantity (Packs):</label>
-  <select id="pack-count" style="padding: 5px; width: 100%;">
-    <option value="1">1 Pack (Default)</option>
-    <option value="2">2 Packs</option>
-    <option value="3">3 Packs</option>
-    <option value="4">4 Packs</option>
-    <option value="5">5 Packs</option>
-    <option value="6">6 Packs</option>
-    <option value="7">7 Packs</option>
-    <option value="8">8 Packs</option>
-    <option value="9">9 Packs</option>
-    <option value="10">10 Packs</option>
-  </select>
-</div>
+      <label for="pack-count">Select Quantity (Packs):</label>
+      <select id="pack-count" style="padding: 5px; width: 100%;">
+        <option value="1">1 Pack (Default)</option>
+        <option value="2">2 Packs</option>
+        <option value="3">3 Packs</option>
+        <option value="4">4 Packs</option>
+        <option value="5">5 Packs</option>
+        <option value="6">6 Packs</option>
+        <option value="7">7 Packs</option>
+        <option value="8">8 Packs</option>
+        <option value="9">9 Packs</option>
+        <option value="10">10 Packs</option>
+      </select>
+    </div>
   </main>
 
 
@@ -139,44 +141,46 @@
 
   <div class="overlay-modal" id="cart-overlay"></div>
 
-<div class="cart-drawer" id="cart-drawer">
-  
-  <div class="cart-header">
-    <h3>Your Cart</h3>
-    <button classs="cart-close-btn" id="cart-close-btn">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-  
-  ...
-  <div class="cart-content" id="cart-content-area"> <div class="cart-empty" id="cart-empty-msg">
-      <i class="fa-solid fa-cart-shopping"></i>
-      <p>Your cart is empty!</p>
+  <div class="cart-drawer" id="cart-drawer">
+
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button classs="cart-close-btn" id="cart-close-btn">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
-    
-    <div class="items-list-container" id="cart-items-container">
+
+    ...
+    <div class="cart-content" id="cart-content-area">
+      <div class="cart-empty" id="cart-empty-msg">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Your cart is empty!</p>
       </div>
-    
-  </div>
-  ...
-  
-  <div class="cart-footer">
-    <div class="subtotal-row">
-      <span>Subtotal:</span>
-      <span class="subtotal-price" id="cart-subtotal">₹0.00</span>
+
+      <div class="items-list-container" id="cart-items-container">
+      </div>
+
     </div>
-    <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+    ...
+
+    <div class="cart-footer">
+      <div class="subtotal-row">
+        <span>Subtotal:</span>
+        <span class="subtotal-price" id="cart-subtotal">₹0.00</span>
+      </div>
+      <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+    </div>
+
   </div>
-  
-</div>
 
-<div id="toast-popup">
-  <i class="fa-solid fa-check-circle"></i>
-  <span id="toast-message">Product added to cart!</span>
-</div>
+  <div id="toast-popup">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toast-message">Product added to cart!</span>
+  </div>
 
-<script src="js/global.js"></script>
-<script src="js/detail.js"></script>
+  <script src="js/global.js"></script>
+  <script src="js/detail.js"></script>
 
 </body>
+
 </html>

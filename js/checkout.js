@@ -7,96 +7,68 @@ window.finalGrandTotal = 0; // Global Total Amount variable
 
 // --- 2. CORE HELPER FUNCTIONS ---
 
-function saveOrderToDatabase(
-    name,
-    phone,
-    address,
-    shopName,
-    cart,
-    total,
-    paymentId
-) {
+function saveOrderToDatabase(name, phone, address, shopName, cart, total, paymentId) {
     const finalTotalAmount = parseFloat(total);
 
-    // Cart mapping (Jismein humne robust data banaya tha)
-    const mappedItems = cart.map((item, index) => ({
-        // Schema ke hisaab se fields:
-        productId: item.productId || "UNKNOWN", // Schem mein productId hai
-        name: String(item.name || item.productName || `Item ${index + 1}`),
-        brand: item.brand || "N/A", // Schema mein brand hai
-        price: parseFloat(item.unitPrice || item.price || 0), // Schema mein price hai
-        moq: parseInt(item.moq || 1), // Schema mein moq hai
+    // Cart items ko map karte waqt 'packs' ko explicit roop se add karo
+    const mappedItems = cart.map((item, index) => {
+        // 1. Packs aur MOQ ko pakka number banao
+        const p_packs = parseInt(item.packs) || 1; 
+        const p_moq = parseInt(item.moq) || 1;
+        
+        // 2. Quantity calculate karo (Safety ke liye)
+        // Agar item.quantity pehle se hai (110) toh wahi lo, nahi toh calculate karo
+        const p_qty = (item.quantity && parseInt(item.quantity) > p_packs) 
+                      ? parseInt(item.quantity) 
+                      : (p_packs * p_moq);
 
-        // NOTE: Qty aur Packs yahaan nahi hain, toh hum unhe bhi add kar denge
-        // taaki invoice me dikhe, agar server ignore karta hai toh theek hai.
-        quantity: parseInt(item.quantity || item.qty || 1),
-        packs: parseInt(item.packs || 1),
-    }));
+        return {
+            productId: item.productId || "UNKNOWN",
+            name: String(item.name || item.productName || `Item ${index + 1}`),
+            brand: item.brand || "N/A",
+            price: parseFloat(item.unitPrice || item.price || 0),
+            moq: p_moq,
+            
+            // --- YE HAI MAIN LINE (Server ko Packs bhejo) ---
+            packs: p_packs, 
+            quantity: p_qty,
+            // -----------------------------------------------
+            
+            img: item.img // Image bhi bhejo
+        };
+    });
 
     const orderData = {
         customerName: name,
         customerPhone: phone,
         shippingAddress: address,
         shopName: shopName,
-
-        // --- CRITICAL FIX: ITEMS ARRAY KA NAAM BADLA ---
-        orderItems: mappedItems, // Ab 'items' ki jagah 'orderItems' bhejenge
-        // ---------------------------------------------
-
+        orderItems: mappedItems, // Updated items array
         totalAmount: finalTotalAmount,
         paymentMethod: "Online (Mock)",
         paymentId: paymentId,
     };
+
+    console.log("Sending Order Data to Server:", orderData); // Console check karo
 
     fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
     })
-        .then((res) => res.json())
-        .then((data) => {
-            // --- 1. CRITICAL DATA VALIDATION ---
-            if (data.error || !data.order) {
-                console.error(
-                    "Server Response Error:",
-                    data.error || "Order data missing in response."
-                );
-                showToast("Error: Order Save nahi hua! Please check terminal.");
-                return;
-            }
-
-            // --- 2. FINAL ORDER OBJECT BANAYEIN (CRITICAL FIX) ---
-            // Naye object mein server se aaye orderItems ko 'items' key mein map karo.
-            const finalOrder = {
-                ...data.order,
-                items: data.order.orderItems || [], // FIX: 'orderItems' ko 'items' mein map kiya
-                customerPhone: data.order.customerPhone || "N/A",
-            };
-
-            console.log("Items received from server:", finalOrder.items);
-            // --------------------------------------------------------
-
-            // --- 3. INVOICE LOGIC (Use finalOrder) ---
-            if (finalOrder.items.length > 0) {
-            } else {
-                showToast("Order save hua, lekin products list missing hai.");
-                // Agar products missing hain, toh bhi redirect kar do
-            }
-
-            localStorage.removeItem("shoeonCart");
-            showToast("Order Placed Successfully!");
-
-            // Success Page par bhejo
-
-            
-                const orderNo = finalOrder.orderNumber;
-                window.location.href = `order-success.html?order_id=${orderNo}`;
-            
-        })
-        .catch((err) => {
-            console.error("ORDER FETCH FAILED:", err);
-            showToast("Server error during order processing. Check terminal.");
-        });
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.error || !data.order) {
+            showToast("Error: Order Save nahi hua!");
+            return;
+        }
+        localStorage.removeItem("shoeonCart");
+        window.location.href = `order-success.html?order_id=${data.order.orderNumber}`;
+    })
+    .catch((err) => {
+        console.error("ORDER ERROR:", err);
+        showToast("Server error during order processing.");
+    });
 }
 
 // --- 3. UI RENDER FUNCTION (Old code restored) ---
@@ -344,3 +316,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 }); // <--- document.addEventListener ka closing bracket
+
+// --- QR CODE ZOOM LOGIC ---
+
+function openQrModal() {
+    var modal = document.getElementById("qrModal");
+    var img = document.getElementById("myQrImage");
+    var modalImg = document.getElementById("img01");
+    
+    modal.style.display = "block";
+    modalImg.src = img.src; // Jo choti image hai wahi badi dikhegi
+}
+
+function closeQrModal() {
+    var modal = document.getElementById("qrModal");
+    modal.style.display = "none";
+}

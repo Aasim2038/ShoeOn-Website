@@ -208,4 +208,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load Settings (Banner) - Sabse last me call karo
   loadSiteSettings();
 
+});/* =========================================
+   INTRO VIDEO LOGIC
+   ========================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const introOverlay = document.getElementById('intro-overlay');
+    const introVideo = document.getElementById('intro-video');
+
+    // Sirf tab chalega jab HTML uncommented ho
+    if (introOverlay && introVideo) {
+        
+        // 1. Jab video khatam ho jaye, to overlay hata do
+        introVideo.onended = function() {
+            closeIntro();
+        };
+
+        // 2. Safety: Agar 5 second mein video load na ho to hata do (Fallback)
+        setTimeout(() => {
+            // Agar video atak gaya to 6 second baad auto close
+           // closeIntro(); 
+        }, 8000); 
+    }
 });
+
+// Function to close intro
+function closeIntro() {
+    const introOverlay = document.getElementById('intro-overlay');
+    if (introOverlay) {
+        introOverlay.style.opacity = '0'; // Smooth fade out
+        setTimeout(() => {
+            introOverlay.style.display = 'none'; // Remove from screen
+        }, 500); // 0.5 sec ka fade animation
+    }
+}

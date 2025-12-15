@@ -166,13 +166,13 @@ document.addEventListener("DOMContentLoaded", () => {
             // 2. Product Object banate time quantity calculate karo
             const productToBuy = {
               id: product._id,
-              name: product.name,        // Name add kiya for consistency
-              brand: product.brand,      // Brand add kiya
+              name: product.name,        
+              brand: product.brand,      
               img: product.images && product.images.length > 0 ? product.images[0] : "images/placeholder.jpg",
               unitPrice: parseFloat(product.salePrice),
               moq: moq,
               packs: packs,
-              quantity: packs * moq,     // YEH MAIN FIX HAI (10 packs * 4 moq = 40)
+              quantity: packs * moq,     
               price: product.salePrice,
               selectedSize: product.isLoose ? selectedSize : "Set",
             };
