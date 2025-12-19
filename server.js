@@ -13,6 +13,15 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = 'shoeon_secret_key_123';
 
+const rateLimit = require('express-rate-limit'); // <--- Import
+
+// Rule: 15 minute mein maximum 100 orders allow karo ek IP se
+const orderLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: "Too many orders from this IP, please try again later."
+});
+
 const authMiddleware = (req, res, next) => {
     // 1. Header se token uthao
     const authHeader = req.header('Authorization');
@@ -304,17 +313,6 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
   }
 });
 
-
-
-/**
- * (H) EK SINGLE ORDER LAANE KA ROUTE
- */
-app.get('/api/orders/:id', (req, res) => {
-  // ... (Yeh code waisa hi hai) ...
-  Order.findById(req.params.id)
-    .then(order => res.status(200).json(order))
-    .catch(err => res.status(404).json({ error: 'Order not found' }));
-});
 
 
 /**
@@ -724,7 +722,7 @@ app.get('/api/user/my-orders/:userPhone', async (req, res) => {
  * ============================================
  */
 
-app.post('/api/orders', async (req, res) => {
+app.post('/api/orders', orderLimiter, async (req, res) => {
     try {
         const orderNumber = Math.floor(100000 + Math.random() * 900000); 
         
@@ -771,38 +769,131 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
+// ==========================================
+// GET ORDER COUNTS (STATS)
+// ==========================================
+app.get('/api/orders/stats', async (req, res) => {
+    try {
+        const stats = await Order.aggregate([
+            { $group: { _id: "$status", count: { $sum: 1 } } }
+        ]);
+        
+        const formattedStats = {
+            All: 0,
+            Pending: 0,
+            Processing: 0,
+            Shipped: 0,
+            Delivered: 0,
+            Cancelled: 0
+        };
+
+        let totalOrders = 0;
+
+        stats.forEach(item => {
+            if (item._id) {
+                // --- MAGIC FIX: Status ka pehla letter Bada karo, baaki chota ---
+                // Example: "pending" -> "Pending", "SHIPPED" -> "Shipped"
+                const statusKey = item._id.charAt(0).toUpperCase() + item._id.slice(1).toLowerCase();
+                
+                // Agar ye status hamari list me hai, to count add karo
+                if (formattedStats[statusKey] !== undefined) {
+                    formattedStats[statusKey] += item.count;
+                }
+                
+                // Total me sab jodte jao
+                totalOrders += item.count;
+            }
+        });
+
+        formattedStats.All = totalOrders;
+        
+        // Debugging ke liye (Terminal me dekho kya aa raha hai)
+        console.log("Live Stats Sent:", formattedStats);
+
+        res.json(formattedStats);
+    } catch (err) {
+        console.error("Stats Error:", err);
+        res.status(500).json({ error: "Failed to fetch stats" });
+    }
+});
+
+/**
+ *  EK SINGLE ORDER LAANE KA ROUTE
+ */
+app.get('/api/orders/:id', (req, res) => {
+  // ... (Yeh code waisa hi hai) ...
+  Order.findById(req.params.id)
+    .then(order => res.status(200).json(order))
+    .catch(err => res.status(404).json({ error: 'Order not found' }));
+});
+
 app.get('/api/orders', async (req, res) => {
     try {
-        const { search } = req.query; 
+        // 1. Yahan 'status' ko bhi read karna zaroori hai (Pehle ye missing tha)
+        const { search, page, limit, status } = req.query; 
+
+        const pageNumber = parseInt(page) || 1;
+        const pageSize = parseInt(limit) || 20;
+        const skip = (pageNumber - 1) * pageSize;
+
         let query = {}; 
 
+        // --- 2. FILTER LOGIC (YE ADD KARNA HAI) ---
+        // Agar status aa raha hai aur wo 'All' nahi hai, to filter lagao
+        if (status && status !== 'All') {
+             // Case-insensitive match (Matlab 'shipped', 'Shipped', 'SHIPPED' sab chalega)
+            query.status = new RegExp(`^${status}$`, 'i');
+        }
+        // ------------------------------------------
+
+        // 3. Search Logic
         if (search && search.trim() !== '') {
-            // Step 1: Search term ko Case-Insensitive Regex banao
             const searchRegex = new RegExp(search.trim(), 'i');
-            
-            // Step 2: Query ko robust $or condition ke saath set karo
-            query = {
-                $or: [
-                    // Order Number ko String mein convert karke search karein
-                    { orderNumber: { $regex: searchRegex } }, 
-                    { customerName: { $regex: searchRegex } },
-                    { customerPhone: { $regex: searchRegex } }, // Phone number bhi add kiya
-                    { shopName: { $regex: searchRegex } },
-                ]
-            };
+            // Search karte waqt hum status filter ko bhi dhyan me rakhenge
+            // $and use karke ensure karenge ki Search + Status dono match ho
+            const searchConditions = [
+                { orderNumber: { $regex: searchRegex } }, 
+                { customerName: { $regex: searchRegex } },
+                { customerPhone: { $regex: searchRegex } }
+            ];
+
+            if (query.status) {
+                // Agar status filter laga hai, to status wahi rehna chahiye
+                query = { 
+                    status: query.status,
+                    $or: searchConditions
+                };
+            } else {
+                // Agar status 'All' hai, to bas search karo
+                query.$or = searchConditions;
+            }
         }
         
-        // Order.find() mein ab humara naya 'query' object use hoga
-        const orders = await Order.find(query).sort({ createdAt: -1 }); 
-        
-        res.status(200).json(orders);
+        // 4. Data Fetching
+        const orders = await Order.find(query)
+            .select('orderNumber customerName customerPhone totalAmount status createdAt') 
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(pageSize);
+
+        // 5. Total Count (Pagination ke liye)
+        const totalOrders = await Order.countDocuments(query);
+
+        res.status(200).json({
+            orders,
+            currentPage: pageNumber,
+            totalPages: Math.ceil(totalOrders / pageSize),
+            totalOrders
+        });
+
     } catch (err) {
-        console.error("Error fetching orders from DB:", err);
-        res.status(500).json({ error: 'Database error while fetching orders' });
+        console.error("Error fetching orders:", err);
+        res.status(500).json({ error: 'Failed to fetch orders' });
     }
 });
 
 // ------------------------------------------------------------
+
 
 
 /**

@@ -119,6 +119,20 @@
           <tbody id="order-list-body">
             </tbody>
         </table>
+
+        <div class="pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px; padding-bottom: 30px;">
+    
+    <button id="prev-btn" onclick="changePage(-1)" style="padding: 8px 15px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;" disabled>
+        <i class="fa-solid fa-chevron-left"></i> Previous
+    </button>
+
+    <span id="page-info" style="font-weight: bold; font-size: 1.1rem;">Page 1</span>
+
+    <button id="next-btn" onclick="changePage(1)" style="padding: 8px 15px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">
+        Next <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+</div>
       </div>
       
     </main>
