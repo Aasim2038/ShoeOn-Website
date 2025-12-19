@@ -23,7 +23,7 @@ function saveOrderToDatabase(name, phone, address, shopName, cart, total, paymen
                       : (p_packs * p_moq);
 
         return {
-            productId: item.productId || "UNKNOWN",
+            productId: item.id || item.productId || item._id,
             name: String(item.name || item.productName || `Item ${index + 1}`),
             brand: item.brand || "N/A",
             price: parseFloat(item.unitPrice || item.price || 0),

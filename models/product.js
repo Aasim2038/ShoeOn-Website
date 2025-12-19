@@ -44,6 +44,8 @@ const productSchema = new Schema(
       required: true,
       default: 1, // Agar set na karein toh default 1
     },
+
+    stock: { type: Number, required: true, default: 0 },
     isLoose: {
       type: Boolean,
       default: false,

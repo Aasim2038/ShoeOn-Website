@@ -37,24 +37,18 @@
       </div>
 
       <div class="slider-track" id="productSlider">
-        <div class="slide"><img src="images/shoe1.jpg" alt="Shoe Image 1"></div>
-        <div class="slide"><img src="images/shoe2.jpg" alt="Shoe Image 2"></div>
-        <div class="slide"><img src="images/shoe3.jpg" alt="Shoe Image 3"></div>
-        <div class="slide"><img src="images/shoe4.jpg" alt="Shoe Image 4"></div>
+        <div class="slide"><img src="images/placeholder.jpg" alt="Loading..."></div>
       </div>
 
       <div class="slider-dots" id="sliderDots">
         <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
       </div>
 
     </div>
 
     <div class="pdp-info">
-      <h2 class="pdp-brand" id="pdp-brand">Liberty</h2>
-      <h1 class="pdp-title" id="pdp-name">Men's Synthetic Leather Formal Shoes</h1>
+      <h2 class="pdp-brand" id="pdp-brand">Loading...</h2>
+      <h1 class="pdp-title" id="pdp-name">Loading...</h1>
 
       <div class="b2b-price-box-new">
 
@@ -82,7 +76,8 @@
           <p class="margin-box" id="pdp-margin-display">Your Margin: ₹0 (0%)</p>
           <p class="moq-display" id="pdp-moq-display"><i class="fa-solid fa-box"></i> MOQ: 0 Pairs (1 Set)</p>
           
-        </div>
+          <p id="pdp-stock-display" style="margin-top: 10px; font-size: 0.95rem; font-weight: 600;"></p>
+          </div>
       </div>
       
 
@@ -102,38 +97,28 @@
 
       <div class="product-info-box">
         <h2>Product Details</h2>
+        <ul class="spec-list" id="pdp-specs-list">
+             </ul>
         <div class="spec-grid">
-          <div class="spec-item">
-            <strong>Sole Material:</strong>
-            <span id="spec-sole-value">N/A</span>
-          </div>
-          <div class="spec-item">
-            <strong>Country of Origin:</strong>
-            <span id="spec-origin-value">N/A</span>
-          </div>
+            </div>
         </div>
       </div>
 
     </div>
 
-    <div class="pack-selector" style="margin-bottom: 15px;">
-      <label for="pack-count">Select Quantity (Packs):</label>
-      <select id="pack-count" style="padding: 5px; width: 100%;">
-        <option value="1">1 Pack (Default)</option>
-        <option value="2">2 Packs</option>
-        <option value="3">3 Packs</option>
-        <option value="4">4 Packs</option>
-        <option value="5">5 Packs</option>
-        <option value="6">6 Packs</option>
-        <option value="7">7 Packs</option>
-        <option value="8">8 Packs</option>
-        <option value="9">9 Packs</option>
-        <option value="10">10 Packs</option>
-      </select>
-    </div>
+    <div class="pack-selector" style="margin-bottom: 15px; padding: 0 15px;">
+  
+  <label for="pack-count" style="font-weight: bold; display:block; margin-bottom:5px;">Select Quantity (Packs):</label>
+  
+  <select id="pack-count" style="padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+    </select>
+
+  <input type="number" id="custom-pack-input" placeholder="Enter number of packs" 
+         style="display: none; margin-top: 10px; padding: 10px; width: 100%; border: 1px solid #000; border-radius: 5px; background-color: #f9f9f9;">
+         
+  <p id="pack-stock-msg" style="font-size: 0.85rem; color: #666; margin-top: 5px;"></p>
+</div>
   </main>
-
-
 
   <div class="pdp-action-bar">
     <button class="btn-wishlist"><i class="fa-regular fa-heart"></i></button>
@@ -152,7 +137,6 @@
       </button>
     </div>
 
-    ...
     <div class="cart-content" id="cart-content-area">
       <div class="cart-empty" id="cart-empty-msg">
         <i class="fa-solid fa-cart-shopping"></i>
@@ -163,7 +147,6 @@
       </div>
 
     </div>
-    ...
 
     <div class="cart-footer">
       <div class="subtotal-row">
@@ -184,5 +167,4 @@
   <script src="js/detail.js"></script>
 
 </body>
-
 </html>

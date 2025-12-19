@@ -70,16 +70,19 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
     const files = req.files;
     let imageUrls = [];
 
-    // 1. File Upload Logic (Waisa hi rahega)
+    // 1. File Upload Logic (Cloudinary wala same rahega)
     if (files && files.length > 0) {
       for (const file of files) {
         const result = await cloudinary.uploader.upload(file.path, { folder: 'shoeon-products' });
         imageUrls.push(result.secure_url);
-        require('fs').unlinkSync(file.path);
+        // Local file delete karna zaroori hai agar diskStorage use kar rahe ho
+        try {
+            require('fs').unlinkSync(file.path);
+        } catch(e) { console.log("File delete error:", e); }
       }
     }
     
-    // 2. Naya Product create karo (Ab saare fields explicitly save honge)
+    // 2. Naya Product create karo
     const product = new Product({
       name: productData.name,
       brand: productData.brand,
@@ -87,19 +90,25 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
       mrp: productData.mrp,
       salePrice: productData.salePrice,
       comparePrice: productData.comparePrice,
+      
       moq: productData.moq,
+      
+      // --- YEH RAHI WO MISSING LINE (Add Karo) ---
+      stock: productData.stock, 
+      // ------------------------------------------
+
       isLoose: productData.isLoose, 
       category: productData.category,
       material: productData.material,
       
-      // --- CRITICAL TECH SPECS FIELDS ADD KIYE GAYE HAIN ---
+      // Tech Specs
       sole: productData.sole,
       closure: productData.closure,
       origin: productData.origin,
-      // ------------------------------------------------
       
+      // Arrays handling
       sizes: productData.sizes ? productData.sizes.split(',') : [], 
-      tags: productData.tags.split(','), 
+      tags: productData.tags ? productData.tags.split(',') : [], 
       images: imageUrls 
     });
 
