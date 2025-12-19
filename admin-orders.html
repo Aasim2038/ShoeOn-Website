@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>
+    .filter-btn {
+        padding: 8px 15px;
+        border: 2px solid #555;
+        background-color: #555;
+        color: white;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0.7;
+        transition: 0.3s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+        opacity: 1;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .badge {
+        background: white;
+        color: black;
+        padding: 2px 8px;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: bold;
+    }
+</style>
   <meta charset="UTF-8">
   <script>
   if (sessionStorage.getItem('shoeonAdminLoggedIn') !== 'true') {
@@ -23,6 +52,7 @@
       <div class="nav-header">
         <h3>ShoeOn Admin</h3>
       </div>
+     
       <ul>
         <li class="active"><a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
         <li><a href="admin-products.html"><i class="fa-solid fa-box-archive"></i> Products</a></li>
@@ -39,6 +69,34 @@
       <div class="content-header">
         <h1>Order Management</h1>
       </div>
+
+       <div class="filter-container" style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+    
+    <button class="filter-btn active" onclick="filterOrders('All')" id="btn-all">
+        All Orders <span class="badge" id="count-all">0</span>
+    </button>
+    
+    <button class="filter-btn" onclick="filterOrders('Pending')" id="btn-pending" style="background-color: #f39c12; border-color: #f39c12;">
+        Pending <span class="badge" id="count-pending">0</span>
+    </button>
+
+    <button class="filter-btn" onclick="filterOrders('Processing')" id="btn-processing" style="background-color: #3498db; border-color: #3498db;">
+        Processing <span class="badge" id="count-processing">0</span>
+    </button>
+
+    <button class="filter-btn" onclick="filterOrders('Shipped')" id="btn-shipped" style="background-color: #9b59b6; border-color: #9b59b6;">
+        Shipped <span class="badge" id="count-shipped">0</span>
+    </button>
+
+    <button class="filter-btn" onclick="filterOrders('Delivered')" id="btn-delivered" style="background-color: #27ae60; border-color: #27ae60;">
+        Delivered <span class="badge" id="count-delivered">0</span>
+    </button>
+    
+    <button class="filter-btn" onclick="filterOrders('Cancelled')" id="btn-cancelled" style="background-color: #e74c3c; border-color: #e74c3c;">
+        Cancelled <span class="badge" id="count-cancelled">0</span>
+    </button>
+
+</div>
 
       <div class="search-container" style="margin-bottom: 20px;">
     <input type="text" id="orderSearchInput" placeholder="Order ID, Customer ya Phone Number se search karein..." 

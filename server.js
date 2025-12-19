@@ -65,60 +65,69 @@ mongoose.connect(dbURI)
 
 // (A) NAYA PRODUCT BANANE KA ROUTE (File Upload Ke Saath!)
 app.post('/api/products', upload.array('images', 5), async (req, res) => {
-  try {
-    const productData = req.body;
-    const files = req.files;
-    let imageUrls = [];
+    try {
+        const productData = req.body;
+        const files = req.files;
+        let imageUrls = [];
 
-    // 1. File Upload Logic (Cloudinary wala same rahega)
-    if (files && files.length > 0) {
-      for (const file of files) {
-        const result = await cloudinary.uploader.upload(file.path, { folder: 'shoeon-products' });
-        imageUrls.push(result.secure_url);
-        // Local file delete karna zaroori hai agar diskStorage use kar rahe ho
-        try {
-            require('fs').unlinkSync(file.path);
-        } catch(e) { console.log("File delete error:", e); }
-      }
+        // --- 1. MAGIC UPLOAD LOGIC (Yahan Compression Hoga) ---
+        if (files && files.length > 0) {
+            for (const file of files) {
+                
+                // Cloudinary ko bol rahe hain: "Bhai compress karke save kar"
+                const result = await cloudinary.uploader.upload(file.path, { 
+                    folder: 'shoeon-products',
+                    
+                    // --- YE HAI WO JADUI SETTING ---
+                    transformation: [
+                        { width: 1000, crop: "limit" },  // Image ko 1000px se bada mat hone do
+                        { quality: "auto" },             // Quality maintain karte hue size kam karo
+                        { fetch_format: "auto" }         // WebP format use karo (Fastest loading)
+                    ]
+                    // -----------------------------
+                });
+
+                imageUrls.push(result.secure_url);
+
+                // Server se original heavy file delete kar do
+                try {
+                    require('fs').unlinkSync(file.path);
+                } catch(e) { console.log("File delete error:", e); }
+            }
+        }
+        
+        // 2. Product Save Logic (Stock wagera sab same rahega)
+        const product = new Product({
+            name: productData.name,
+            brand: productData.brand,
+            description: productData.description,
+            mrp: productData.mrp,
+            salePrice: productData.salePrice,
+            comparePrice: productData.comparePrice,
+            
+            moq: productData.moq,
+            stock: productData.stock, // Stock save ho raha hai
+
+            isLoose: productData.isLoose, 
+            category: productData.category,
+            material: productData.material,
+            
+            sole: productData.sole,
+            closure: productData.closure,
+            origin: productData.origin,
+            
+            sizes: productData.sizes ? productData.sizes.split(',') : [], 
+            tags: productData.tags ? productData.tags.split(',') : [], 
+            images: imageUrls 
+        });
+
+        const savedProduct = await product.save();
+        res.status(201).json(savedProduct);
+
+    } catch (err) {
+        console.log('Error saving product:', err);
+        res.status(400).json({ error: 'Failed to add product' });
     }
-    
-    // 2. Naya Product create karo
-    const product = new Product({
-      name: productData.name,
-      brand: productData.brand,
-      description: productData.description,
-      mrp: productData.mrp,
-      salePrice: productData.salePrice,
-      comparePrice: productData.comparePrice,
-      
-      moq: productData.moq,
-      
-      // --- YEH RAHI WO MISSING LINE (Add Karo) ---
-      stock: productData.stock, 
-      // ------------------------------------------
-
-      isLoose: productData.isLoose, 
-      category: productData.category,
-      material: productData.material,
-      
-      // Tech Specs
-      sole: productData.sole,
-      closure: productData.closure,
-      origin: productData.origin,
-      
-      // Arrays handling
-      sizes: productData.sizes ? productData.sizes.split(',') : [], 
-      tags: productData.tags ? productData.tags.split(',') : [], 
-      images: imageUrls 
-    });
-
-    const savedProduct = await product.save();
-    res.status(201).json(savedProduct);
-
-  } catch (err) {
-    console.log('Error saving product:', err);
-    res.status(400).json({ error: 'Failed to add product' });
-  }
 });
 
 
@@ -311,11 +320,26 @@ app.get('/api/orders/:id', (req, res) => {
 /**
  * (I) ORDER STATUS UPDATE KARNE KA ROUTE
  */
-app.put('/api/orders/status/:id', (req, res) => {
-  // ... (Yeh code waisa hi hai) ...
-  Order.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true })
-    .then(order => res.status(200).json({ message: 'Status updated!', order: order }))
-    .catch(err => res.status(500).json({ error: 'Server error' }));
+app.put('/api/orders/:id/status', async (req, res) => {
+    try {
+        const { status } = req.body;
+        
+        // Database mein status update karo
+        const updatedOrder = await Order.findByIdAndUpdate(
+            req.params.id,
+            { status: status },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        res.json(updatedOrder);
+    } catch (err) {
+        console.error("Status Update Error:", err);
+        res.status(500).json({ error: "Failed to update status" });
+    }
 });
 /**
  * ============================================
