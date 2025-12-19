@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountInput = document.getElementById('discount');
     const salePriceInput = document.getElementById('salePrice');
     const moqInput = document.getElementById('moq');
+    const stockInput = document.getElementById('stock');
     
     // Category Elements
     const mainCategorySelect = document.getElementById('main-category');
@@ -217,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if(moqInput) moqInput.value = product.moq || 1;
             if(materialInput) materialInput.value = product.material || '';
+            if(stockInput) stockInput.value = product.stock || 0;
 
             // --- POPULATE DROPDOWNS & CHECKBOXES ---
             renderSelectOptions(soleSelect, SOLE_OPTIONS, product.sole);
@@ -304,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(materialInput) formData.append('material', materialInput.value);
             if(soleSelect) formData.append('sole', soleSelect.value);
             if(originSelect) formData.append('origin', originSelect.value); 
+            if(stockInput) formData.append('stock', parseInt(stockInput.value));
             
             formData.append('sizes', selectedSizes.join(','));
 

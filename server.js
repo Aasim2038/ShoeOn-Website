@@ -285,6 +285,7 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
         salePrice: updatedData.salePrice,
         comparePrice: updatedData.comparePrice,
         moq: updatedData.moq,
+        stock: updatedData.stock,
         category: updatedData.category,
         material: updatedData.material,
         
