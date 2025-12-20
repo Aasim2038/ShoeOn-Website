@@ -7,7 +7,7 @@ const TARGET_HOST = 'shoeon-websitedemo.onrender.com';
 const postData = JSON.stringify({
     customerName: "Spam Tester",
     customerPhone: "0000000000",
-    totalAmount: 100,
+    totalAmount: 500,
     orderItems: [] // Khali bhej rahe taaki DB load na le, bas Request count ho
 });
 

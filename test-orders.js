@@ -21,7 +21,8 @@ const postData = JSON.stringify({
     ]
 });
 
-const TOTAL_ORDERS = 50; // 50 Orders ek saath!
+const TOTAL_ORDERS = 300;
+
 let completed = 0;
 
 console.log(`🚀 Bombarding Orders on: ${TARGET_HOST}`);

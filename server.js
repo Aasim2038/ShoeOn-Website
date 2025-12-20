@@ -18,7 +18,7 @@ const rateLimit = require('express-rate-limit'); // <--- Import
 // Rule: 15 minute mein maximum 100 orders allow karo ek IP se
 const orderLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
+    max: 1000, // Limit each IP to 100 requests per windowMs
     message: "Too many orders from this IP, please try again later."
 });
 
@@ -723,7 +723,7 @@ app.get('/api/user/my-orders/:userPhone', async (req, res) => {
  * ============================================
  */
 
-app.post('/api/orders', orderLimiter, async (req, res) => {
+app.post('/api/orders', async (req, res) => {
     try {
         const orderNumber = Math.floor(100000 + Math.random() * 900000); 
         
