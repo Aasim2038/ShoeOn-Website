@@ -16,11 +16,13 @@ const JWT_SECRET = 'shoeon_secret_key_123';
 const rateLimit = require('express-rate-limit'); // <--- Import
 
 // Rule: 15 minute mein maximum 100 orders allow karo ek IP se
-const orderLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 1000, // Limit each IP to 100 requests per windowMs
-    message: "Too many orders from this IP, please try again later."
-});
+// const orderLimiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 1000, // Limit each IP to 100 requests per windowMs
+//     message: "Too many orders from this IP, please try again later."
+// });
+
+
 
 const authMiddleware = (req, res, next) => {
     // 1. Header se token uthao
