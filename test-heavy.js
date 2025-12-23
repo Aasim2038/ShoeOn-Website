@@ -6,7 +6,7 @@ const TARGET_HOST = 'shoeon-websitedemo.onrender.com'; // Live Link
 // Product ID (Zinda product ki ID daalna)
 const PRODUCT_ID = "6762dc891c327092957b450c"; 
 
-const TOTAL_ORDERS = 2000;
+const TOTAL_ORDERS = 100;
 const BATCH_SIZE = 100; // Ek baar mein 100 bhejo
 let ordersSent = 0;
 
