@@ -49,8 +49,6 @@ function saveOrderToDatabase(name, phone, address, shopName, cart, total, paymen
         paymentId: paymentId,
     };
 
-    console.log("Sending Order Data to Server:", orderData); // Console check karo
-
     fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -164,10 +162,7 @@ function generateInvoice(order) {
 
     const subtotal = order.totalAmount / 1.05;
     const gst = order.totalAmount - subtotal;
-    console.log("Generating invoice for Order:", order);
-    console.log(itemsRows);
-
-    // Invoice HTML Structure (Simplified for clarity)
+        // Invoice HTML Structure (Simplified for clarity)
     const invoiceHTML = `
     <html>
     <head>
@@ -245,8 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (placeOrderBtn) {
         placeOrderBtn.addEventListener("click", async (e) => {
             e.preventDefault();
-            console.log("--- Click Registered ---");
-
             // UI update
             placeOrderBtn.innerText = "Checking Details...";
             placeOrderBtn.style.opacity = "0.7";
@@ -296,7 +289,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const verifyData = { status: "success" }; // MOCK SUCCESS STATUS
 
                 if (verifyData.status === "success") {
-                    console.log("Attempting to save order with Total:", totalAmount);
                     saveOrderToDatabase(
                         customerName,
                         customerPhone,

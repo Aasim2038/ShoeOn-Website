@@ -16,11 +16,11 @@ const JWT_SECRET = 'shoeon_secret_key_123';
 const rateLimit = require('express-rate-limit'); // <--- Import
 
 // Rule: 15 minute mein maximum 100 orders allow karo ek IP se
-// const orderLimiter = rateLimit({
-//     windowMs: 15 * 60 * 1000, // 15 minutes
-//     max: 1000, // Limit each IP to 100 requests per windowMs
-//     message: "Too many orders from this IP, please try again later."
-// });
+const orderLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000, // Limit each IP to 100 requests per windowMs
+    message: "Too many orders from this IP, please try again later."
+});
 
 
 
@@ -382,8 +382,6 @@ app.get('/api/dashboard-stats', async (req, res) => {
  */
 app.post('/api/auth/register', (req, res) => {
   const userData = req.body;
-  console.log('Naya Registration Request:', userData);
-
   // 1. Check karo ki phone number pehle se hai ya nahi
   User.findOne({ phone: userData.phone })
     .then(existingUser => {
@@ -725,7 +723,7 @@ app.get('/api/user/my-orders/:userPhone', async (req, res) => {
  * ============================================
  */
 
-app.post('/api/orders', async (req, res) => {
+app.post('/api/orders', orderLimiter, async (req, res) => {
     try {
         const orderNumber = Math.floor(100000 + Math.random() * 900000); 
         
@@ -810,9 +808,6 @@ app.get('/api/orders/stats', async (req, res) => {
 
         formattedStats.All = totalOrders;
         
-        // Debugging ke liye (Terminal me dekho kya aa raha hai)
-        console.log("Live Stats Sent:", formattedStats);
-
         res.json(formattedStats);
     } catch (err) {
         console.error("Stats Error:", err);
@@ -933,10 +928,7 @@ app.get('/api/orders/details/:orderNo', async (req, res) => {
 app.get('/api/users', async (req, res) => {
     try {
         const { search } = req.query; 
-        
-        // --- DEBUG LOG 1: Search value aayi ya nahi? ---
-        console.log("Searching users for query:", search); // <--- YEH LINE ADD KAREIN
-        
+                
         let query = {}; 
 
         if (search && search.trim() !== '') {
@@ -951,8 +943,6 @@ app.get('/api/users', async (req, res) => {
                 ]
             };
             
-            // --- DEBUG LOG 2: Final Mongoose query kya bani? ---
-            console.log("Mongoose Query:", JSON.stringify(query)); // <--- YEH LINE ADD KAREIN
         }
         
         const users = await User.find(query).sort({ createdAt: -1 }); 

@@ -3,7 +3,6 @@
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('admin-order-detail.js Loaded');
 
     const params = new URLSearchParams(window.location.search);
     const orderId = params.get('id');

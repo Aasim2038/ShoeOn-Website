@@ -52,8 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function generateDigitalInvoice(order) {
     try {
-        console.log("Generating Invoice...", order);
-
         // 1. ITEMS LIST
         const itemsList = Array.isArray(order.orderItems) ? order.orderItems : [];
         if (itemsList.length === 0) {

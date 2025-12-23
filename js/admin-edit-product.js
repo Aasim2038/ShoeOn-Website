@@ -190,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    console.log("Fetching product ID:", productId); // Debugging
 
     fetch(`/api/products/${productId}`)
         .then(res => {
@@ -198,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return res.json();
         })
         .then(product => {
-            console.log("Product Data Loaded:", product); // Debugging: Check console for data
 
             // --- SAFELY POPULATE FIELDS ---
             if(nameInput) nameInput.value = product.name || '';
