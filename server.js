@@ -1,6 +1,5 @@
 // --- 1. ZAROORI PACKAGES IMPORT KARO ---
 const express = require('express');
-app.set('trust proxy', 1);
 const mongoose = require('mongoose');
 require('dotenv').config(); 
 const Product = require('./models/product'); 
