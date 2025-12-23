@@ -21,7 +21,7 @@ const postData = JSON.stringify({
     ]
 });
 
-const TOTAL_ORDERS = 15;
+const TOTAL_ORDERS = 250;
 
 let completed = 0;
 
