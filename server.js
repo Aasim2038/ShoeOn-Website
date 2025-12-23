@@ -19,7 +19,7 @@ const rateLimit = require('express-rate-limit');
 // Rule: 15 minute mein maximum 100 orders allow karo ek IP se
 const orderLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 50, // Limit each IP to 100 requests per windowMs
+    max: 5, // Limit each IP to 100 requests per windowMs
     message: console.log("Too many orders from this IP, please try again later.")
 });
 
