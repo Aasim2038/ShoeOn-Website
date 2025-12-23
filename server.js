@@ -81,52 +81,40 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
         const files = req.files;
         let imageUrls = [];
 
-        // --- 1. MAGIC UPLOAD LOGIC (Yahan Compression Hoga) ---
+        // 1. Image Upload Logic (Ye same rahega)
         if (files && files.length > 0) {
             for (const file of files) {
-                
-                // Cloudinary ko bol rahe hain: "Bhai compress karke save kar"
                 const result = await cloudinary.uploader.upload(file.path, { 
                     folder: 'shoeon-products',
-                    
-                    // --- YE HAI WO JADUI SETTING ---
                     transformation: [
-                        { width: 1000, crop: "limit" },  // Image ko 1000px se bada mat hone do
-                        { quality: "auto" },             // Quality maintain karte hue size kam karo
-                        { fetch_format: "auto" }         // WebP format use karo (Fastest loading)
+                        { width: 1000, crop: "limit" }, 
+                        { quality: "auto" },            
+                        { fetch_format: "auto" }        
                     ]
-                    // -----------------------------
                 });
-
                 imageUrls.push(result.secure_url);
-
-                // Server se original heavy file delete kar do
-                try {
-                    require('fs').unlinkSync(file.path);
-                } catch(e) { console.log("File delete error:", e); }
+                try { require('fs').unlinkSync(file.path); } catch(e) {}
             }
         }
         
-        // 2. Product Save Logic (Stock wagera sab same rahega)
+        // 2. Product Save Logic
         const product = new Product({
             name: productData.name,
             brand: productData.brand,
             description: productData.description,
             mrp: productData.mrp,
             salePrice: productData.salePrice,
-            comparePrice: productData.comparePrice,
-            
-            moq: productData.moq,
-            stock: productData.stock, // Stock save ho raha hai
+            offlinePrice: productData.offlinePrice, 
 
+            comparePrice: productData.comparePrice,
+            moq: productData.moq,
+            stock: productData.stock,
             isLoose: productData.isLoose, 
             category: productData.category,
             material: productData.material,
-            
             sole: productData.sole,
             closure: productData.closure,
             origin: productData.origin,
-            
             sizes: productData.sizes ? productData.sizes.split(',') : [], 
             tags: productData.tags ? productData.tags.split(',') : [], 
             images: imageUrls 
@@ -256,20 +244,21 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
   const id = req.params.id;
   
   try {
-    const updatedData = req.body;
+    // 1. Sabse pehle Data Receive karo
+    const updatedData = req.body; 
     const files = req.files;
     let newImageUrls = [];
     
-    // 1. File Upload Logic (Same)
+    // 2. Image Upload Logic (Agar nayi images aayi hain)
     if (files && files.length > 0) {
       for (const file of files) {
         const result = await cloudinary.uploader.upload(file.path, { folder: 'shoeon-products' });
         newImageUrls.push(result.secure_url);
-        require('fs').unlinkSync(file.path);
+        try { require('fs').unlinkSync(file.path); } catch(e) {}
       }
       updatedData.images = newImageUrls; 
     } else {
-      // Purani images retain karo
+      // Agar nayi images nahi hain to purani retain karo
       if (updatedData.existingImages) {
         updatedData.images = updatedData.existingImages.split(',').filter(url => url !== '');
       } else {
@@ -277,45 +266,45 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
       }
     }
 
-    // 2. Data Update karne ke liye Model Dhoondo
-    // Naye fields ko Mongoose me update karo
+    // 3. Update Object Banao (Database ke liye)
     const update = {
         name: updatedData.name,
         brand: updatedData.brand,
         description: updatedData.description,
         mrp: updatedData.mrp,
         salePrice: updatedData.salePrice,
+        offlinePrice: updatedData.offlinePrice, // Yahan data jod diya
         comparePrice: updatedData.comparePrice,
         moq: updatedData.moq,
         stock: updatedData.stock,
         category: updatedData.category,
         material: updatedData.material,
-        
-        // --- NAYE TECHNICAL SPECS FIELDS (CRITICAL) ---
         sole: updatedData.sole,
         closure: updatedData.closure,
         origin: updatedData.origin,
-        // ----------------------------------------------
+        isLoose: updatedData.isLoose,
         
-        tags: updatedData.tags.split(','),
-        images: updatedData.images 
+        // Tags array handle karo
+        tags: updatedData.tags ? (Array.isArray(updatedData.tags) ? updatedData.tags : updatedData.tags.split(',')) : [],
+        
+        // Images update karo agar hain to
+        ...(updatedData.images && updatedData.images.length > 0 && { images: updatedData.images }) 
     };
 
-    // 3. Product ko ID se dhoondo aur naye data se update karo
+    // 4. Database me Update karo
     const updatedProduct = await Product.findByIdAndUpdate(id, update, { new: true });
 
     if (!updatedProduct) {
       return res.status(404).json({ error: 'Product not found' });
     }
-    
+
     res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
 
   } catch (err) {
     console.log('Update error:', err);
-    res.status(400).json({ error: 'Failed to update product due to data validation.' });
+    res.status(400).json({ error: 'Failed to update product.' });
   }
 });
-
 
 
 /**
@@ -414,47 +403,6 @@ app.post('/api/auth/register', (req, res) => {
     });
 });
 
-/**
- * (M) ADMIN: USER STATUS UPDATE (Approve/Block)
- * Method: PUT
- * URL: /api/users/status/:id
- */
-app.put('/api/users/:id', async (req, res) => {
-    try {
-        const userId = req.params.id;
-        const updates = req.body; // Ismein { isApproved: true/false } aata hai
-        
-        // Ensure only allowed fields are updated (safety check)
-        const updateFields = {};
-        if (updates.isApproved !== undefined) {
-            updateFields.isApproved = updates.isApproved;
-        }
-        // Agar aap creditLimit, shopName bhi update karte hain toh woh bhi yahan aayega
-
-        if (Object.keys(updateFields).length === 0) {
-            return res.status(400).json({ error: 'No valid fields provided for update.' });
-        }
-
-        const updatedUser = await User.findByIdAndUpdate(
-            userId, 
-            { $set: updateFields },
-            { new: true } // Updated document wapas chahiye
-        );
-
-        if (!updatedUser) {
-            return res.status(404).json({ error: 'User not found.' });
-        }
-
-        res.status(200).json({ 
-            message: 'User status successfully updated!',
-            user: updatedUser 
-        });
-
-    } catch (err) {
-        console.error("Error updating user status:", err);
-        res.status(500).json({ error: 'Server error updating user status.' });
-    }
-});
 /*
 * ============================================
  * (N) USER LOGIN ROUTE
@@ -495,7 +443,8 @@ app.post('/api/auth/login', (req, res) => {
           id: user._id, 
           name: user.name, 
           phone: user.phone,
-          isAdmin: user.isAdmin 
+          isAdmin: user.isAdmin,
+          isOfflineCustomer: user.isOfflineCustomer 
         } 
       });
     })
@@ -652,28 +601,6 @@ app.get('/api/users/:id', async (req, res) => {
   }
 });
 
-// /**
-//  * ============================================
-//  * (AE) UPDATE Customer Details & Credit Terms
-//  * Method: PUT
-//  * URL: /api/users/:id
-//  * ============================================
-//  */
-// app.put('/api/users/:id', async (req, res) => {
-//   try {
-//     // Ye new customer details aur credit terms honge
-//     const update = req.body;
-    
-//     const updatedUser = await User.findByIdAndUpdate(req.params.id, update, { new: true });
-    
-//     if (!updatedUser) return res.status(404).json({ error: 'User not found for update' });
-    
-//     res.status(200).json({ message: 'Customer details updated!', user: updatedUser });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Update failed' });
-//   }
-// });
 
 /**
  * ============================================
@@ -724,7 +651,6 @@ app.get('/api/user/my-orders/:userPhone', async (req, res) => {
  */
 
 app.post('/api/orders', orderLimiter, async (req, res) => {
-  console.log("Order from IP:", req.ip);
     try {
         const orderNumber = Math.floor(100000 + Math.random() * 900000); 
         
@@ -956,6 +882,70 @@ app.get('/api/users', async (req, res) => {
     }
 });
 
+
+// ==========================================
+// UPDATE USER (ALL-IN-ONE: Approval + Offline + Details)
+// ==========================================
+app.put('/api/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        
+        // Frontend se jo bhi data aa raha hai usse nikaal lo
+        const { 
+            name, 
+            phone, 
+            shopName, 
+            shopAddress, 
+            gstNumber, 
+            
+            isApproved,        // Approval Status (Button se aata hai)
+            isOfflineCustomer, // Offline/Online Status (Checkbox se aata hai)
+            
+            // Agar future me Credit wapis lagana ho to ye fields yahi rahengi
+            isCreditApproved, 
+            creditTermsDays, 
+            creditLimit 
+        } = req.body;
+
+        // Ek 'update object' banao (Jo data aaya sirf wahi update hoga)
+        const updateFields = {};
+
+        // Text fields update karo agar aaye hain to
+        if (name) updateFields.name = name;
+        if (phone) updateFields.phone = phone;
+        if (shopName) updateFields.shopName = shopName;
+        if (shopAddress) updateFields.shopAddress = shopAddress;
+        if (gstNumber) updateFields.gstNumber = gstNumber;
+
+        // Boolean (True/False) fields check karo
+        // (Hum 'undefined' check kar rahe hain taaki false value bhi save ho sake)
+        if (typeof isApproved !== 'undefined') updateFields.isApproved = isApproved;
+        if (typeof isOfflineCustomer !== 'undefined') updateFields.isOfflineCustomer = isOfflineCustomer;
+        
+        // Credit fields (Optional)
+        if (typeof isCreditApproved !== 'undefined') updateFields.isCreditApproved = isCreditApproved;
+        if (creditTermsDays) updateFields.creditTermsDays = creditTermsDays;
+        if (creditLimit) updateFields.creditLimit = creditLimit;
+
+        // Database Update Query
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { $set: updateFields }, // Sirf wahi fields update hongi jo humne set ki hain
+            { new: true } // Naya data wapis milega
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Success Response
+        res.json(updatedUser);
+
+    } catch (err) {
+        console.error("Update Error:", err);
+        res.status(500).json({ error: "Server Error updating user." });
+    }
+});
 
 // /**
 //  * ============================================

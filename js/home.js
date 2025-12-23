@@ -50,12 +50,18 @@ const allCategoryData = {
  'loose-sheet': { 
   title: 'Loose Footwear',
   items: [
-    // Hum sub-categories ko bhi 'women-loose' jaisa naam de rahe hain taaki unique rahe
     { name: 'Womens', img: 'images/catogywomen.png', url: 'products.html?isLoose=true&category=women-loose' }, 
     { name: 'Mens', img: 'images/catogyman.png', url: 'products.html?isLoose=true&category=men-loose' },
     { name: 'Boys', img: 'images/catogyboy.png', url: 'products.html?isLoose=true&category=boys-loose' },
     { name: 'Girls', img: 'images/catogygirl.png', url: 'products.html?isLoose=true&category=girls-loose' },
     { name: 'Kids', img: 'images/sub-cat/crock.jpg', url: 'products.html?isLoose=true&category=kids-loose' }
+  ]
+},
+ 'party-sheet': { 
+  title: 'partywears Footwear',
+  items: [
+    { name: 'Womens', img: 'images/sub-cat/women-party.jpg', url: 'products.html?=true&category=Women-Party-Wears' }, 
+    { name: 'Girls', img: 'images/sub-cat/girl-party.png', url: 'products.html?true&category=Girls-Party-Wears' },
   ]
 }
 };
@@ -159,8 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById(containerId);
     if (!container) return;
     
-    // Check login status (global.js se function mil sakta hai, nahi toh localStorage check karo)
-    const isUserLoggedIn = localStorage.getItem('shoeonUser') ? true : false;
+    // 1. User Data Nikalo (Login check + Offline Check)
+    const userData = JSON.parse(localStorage.getItem('shoeonUser'));
+    const isUserLoggedIn = userData ? true : false;
+    const isOffline = userData && userData.isOfflineCustomer; // 🔥 Offline status check
 
     fetch(`/api/products?tag=${tag}`, { cache: 'no-store' })
       .then(res => res.json())
@@ -171,6 +179,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         let html = '';
         products.forEach(product => {
+          
+          // 🔥 2. PRICE LOGIC (Ye add kiya hai) 🔥
+          let finalPrice = product.salePrice; // Default Online Price
+          let priceStyle = ""; 
+
+          // Agar Offline User hai AUR Offline Price set hai
+          if (isOffline && product.offlinePrice && product.offlinePrice > 0) {
+              finalPrice = product.offlinePrice;
+              priceStyle = "color: #d35400;"; // Orange color taaki alag dikhe
+          }
+
           html += `
             <div class="product-card-b2b" onclick="window.location.href='product-detail.html?id=${product._id}'" style="cursor:pointer;">
               <div class="card-image-container">
@@ -182,9 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="b2b-info">
                   <div class="info-left">
                     <span class="product-price-label">Price</span>
-                    <span class="product-price">
-                       ${isUserLoggedIn ? '₹'+product.salePrice : 'Login'}
+                    
+                    <span class="product-price" style="${priceStyle}">
+                       ${isUserLoggedIn ? '₹'+finalPrice : 'Login'}
                     </span>
+
                   </div>
                   <div class="info-right">
                     <span class="moq-label">MOQ</span>

@@ -9,6 +9,7 @@ const CATEGORY_DATA = {
     "boys": ["Sports-Shoes", "PU-Chappal", "Sandals" , "School-Shoes" , "Crocks", "Loose-Products"],
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals" , "School-Bellies" , "Crocks", "Loose-Products"],
     "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
+    "party": ["Womens", "Gilrs"],
 };
 
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR','Phylon', 'Double Density'];
@@ -28,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mrpInput = document.getElementById('mrp');
     const discountInput = document.getElementById('discount');
     const salePriceInput = document.getElementById('salePrice');
+    const comparePriceInput = document.getElementById('comparePrice');
+    const offlinePriceInput = document.getElementById('offlinePrice');
     const moqInput = document.getElementById('moq');
     const stockInput = document.getElementById('stock');
     
@@ -202,8 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if(nameInput) nameInput.value = product.name || '';
             if(brandInput) brandInput.value = product.brand || '';
             if(descInput) descInput.value = product.description || '';
+            if(comparePriceInput) comparePriceInput.value = product.comparePrice || '';
             if(mrpInput) mrpInput.value = product.mrp || 0;
             if(salePriceInput) salePriceInput.value = product.salePrice || 0;
+            if(offlinePriceInput) offlinePriceInput.value = product.offlinePrice || 0;
             
             // Calculate discount if missing
             if(discountInput) {
@@ -298,7 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if(brandInput) formData.append('brand', brandInput.value);
             if(descInput) formData.append('description', descInput.value);
             if(mrpInput) formData.append('mrp', parseFloat(mrpInput.value));
+            if(comparePriceInput) formData.append('comparePrice', parseFloat(comparePriceInput.value));
             if(salePriceInput) formData.append('salePrice', parseFloat(salePriceInput.value));
+            if(offlinePriceInput) formData.append('offlinePrice', parseFloat(offlinePriceInput.value));
             if(moqInput) formData.append('moq', parseInt(moqInput.value));
             if(finalCategoryInput) formData.append('category', finalCategoryInput.value); 
             if(materialInput) formData.append('material', materialInput.value);

@@ -9,6 +9,7 @@ const CATEGORY_DATA = {
     "boys": ["Sports-Shoes", "PU-Chappal", "Sandals", "School-Shoes", "Crocks", "Loose-Products"],
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Bellies", "Crocks", "Loose-Products"],
     "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
+    "party": ["Womens", "Gilrs"],
 };
 
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR', 'Phylon', 'Double Density'];
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mrpInput = document.getElementById('mrp');
     const salePriceInput = document.getElementById('salePrice');
     const comparePriceInput = document.getElementById('comparePrice');
-    const stockInput = document.getElementById('stock'); // <--- STOCK INPUT
+    const offlinePriceInput = document.getElementById('offlinePrice');
+    const stockInput = document.getElementById('stock');
     
     const imagesFileInput = document.getElementById('images');
     const isLooseCheckbox = document.getElementById('isLoose');
@@ -108,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Numbers
             formData.append('mrp', parseFloat(mrpInput.value));
             formData.append('salePrice', parseFloat(salePriceInput.value));
+            formData.append('offlinePrice', parseFloat(offlinePriceInput ? offlinePriceInput.value : 0));
             formData.append('comparePrice', comparePriceInput.value);
             formData.append('moq', parseInt(document.getElementById('moq').value));
             

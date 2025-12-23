@@ -32,6 +32,9 @@ const productSchema = new Schema(
     type: Number,
     required: true
   },
+  offlinePrice: {
+     type: Number, default: 0 
+    },
   
   // --- YEH NAYA FIELD ADD KARO ---
   comparePrice: { // Jo cut-line me dikhegi (e.g., ₹300)

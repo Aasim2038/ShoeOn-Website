@@ -1,33 +1,26 @@
 /* =========================================
-   ADMIN-CUSTOMER-EDIT.JS (FINAL WORKING CODE)
+   ADMIN-CUSTOMER-EDIT.JS (CLEAN VERSION)
+   Only Offline Status & Approval
    ========================================= */
-
-   const params = new URLSearchParams(window.location.search);
-    const userId = params.get('id');
-
-    const isCreditApprovedInput = document.getElementById('isCreditApproved');
-    
-    const creditTermsDaysInput = document.getElementById('creditTermsDays');
 
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- 1. Variables & Elements ---
-    const form = document.getElementById('customer-update-form'); // Corrected Form ID
+    const form = document.getElementById('customer-update-form'); 
     const responseDiv = document.getElementById('update-message');
+    
+    // URL se ID nikalo
     const params = new URLSearchParams(window.location.search);
     const userId = params.get('id');
 
-    // Display Elements
-    const infoDisplay = document.getElementById('customer-info-display');
-    const currentStatusDisplay = document.getElementById('current-approval-status');
-    
-    // Editable Inputs
-    const isCreditApprovedInput = document.getElementById('isCreditApproved');
-    const creditTermsDaysInput = document.getElementById('creditTermsDays');
-    const creditLimitInput = document.getElementById('creditLimit');
+    // Inputs (Sirf Offline wala rakha hai)
+    const isOfflineCustomerInput = document.getElementById('isOfflineCustomer'); 
 
-
-    if (!userId) { responseDiv.innerText = 'Error: User ID not found.'; return; }
+    // Error check
+    if (!userId) { 
+        if(responseDiv) responseDiv.innerText = 'Error: User ID not found.'; 
+        return; 
+    }
 
     // --- 2. Data Load & Display ---
     function loadCustomer(id) {
@@ -36,47 +29,62 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(user => {
                 if (user.error || !user.name) throw new Error("Could not load user data.");
                 
-                // Set editable inputs
-                isCreditApprovedInput.checked = user.isCreditApproved;
-                creditTermsDaysInput.value = String(user.creditTermsDays || 0); 
-                creditLimitInput.value = user.creditLimit || 0;
+                // 1. Checkbox set karo (Agar DB mein true hai to tick dikhega)
+                if(isOfflineCustomerInput) {
+                    isOfflineCustomerInput.checked = user.isOfflineCustomer || false;
+                }
 
-                // Set status badge and information (Puraana design)
-                const statusText = user.isApproved ? 'Approved' : 'Pending Approval';
-                const statusClass = user.isApproved ? 'status-delivered' : 'status-cancelled';
-                
-                currentStatusDisplay.innerHTML = `<span class="status-badge ${statusClass}">${statusText}</span>`;
+                // 2. Info Display (Naam, Shop, etc.)
+                const infoDisplay = document.getElementById('customer-info-display');
+                if(infoDisplay) {
+                    infoDisplay.innerHTML = `
+                        <div><strong>Full Name:</strong><span>${user.name}</span></div>
+                        <div><strong>Phone:</strong><span>${user.phone}</span></div>
+                        <div><strong>Shop Name:</strong><span>${user.shopName}</span></div>
+                        <div><strong>Shop Address:</strong><span>${user.shopAddress}</span></div>
+                        <div><strong>GST:</strong><span>${user.gstNumber || 'N/A'}</span></div>
+                        
+                        <div style="margin-top:15px; padding:10px; background:${user.isOfflineCustomer ? '#fff3cd' : '#d4edda'}; border-radius:5px;">
+                            <strong>Current Type:</strong> 
+                            <span style="color:${user.isOfflineCustomer ? '#856404' : '#155724'}; font-weight:bold;">
+                                ${user.isOfflineCustomer ? '🛑 Existing/Offline Customer' : '✅ New/Online Customer'}
+                            </span>
+                        </div>
+                    `;
+                }
 
-                // Fill static customer info (purane design jaisa)
-                infoDisplay.innerHTML = `
-                    <div><strong>Full Name:</strong><span>${user.name}</span></div>
-                    <div><strong>Phone:</strong><span>${user.phone}</span></div>
-                    <div><strong>Shop Name:</strong><span>${user.shopName}</span></div>
-                    <div><strong>Shop Address:</strong><span>${user.shopAddress}</span></div>
-                    <div><strong>GST:</strong><span>${user.gstNumber || 'N/A'}</span></div>
-                `;
+                // 3. Status Badge Update
+                const currentStatusDisplay = document.getElementById('current-approval-status');
+                if(currentStatusDisplay) {
+                    const statusText = user.isApproved ? 'Approved' : 'Pending Approval';
+                    const statusClass = user.isApproved ? 'status-delivered' : 'status-cancelled';
+                    currentStatusDisplay.innerHTML = `<span class="status-badge ${statusClass}">${statusText}</span>`;
+                }
             })
             .catch(err => {
-                responseDiv.innerText = `Error loading user data.`;
+                console.error(err);
+                if(responseDiv) responseDiv.innerText = `Error loading user data.`;
             });
     }
 
-
-    // --- 3. Form Submission Logic (Credit Update) ---
+    // --- 3. SAVE BUTTON LOGIC ---
     if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault(); 
             
-            // Collect only credit and approval data
+            responseDiv.innerText = 'Updating...';
+            responseDiv.style.color = 'blue';
+
+            // Sirf ye data bhejenge
             const updateData = {
-                isCreditApproved: isCreditApprovedInput.checked,
-                creditTermsDays: parseInt(creditTermsDaysInput.value) || 0,
-                creditLimit: parseFloat(creditLimitInput.value) || 0
+                // Checkbox ki value (True/False)
+                isOfflineCustomer: isOfflineCustomerInput ? isOfflineCustomerInput.checked : false,
+                
+                // Button dabane ka matlab hai Admin ne Approve kar diya
+                isApproved: true 
             };
 
-            responseDiv.innerText = 'Saving...';
-
-            // PUT Request to server
+            // Server ko bhejo
             fetch(`/api/users/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -86,17 +94,25 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.error) {
                     responseDiv.innerText = `Error: ${data.error}`;
+                    responseDiv.style.color = 'red';
                 } else {
-                    responseDiv.innerText = 'Credit terms updated successfully!';
+                    responseDiv.innerText = 'Saved & User Approved!';
                     responseDiv.style.color = 'green';
-                    loadCustomer(userId); // Page ko refresh karke naya status dikhao
+                    
+                    // Data refresh karo taaki naya status dikhe
+                    loadCustomer(userId); 
                 }
             })
             .catch(err => {
-                responseDiv.innerText = 'Server Error during update.';
+                console.error(err);
+                responseDiv.innerText = 'Server Error.';
+                responseDiv.style.color = 'red';
             });
         });
+    } else {
+        console.error("Form not found!");
     }
 
-    loadCustomer(userId); // Page load hote hi data fetch karo
+    // Page khulte hi data load karo
+    loadCustomer(userId);
 });
