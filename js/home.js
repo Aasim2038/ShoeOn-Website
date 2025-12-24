@@ -75,11 +75,10 @@ const allCategoryData = {
 };
 
 function getOptimizedUrl(url, width = 600) {
-  if (!url) return 'images/placeholder.jpg'; // Agar image nahi hai to placeholder dikhao
+  if (!url) return 'images/puma-logo.webp'; 
 
-  // Sirf Cloudinary URLs ko optimize karo, Local images (images/sub-cat/...) ko chhod do
+  
   if (url.includes('/upload/')) {
-    // Width dynamic rakha hai taaki banner ke liye bada aur cards ke liye chota le sakein
     return url.replace('/upload/', `/upload/w_${width},f_auto,q_auto/`);
   }
   return url;
