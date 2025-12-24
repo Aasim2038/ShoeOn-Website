@@ -9,22 +9,22 @@ const allCategoryData = {
   'men-sheet': {
     title: 'Men Footwear',
     items: [
-      { name: 'Casual Shoes', img: 'images/sub-cat/casual-shoes.jpeg', url: 'products.html?category=men-casual' },
-      { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpg', url: 'products.html?category=men-pu-chappal' },
-      { name: 'Sandals', img: 'images/sub-cat/sandals.png', url: 'products.html?category=men-sandals' },
-      { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.jpeg', url: 'products.html?category=men-sports' },
-      { name: 'Crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=men-crock' },
-      { name: ' Safety Shoe', img: 'images/sub-cat/msafety-shoes.jpeg', url: 'products.html?category=men-safty' },
+      { name: 'Casual Shoes', img: 'images/sub-cat/casual-shoes.webp', url: 'products.html?category=men-casual' },
+      { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.webp', url: 'products.html?category=men-pu-chappal' },
+      { name: 'Sandals', img: 'images/sub-cat/sandals.webp', url: 'products.html?category=men-sandals' },
+      { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.webp', url: 'products.html?category=men-sports' },
+      { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=men-crock' },
+      { name: ' Safety Shoe', img: 'images/sub-cat/msafety-shoes.webp', url: 'products.html?category=men-safty' },
     ]
   },
   'women-sheet': {
     title: 'Women Footwear',
     items: [
-      { name: 'Bellies', img: 'images/sub-cat/women-bellies.jpg', url: 'products.html?category=women-bellies' },
-      { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpg', url: 'products.html?category=women-pu-chappal' },
-      { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.jpg', url: 'products.html?category=women-pu-sandals' },
-      { name: 'crocks', img: 'images/sub-cat/crock.jpg', url: 'products.html?category=women-crockss' },
-      { name: 'Safety Shoe', img: 'images/sub-cat/wsafety-shoes.png', url: 'products.html?category=women-safty' },
+      { name: 'Bellies', img: 'images/sub-cat/women-bellies.webp', url: 'products.html?category=women-bellies' },
+      { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.webp', url: 'products.html?category=women-pu-chappal' },
+      { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.webp', url: 'products.html?category=women-pu-sandals' },
+      { name: 'crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=women-crockss' },
+      { name: 'Safety Shoe', img: 'images/sub-cat/wsafety-shoes.webp', url: 'products.html?category=women-safty' },
     ]
   },
   'boys-sheet': { title: 'Boys Footwear', items: [
