@@ -94,7 +94,8 @@ button { cursor: pointer; }
 /* =========================================
    4. HERO BANNER (Slider)
    ========================================= */
-.hero-banner-slider { width: 100%; min-height: 200px; overflow: hidden; background-color: #f0f0f0; }
+.hero-banner-slider {min-height: 200px;
+    background-color: #f0f0f0; width: 100%; min-height: 200px; overflow: hidden; background-color: #f0f0f0; }
 .slider-track { display: flex; width: 400%; transition: transform 0.5s ease-in-out; }
 .slide { width: 100%; height: 200px; overflow: hidden; } /* Mobile Height */
 .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -177,7 +178,7 @@ button { cursor: pointer; }
    ========================================= */
 .product-carousel { padding: 20px 0; background-color: #f9f9f9; }
 .carousel-title { text-align: center; color: #d3a14b; margin-bottom: 20px; text-transform: uppercase; }
-.carousel-container { display: flex; overflow-x: auto; padding: 10px 15px; gap: 15px; scrollbar-width: none; }
+.carousel-container { min-height: 320px; display: flex; overflow-x: auto; padding: 10px 15px; gap: 15px; scrollbar-width: none; }
 .carousel-container::-webkit-scrollbar { display: none; }
 
 .product-card-b2b {
