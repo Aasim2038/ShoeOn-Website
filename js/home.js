@@ -2,7 +2,7 @@
    HOME.JS (Dynamic Slider + Popups)
    ========================================= */
 
-  
+
 
 // 1. Categories Data (Pop-ups ke liye - Waisa hi hai)
 const allCategoryData = {
@@ -16,7 +16,7 @@ const allCategoryData = {
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=men-crock' },
       { name: ' Safety Shoe', img: 'images/sub-cat/msafety-shoes.webp', url: 'products.html?category=men-safty' },
     ]
-  },  
+  },
   'women-sheet': {
     title: 'Women Footwear',
     items: [
@@ -27,50 +27,56 @@ const allCategoryData = {
       { name: 'Safety Shoe', img: 'images/sub-cat/wsafety-shoes.webp', url: 'products.html?category=women-safty' },
     ]
   },
-  'boys-sheet': { title: 'Boys Footwear', items: [
-    { name: 'Sports-shoes', img: 'images/sub-cat/boyssportsshoe.webp', url: 'products.html?category=boys-Sports-shoes' },
+  'boys-sheet': {
+    title: 'Boys Footwear', items: [
+      { name: 'Sports-shoes', img: 'images/sub-cat/boyssportsshoe.webp', url: 'products.html?category=boys-Sports-shoes' },
       { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.webp', url: 'products.html?category=boys-PU Chappals' },
       { name: 'Sandals', img: 'images/sub-cat/sandals.webp', url: 'products.html?category=boys-sandals' },
       { name: 'School shoes', img: 'images/sub-cat/shool-shoe.webp', url: 'products.html?category=boys-School shoes' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=boys-crocks' },
-  ] },
-  'girl-sheet': { title: 'Girls Footwear', items: [
-      { name: 'Bellies', img: 'images/sub-cat/women-bellies.webp', url: 'products.html?category=girl-bellies' },     
+    ]
+  },
+  'girl-sheet': {
+    title: 'Girls Footwear', items: [
+      { name: 'Bellies', img: 'images/sub-cat/women-bellies.webp', url: 'products.html?category=girl-bellies' },
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.webp', url: 'products.html?category=girl-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.webp', url: 'products.html?category=girl-pu-sandals' },
       { name: 'School bellies', img: 'images/sub-cat/girl-school-ballies.webp', url: 'products.html?category=girl-School ballies' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=girl-crocks' },
-      { name: 'Safty Shoe', img: '', url: 'products.html?category= -safty' },  ] },
-  
-  'girl-sheet': { title: 'Girls Footwear', items: [
-      { name: 'Bellies', img: 'images/sub-cat/women-bellies.webp', url: 'products.html?category=girl-bellies' },     
+      { name: 'Safty Shoe', img: '', url: 'products.html?category= -safty' },]
+  },
+
+  'girl-sheet': {
+    title: 'Girls Footwear', items: [
+      { name: 'Bellies', img: 'images/sub-cat/women-bellies.webp', url: 'products.html?category=girl-bellies' },
       { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.webp', url: 'products.html?category=girl-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.webp', url: 'products.html?category=girl-pu-sandals' },
       { name: 'School bellies', img: 'images/sub-cat/girl-school-ballies.webp', url: 'products.html?category=girl-School ballies' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=girl-crocks' }
-   ]},
- 'loose-sheet': { 
-  title: 'Loose Footwear',
-  items: [
-    { name: 'Womens', img: 'images/catogywomen.webp', url: 'products.html?isLoose=true&category=women-loose' }, 
-    { name: 'Mens', img: 'images/catogyman.webp', url: 'products.html?isLoose=true&category=men-loose' },
-    { name: 'Boys', img: 'images/catogyboy.webp', url: 'products.html?isLoose=true&category=boys-loose' },
-    { name: 'Girls', img: 'images/catogygirl.webp', url: 'products.html?isLoose=true&category=girls-loose' },
-    { name: 'Kids', img: 'images/sub-cat/crock.webp', url: 'products.html?isLoose=true&category=kids-loose' }
-  ]
-},
- 'party-sheet': { 
-  title: 'partywears Footwear',
-  items: [
-    { name: 'Womens', img: 'images/sub-cat/women-party.webp', url: 'products.html?=true&category=Women-Party-Wears' }, 
-    { name: 'Girls', img: 'images/sub-cat/girl-party.webp', url: 'products.html?true&category=Girls-Party-Wears' },
-  ]
-}
+    ]
+  },
+  'loose-sheet': {
+    title: 'Loose Footwear',
+    items: [
+      { name: 'Womens', img: 'images/catogywomen.webp', url: 'products.html?isLoose=true&category=women-loose' },
+      { name: 'Mens', img: 'images/catogyman.webp', url: 'products.html?isLoose=true&category=men-loose' },
+      { name: 'Boys', img: 'images/catogyboy.webp', url: 'products.html?isLoose=true&category=boys-loose' },
+      { name: 'Girls', img: 'images/catogygirl.webp', url: 'products.html?isLoose=true&category=girls-loose' },
+      { name: 'Kids', img: 'images/sub-cat/crock.webp', url: 'products.html?isLoose=true&category=kids-loose' }
+    ]
+  },
+  'party-sheet': {
+    title: 'partywears Footwear',
+    items: [
+      { name: 'Womens', img: 'images/sub-cat/women-party.webp', url: 'products.html?=true&category=Women-Party-Wears' },
+      { name: 'Girls', img: 'images/sub-cat/girl-party.webp', url: 'products.html?true&category=Girls-Party-Wears' },
+    ]
+  }
 };
 
- function getOptimizedUrl(url, width = 600) {
+function getOptimizedUrl(url, width = 600) {
   if (!url) return 'images/placeholder.jpg'; // Agar image nahi hai to placeholder dikhao
-  
+
   // Sirf Cloudinary URLs ko optimize karo, Local images (images/sub-cat/...) ko chhod do
   if (url.includes('/upload/')) {
     // Width dynamic rakha hai taaki banner ke liye bada aur cards ke liye chota le sakein
@@ -80,7 +86,7 @@ const allCategoryData = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   // --- A. LOAD SETTINGS (Slider & Contact) ---
   function loadSiteSettings() {
     const sliderTrack = document.getElementById('slider-track');
@@ -90,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/api/settings')
       .then(res => res.json())
       .then(settings => {
-        
+
         // 1. Update Footer Info
         if (settings.supportEmail && footerEmail) footerEmail.innerText = settings.supportEmail;
         if (settings.supportPhone && footerPhone) footerPhone.innerText = settings.supportPhone;
@@ -98,12 +104,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Build Slider
         if (sliderTrack && settings.banners && settings.banners.length > 0) {
           sliderTrack.innerHTML = ''; // Clear default
-          
-          settings.banners.forEach(imgUrl => {
-            // Cloudinary URL se image banao
+
+          settings.banners.forEach((imgUrl, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.className = 'slide';
-            slideDiv.innerHTML = `<img src="${getOptimizedUrl(imgUrl, 1000)}" alt="Banner" loading="lazy">`;
+
+            const loadingMode = index === 0 ? 'eager' : 'lazy';
+            const priority = index === 0 ? 'fetchpriority="high"' : '';
+
+            slideDiv.innerHTML = `<img src="${getOptimizedUrl(imgUrl, 1000)}" alt="Banner" loading="${loadingMode}" ${priority}>`;
             sliderTrack.appendChild(slideDiv);
           });
 
@@ -123,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Track ki width set karo (e.g., 3 images = 300%)
     sliderTrack.style.width = `${slideCount * 100}%`;
-    
+
     // Har slide ki width set karo
     Array.from(sliderTrack.children).forEach(slide => {
       slide.style.width = `${100 / slideCount}%`;
@@ -151,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = allCategoryData[categoryKey];
       if (!data) return;
       sheetTitle.innerText = data.title;
-      sheetGrid.innerHTML = ''; 
+      sheetGrid.innerHTML = '';
       let itemsHTML = '';
       data.items.forEach(item => {
         itemsHTML += `<a href="${item.url}" class="subcategory-item">
@@ -173,13 +182,13 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSheetBtn.addEventListener('click', closeSheet);
     sheetOverlay.addEventListener('click', closeSheet);
   }
-  
+
   // --- D. HOME SECTIONS (New Arrival etc.) ---
   // (Yeh code bhi humne pehle add kiya tha)
   function loadHomeSection(tag, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    
+
     // 1. User Data Nikalo (Login check + Offline Check)
     const userData = JSON.parse(localStorage.getItem('shoeonUser'));
     const isUserLoggedIn = userData ? true : false;
@@ -194,15 +203,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         let html = '';
         products.forEach(product => {
-          
+
           // 🔥 2. PRICE LOGIC (Ye add kiya hai) 🔥
           let finalPrice = product.salePrice; // Default Online Price
-          let priceStyle = ""; 
+          let priceStyle = "";
 
           // Agar Offline User hai AUR Offline Price set hai
           if (isOffline && product.offlinePrice && product.offlinePrice > 0) {
-              finalPrice = product.offlinePrice;
-              priceStyle = "color: #d35400;"; // Orange color taaki alag dikhe
+            finalPrice = product.offlinePrice;
+            priceStyle = "color: #d35400;"; // Orange color taaki alag dikhe
           }
 
           html += `
@@ -218,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="product-price-label">Price</span>
                     
                     <span class="product-price" style="${priceStyle}">
-                       ${isUserLoggedIn ? '₹'+finalPrice : 'Login'}
+                       ${isUserLoggedIn ? '₹' + finalPrice : 'Login'}
                     </span>
 
                   </div>
@@ -240,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadHomeSection('Top Best', 'top-best-container');
   loadHomeSection('New Arrival', 'new-arrival-container');
   loadHomeSection('Featured', 'featured-container');
-  
+
   // Load Settings (Banner) - Sabse last me call karo
   loadSiteSettings();
 
@@ -248,32 +257,32 @@ document.addEventListener('DOMContentLoaded', () => {
    INTRO VIDEO LOGIC
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    const introOverlay = document.getElementById('intro-overlay');
-    const introVideo = document.getElementById('intro-video');
+  const introOverlay = document.getElementById('intro-overlay');
+  const introVideo = document.getElementById('intro-video');
 
-    // Sirf tab chalega jab HTML uncommented ho
-    if (introOverlay && introVideo) {
-        
-        // 1. Jab video khatam ho jaye, to overlay hata do
-        introVideo.onended = function() {
-            closeIntro();
-        };
+  // Sirf tab chalega jab HTML uncommented ho
+  if (introOverlay && introVideo) {
 
-        // 2. Safety: Agar 5 second mein video load na ho to hata do (Fallback)
-        setTimeout(() => {
-            // Agar video atak gaya to 6 second baad auto close
-           // closeIntro(); 
-        }, 8000); 
-    }
+    // 1. Jab video khatam ho jaye, to overlay hata do
+    introVideo.onended = function () {
+      closeIntro();
+    };
+
+    // 2. Safety: Agar 5 second mein video load na ho to hata do (Fallback)
+    setTimeout(() => {
+      // Agar video atak gaya to 6 second baad auto close
+      // closeIntro(); 
+    }, 8000);
+  }
 });
 
 // Function to close intro
 function closeIntro() {
-    const introOverlay = document.getElementById('intro-overlay');
-    if (introOverlay) {
-        introOverlay.style.opacity = '0'; // Smooth fade out
-        setTimeout(() => {
-            introOverlay.style.display = 'none'; // Remove from screen
-        }, 500); // 0.5 sec ka fade animation
-    }
+  const introOverlay = document.getElementById('intro-overlay');
+  if (introOverlay) {
+    introOverlay.style.opacity = '0'; // Smooth fade out
+    setTimeout(() => {
+      introOverlay.style.display = 'none'; // Remove from screen
+    }, 500); // 0.5 sec ka fade animation
+  }
 }
