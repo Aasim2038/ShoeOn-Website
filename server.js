@@ -955,21 +955,21 @@ app.put('/api/users/:id', async (req, res) => {
     }
 });
 
-// /**
-//  * ============================================
-//  * (TEMP) RESET ALL ORDERS
-//  * WARNING: Isse saare orders delete ho jayenge!
-//  * URL: /api/reset-orders
-//  * ============================================
-//  */
-// app.get('/api/reset-orders', async (req, res) => {
-//   try {
-//     // Saare orders delete karo
-//     await Order.deleteMany({});
+/**
+ * ============================================
+ * (TEMP) RESET ALL ORDERS
+ * WARNING: Isse saare orders delete ho jayenge!
+ * URL: /api/reset-orders
+ * ============================================
+ */
+app.get('/api/reset-orders', async (req, res) => {
+  try {
+    // Saare orders delete karo
+    await Order.deleteMany({});
     
-//     res.send('<h1>Reset Successful!</h1><p>All orders have been deleted. Dashboard is now 0.</p>');
-//   } catch (err) {
-//     res.send('Error resetting orders.');
-//   }
-// });
+    res.send('<h1>Reset Successful!</h1><p>All orders have been deleted. Dashboard is now 0.</p>');
+  } catch (err) {
+    res.send('Error resetting orders.');
+  }
+});
 
