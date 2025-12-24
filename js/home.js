@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const loadingMode = index === 0 ? 'eager' : 'lazy';
             const priority = index === 0 ? 'fetchpriority="high"' : '';
 
-            slideDiv.innerHTML = `<img src="${getOptimizedUrl(imgUrl, 1000)}" alt="Banner" loading="${loadingMode}" ${priority}>`;
+            slideDiv.innerHTML = `<img src="${getOptimizedUrl(imgUrl, 600)}" alt="Banner" loading="${loadingMode}" ${priority}>`;
             sliderTrack.appendChild(slideDiv);
           });
 
