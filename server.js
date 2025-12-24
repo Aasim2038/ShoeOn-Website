@@ -22,7 +22,15 @@ const orderLimiter = rateLimit({
     message: console.log("Too many orders from this IP, please try again later.")
 });
 
-
+// Ye function Cloudinary URL ke andar 'magic code' ghusa dega
+function optimizeImage(url) {
+    if (!url) return "";
+    // Agar URL mein 'upload' shabd hai, toh uske baad optimization settings laga do
+    if (url.includes("/upload/")) {
+        return url.replace("/upload/", "/upload/w_600,f_auto,q_auto/");
+    }
+    return url;
+}
 
 const authMiddleware = (req, res, next) => {
     // 1. Header se token uthao

@@ -2,6 +2,8 @@
    HOME.JS (Dynamic Slider + Popups)
    ========================================= */
 
+  
+
 // 1. Categories Data (Pop-ups ke liye - Waisa hi hai)
 const allCategoryData = {
   'men-sheet': {
@@ -66,6 +68,16 @@ const allCategoryData = {
 }
 };
 
+ function getOptimizedUrl(url, width = 600) {
+  if (!url) return 'images/placeholder.jpg'; // Agar image nahi hai to placeholder dikhao
+  
+  // Sirf Cloudinary URLs ko optimize karo, Local images (images/sub-cat/...) ko chhod do
+  if (url.includes('/upload/')) {
+    // Width dynamic rakha hai taaki banner ke liye bada aur cards ke liye chota le sakein
+    return url.replace('/upload/', `/upload/w_${width},f_auto,q_auto/`);
+  }
+  return url;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   
@@ -91,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Cloudinary URL se image banao
             const slideDiv = document.createElement('div');
             slideDiv.className = 'slide';
-            slideDiv.innerHTML = `<img src="${imgUrl}" alt="Banner">`;
+            slideDiv.innerHTML = `<img src="${getOptimizedUrl(imgUrl, 1000)}" alt="Banner" loading="lazy">`;
             sliderTrack.appendChild(slideDiv);
           });
 
@@ -142,7 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
       sheetGrid.innerHTML = ''; 
       let itemsHTML = '';
       data.items.forEach(item => {
-        itemsHTML += `<a href="${item.url}" class="subcategory-item"><img src="${item.img}" alt="${item.name}" loading="lazy"><p>${item.name}</p></a>`;
+        itemsHTML += `<a href="${item.url}" class="subcategory-item">
+    <img src="${getOptimizedUrl(item.img, 200)}" alt="${item.name}" loading="lazy">
+    <p>${item.name}</p>
+</a>`;
       });
       sheetGrid.innerHTML = itemsHTML;
       bottomSheet.classList.add('active');
@@ -193,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
           html += `
             <div class="product-card-b2b" onclick="window.location.href='product-detail.html?id=${product._id}'" style="cursor:pointer;">
               <div class="card-image-container">
-                <img src="${product.images[0] || 'images/placeholder.jpg'}" alt="${product.name}" class="product-image" loading="lazy">
+                <img src="${getOptimizedUrl(product.images[0], 400)}" alt="${product.name}" class="product-image" loading="lazy">
               </div>
               <div class="card-info-container">
                 <h3 class="product-brand">${product.brand}</h3>
