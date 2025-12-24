@@ -16,7 +16,7 @@ const allCategoryData = {
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=men-crock' },
       { name: ' Safety Shoe', img: 'images/sub-cat/msafety-shoes.webp', url: 'products.html?category=men-safty' },
     ]
-  },
+  },  
   'women-sheet': {
     title: 'Women Footwear',
     items: [
