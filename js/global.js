@@ -384,3 +384,54 @@ function handleMyAccount(e) {
     window.location.href = "login.html";
   }
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    syncUserStatus();
+});
+
+function syncUserStatus() {
+    // 1. Check karo user login hai ya nahi
+    const localUserJSON = localStorage.getItem('shoeonUser');
+    if (!localUserJSON) return; // Agar login nahi hai to kuch mat karo
+
+    const localUser = JSON.parse(localUserJSON);
+    const userId = localUser.id || localUser._id; // ID nikalo
+
+    if (!userId) return;
+
+    // 2. Server se latest status pucho
+    fetch(`/api/users/${userId}`)
+        .then(res => res.json())
+        .then(serverUser => {
+            if (serverUser.error) return;
+
+            // 3. CHECK: Kya Browser ka data aur Server ka data alag hai?
+            // (Note: Server se 'true' aayega, Local me shayad 'false' ya missing ho)
+            
+            const serverStatus = serverUser.isOfflineCustomer === true;
+            const localStatus = localUser.isOfflineCustomer === true;
+
+            if (serverStatus !== localStatus) {
+                console.log("🔄 Status changed! Updating local data...");
+
+                // 4. Chup-chap LocalStorage update kar do
+                localUser.isOfflineCustomer = serverStatus;
+                
+                // Agar aur bhi kuch update hua ho to wo bhi le lo
+                localUser.name = serverUser.name;
+                localUser.isApproved = serverUser.isApproved;
+
+                localStorage.setItem('shoeonUser', JSON.stringify(localUser));
+
+                // 5. PAGE RELOAD KARO (Taaki naya price dikhe)
+                // Hum thoda delay denge taaki user ko confusion na ho
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            }
+        })
+        .catch(err => {
+            console.log("Sync check failed (Internet issue maybe):", err);
+        });
+}

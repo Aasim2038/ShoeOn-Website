@@ -1,23 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Products - ShoeOn</title>
-  
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+
   <link rel="stylesheet" href="css/style.css">
-  
+
   <link rel="stylesheet" href="css/products.css">
 </head>
+
 <body>
 
- <header class="page-header">
+  <header class="main-header">
+    <div class="nav-left">
+      <a href="#" class="nav-icon" id="menu-toggle"><i class="fa-solid fa-bars"></i></a>
+
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="ShoeOn" class="header-logo-img">
+        <p>Trusted Footwear Patner</p>
+      </a>
+
+      <p class="slogen">We Connects You</p>
+    </div>
+
+    <div class="nav-center">
+      <div class="search-bar" style="position: relative;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-input" placeholder="Search styles, brands..." autocomplete="off">
+
+        <ul class="suggestions-box" id="suggestions-box"></ul>
+      </div>
+    </div>
+  </header>
+
+  <header class="page-header">
     <div class="header-left">
       <a href="index.html" class="back-arrow"><i class="fa-solid fa-arrow-left"></i></a>
       <div class="page-title">
-        <h3 id="page-category-title">Loading...</h3> 
+        <h3 id="page-category-title">Loading...</h3>
         <span id="style-count">-- Styles</span>
       </div>
     </div>
@@ -34,113 +58,118 @@
   </header>
 
   <main class="product-grid-container" id="product-grid">
-    
-    </main><div class="overlay-modal" id="cart-overlay"></div>
 
-<div class="cart-drawer" id="cart-drawer">
-  
-  <div class="cart-header">
-    <h3>Your Cart</h3>
-    <button classs="cart-close-btn" id="cart-close-btn">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-  
-  ...
-  <div class="cart-content" id="cart-content-area"> <div class="cart-empty" id="cart-empty-msg">
-      <i class="fa-solid fa-cart-shopping"></i>
-      <p>Your cart is empty!</p>
+  </main>
+  <div class="overlay-modal" id="cart-overlay"></div>
+
+  <div class="cart-drawer" id="cart-drawer">
+
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button classs="cart-close-btn" id="cart-close-btn">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
-    
-    <div class="items-list-container" id="cart-items-container">
+
+    ...
+    <div class="cart-content" id="cart-content-area">
+      <div class="cart-empty" id="cart-empty-msg">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Your cart is empty!</p>
       </div>
-    
-  </div>
-  ...
-  
-  <div class="cart-footer">
-    <div class="subtotal-row">
-      <span>Subtotal:</span>
-      <span class="subtotal-price" id="cart-subtotal">₹0.00</span>
+
+      <div class="items-list-container" id="cart-items-container">
+      </div>
+
     </div>
-    <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
-  </div>
-  
-</div>
+    ...
 
-<div class="filter-drawer" id="filter-drawer">
-  
-  <div class="filter-header">
-    <h3>Filters</h3>
-    <button class="filter-close-btn" id="filter-close-btn">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-  
-  <div class="filter-content">
-    
-    <section class="filter-section">
-      <h4>Sort By Price</h4>
-      <div class="filter-options" id="sort-options">
-        <label>
-          <input type="radio" name="sort" value="price-asc"> Low to High
-        </label>
-        <label>
-          <input type="radio" name="sort" value="price-desc"> High to Low
-        </label>
-        <label>
-          <input type="radio" name="sort" value="latest" checked> Newest First
-        </label>
+    <div class="cart-footer">
+      <div class="subtotal-row">
+        <span>Subtotal:</span>
+        <span class="subtotal-price" id="cart-subtotal">₹0.00</span>
       </div>
-    </section>
+      <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+    </div>
 
-    <section class="filter-section">
-  <h4>Price Range (₹)</h4>
-  <div class="price-range-inputs" style="display: flex; gap: 10px;">
-    <input type="number" id="min-price" placeholder="Min" style="width: 50%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-    <input type="number" id="max-price" placeholder="Max" style="width: 50%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
   </div>
-</section>
-    
-    <section class="filter-section">
-      <h4>Material</h4>
-      <div class="filter-options" id="material-options">
-        <label>
-          <input type="checkbox" value="Leather"> Leather
-        </label>
-        <label>
-          <input type="checkbox" value="Canvas"> Canvas
-        </label>
-        <label>
-          <input type="checkbox" value="Synthetic"> Synthetic
-        </label>
-        <label>
-          <input type="checkbox" value="Poly"> Poly
-        </label>
-        <label>
-          <input type="checkbox" value="Other"> Other
-        </label>
-      </div>
-    </section>
-    
+
+  <div class="filter-drawer" id="filter-drawer">
+
+    <div class="filter-header">
+      <h3>Filters</h3>
+      <button class="filter-close-btn" id="filter-close-btn">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="filter-content">
+
+      <section class="filter-section">
+        <h4>Sort By Price</h4>
+        <div class="filter-options" id="sort-options">
+          <label>
+            <input type="radio" name="sort" value="price-asc"> Low to High
+          </label>
+          <label>
+            <input type="radio" name="sort" value="price-desc"> High to Low
+          </label>
+          <label>
+            <input type="radio" name="sort" value="latest" checked> Newest First
+          </label>
+        </div>
+      </section>
+
+      <section class="filter-section">
+        <h4>Price Range (₹)</h4>
+        <div class="price-range-inputs" style="display: flex; gap: 10px;">
+          <input type="number" id="min-price" placeholder="Min"
+            style="width: 50%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+          <input type="number" id="max-price" placeholder="Max"
+            style="width: 50%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+      </section>
+
+      <section class="filter-section">
+        <h4>Material</h4>
+        <div class="filter-options" id="material-options">
+          <label>
+            <input type="checkbox" value="Leather"> Leather
+          </label>
+          <label>
+            <input type="checkbox" value="Canvas"> Canvas
+          </label>
+          <label>
+            <input type="checkbox" value="Synthetic"> Synthetic
+          </label>
+          <label>
+            <input type="checkbox" value="Poly"> Poly
+          </label>
+          <label>
+            <input type="checkbox" value="Other"> Other
+          </label>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="filter-footer">
+      <button class="btn-filter-clear" id="filter-clear-btn">Clear All</button>
+      <button class="btn-filter-apply" id="filter-apply-btn">Apply Filters</button>
+    </div>
+
   </div>
-  
-  <div class="filter-footer">
-    <button class="btn-filter-clear" id="filter-clear-btn">Clear All</button>
-    <button class="btn-filter-apply" id="filter-apply-btn">Apply Filters</button>
+
+  <div id="toast-popup">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toast-message">Product added to cart!</span>
   </div>
-  
-</div>
-
-<div id="toast-popup">
-  <i class="fa-solid fa-check-circle"></i>
-  <span id="toast-message">Product added to cart!</span>
-</div>
- 
 
 
-<script src="js/global.js"></script>
-<script src="js/products.js"></script>
-  
+
+  <script src="js/global.js"></script>
+  <script src="js/products.js"></script>
+
 </body>
+
 </html>

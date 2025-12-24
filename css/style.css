@@ -33,10 +33,10 @@ button { cursor: pointer; }
 
 .nav-left {
     display: flex !important;
-    flex-direction: row !important; /* Row mein laao */
+    flex-direction: row !important;
     align-items: center;
-    gap: 10px; /* Menu aur Logo ke beech gap */
-    flex-shrink: 0; /* Isko dabne mat do */
+    gap: -10px;
+    flex-shrink: 0;
 }
 .nav-right {
     display: flex;
@@ -50,21 +50,29 @@ button { cursor: pointer; }
 }.nav-left p{
   display: none;
 }
+.nav-left .logo {
+    flex-shrink: 0 !important; /* Browser ko bolo: Isko chota mat karna! */
+    display: flex;
+    align-items: center;
+    padding-right: 5px; /* Thoda sa gap search bar se */
+}
 .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
 }
 .logo img, .header-logo-img {
-    height: 28px !important; /* Logo ki height fix (choti) */
-    width: auto; /* Width apne aap adjust hogi */
-    max-width: 80px; /* Zyada chauda hone se roko */
-    object-fit: contain;
+    height: 65px !important;
+    width: auto !important;
+    max-width: none !important;
+    transform: scale(2);
+    margin: 0px 20px !important;
+    object-fit: contain !important;
     display: block;
 }
 
 .nav-icon {
-    font-size: 1.2rem;
+    font-size: 2rem;
     color: #333;
     margin: 0 !important; /* Purana margin hatao */
 }.nav-right .nav-icon:first-child { margin-left: 0; }
@@ -74,6 +82,7 @@ button { cursor: pointer; }
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 }
 
 .cart-count {
