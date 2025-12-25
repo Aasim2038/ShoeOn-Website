@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - ShoeOn B2B</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+
   <link rel="stylesheet" href="css/style.css">
-  
+
   <style>
-    body { background-color: #f4f4f4; }
+    body {
+      background-color: #f4f4f4;
+    }
+
     .auth-container {
       min-height: 100vh;
       display: flex;
@@ -17,51 +21,106 @@
       justify-content: center;
       padding: 20px;
     }
+
     .auth-box {
       background: white;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       width: 100%;
       max-width: 400px;
     }
-    .auth-header { text-align: center; margin-bottom: 20px; }
-    .auth-header h2 { color: #333; margin-bottom: 5px; }
-    .auth-header p { color: #777; font-size: 0.9rem; }
-    
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
-    .form-group input, .form-group textarea {
-      width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 20px;
     }
-    
+
+    .auth-header h2 {
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .auth-header p {
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
     .btn-auth {
-      width: 100%; background-color: #d3a14b; color: white;
-      padding: 12px; border: none; border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer;
+      width: 100%;
+      background-color: #d3a14b;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
     }
-    .btn-auth:hover { background-color: #c29140; }
-    
-    .auth-footer { text-align: center; margin-top: 15px; font-size: 0.9rem; }
-    .auth-footer a { color: #d3a14b; font-weight: bold; }
-    
-    #auth-message { margin-top: 15px; text-align: center; font-size: 0.9rem; }
+
+    .btn-auth:hover {
+      background-color: #c29140;
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    .auth-footer a {
+      color: #d3a14b;
+      font-weight: bold;
+    }
+
+    #auth-message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
+
 <body>
 
   <div class="auth-container">
     <div class="auth-box">
-      
+
       <div class="auth-header">
         <h2>ShoeOn Register</h2>
         <p>Create account for wholesale pricing</p>
       </div>
-      
+
       <form id="register-form">
-        
+
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" id="name" required placeholder="Your Name">
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" required placeholder="shop@gmail.com">
         </div>
         <div class="form-group">
           <label>Phone Number (Login ID)</label>
@@ -71,9 +130,9 @@
           <label>Password</label>
           <input type="password" id="password" required placeholder="Create Password">
         </div>
-        
+
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-        
+
         <div class="form-group">
           <label>Shop Name</label>
           <input type="text" id="shopName" required placeholder="e.g., Aasim Footwear">
@@ -86,20 +145,21 @@
           <label>GST Number (Optional)</label>
           <input type="text" id="gstNumber" placeholder="If available">
         </div>
-        
+
         <button type="submit" class="btn-auth">Register Shop</button>
         <div id="auth-message"></div>
-        
+
       </form>
-      
+
       <div class="auth-footer">
         Already have an account? <a href="login.html">Login here</a>
       </div>
-      
+
     </div>
   </div>
 
   <script src="js/register.js"></script>
 
 </body>
+
 </html>

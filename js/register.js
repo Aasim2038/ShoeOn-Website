@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // 1. Data jama karo
       const userData = {
         name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
         phone: document.getElementById('phone').value,
         password: document.getElementById('password').value,
         shopName: document.getElementById('shopName').value,

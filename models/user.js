@@ -25,7 +25,23 @@ const userSchema = new Schema({
   isAdmin: {
     type: Boolean,
     default: false
-  }
+  },
+
+  //5 reset password 
+  resetPasswordOtp: {
+    type: String, // String rakho taaki agar '0123' ho to zero na hate
+    default: undefined
+  },
+  resetPasswordExpires: {
+    type: Date,
+    default: undefined
+  },
+
+  email: { 
+    type: String, 
+    required: true, 
+    unique: true // Ek email se ek hi account banega
+  },
 
 }, { timestamps: true });
 

@@ -9,6 +9,8 @@ const Setting = require('./models/setting');
 const multer = require('multer'); // UPLOAD ke liye
 const cloudinary = require('cloudinary').v2; // UPLOAD ke liye
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const bcrypt = require('bcryptjs'); // Password hash karne ke liye (Zaroori hai)
 
 
 const JWT_SECRET = 'shoeon_secret_key_123';
@@ -63,6 +65,11 @@ cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET
+});
+
+app.use((req, res, next) => {
+  console.log(`Request Aayi: ${req.method} ${req.url}`);
+  next();
 });
 
 // --- 4. MULTER CONFIG ---
@@ -377,38 +384,34 @@ app.get('/api/dashboard-stats', async (req, res) => {
  * URL: /api/auth/register
  * ============================================
  */
-app.post('/api/auth/register', (req, res) => {
-  const userData = req.body;
-  // 1. Check karo ki phone number pehle se hai ya nahi
-  User.findOne({ phone: userData.phone })
-    .then(existingUser => {
-      
-      // Agar user mil gaya (Duplicate)
-      if (existingUser) {
-        // IMPORTANT: 'return' lagaya taaki code yahin ruk jaye
-        return res.status(400).json({ error: 'Phone number already registered!' });
-      }
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    // 👇 Email bhi receive karo
+    const { name, email, phone, password, shopName, shopAddress, gstNumber } = req.body;
 
-      // Agar user nahi mila, tabhi naya banao
-      const user = new User(userData);
-      
-      // User ko save karo
-      user.save()
-        .then(result => {
-          res.status(201).json({ message: 'Registration successful! Please wait for Admin approval.' });
-        })
-        .catch(err => {
-          console.error(err);
-          // Agar header nahi bheja gaya hai tabhi error bhejo
-          if (!res.headersSent) {
-            res.status(500).json({ error: 'Failed to save user.' });
-          }
-        });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Server error.' });
+    // Check karo Email ya Phone pehle se to nahi hai?
+    const existingUser = await User.findOne({ $or: [{ email }, { phone }] });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email or Phone already exists" });
+    }
+
+    // Naya user banao
+    const newUser = new User({
+      name,
+      email, // 👈 Save Email
+      phone,
+      password, // (Note: Password hash karna mat bhoolna agar nahi kiya hai to)
+      shopName,
+      shopAddress,
+      gstNumber
     });
+
+    await newUser.save();
+    res.json({ message: "Registration Successful" });
+
+  } catch (err) {
+    res.status(500).json({ error: "Server Error" });
+  }
 });
 
 /*
@@ -418,16 +421,24 @@ app.post('/api/auth/register', (req, res) => {
  * URL: /api/auth/login
  * ============================================
  */
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', async (req, res) => { // 👈 async zaroori hai
   const { phone, password } = req.body;
 
-  User.findOne({ phone: phone })
-    .then(user => {
+  try {
+      const user = await User.findOne({ phone: phone });
+      
       if (!user) {
         return res.status(404).json({ error: 'User not found. Please register.' });
       }
 
-      if (user.password !== password) {
+      // 🔍 STEP 1: PASSWORD CHECK (Bcrypt Comparison)
+      // Hum check karenge ki kya jo password user ne dala, wo database ke hash se match karta hai?
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      // Note: Agar purane users ke password plain text hain, toh wo login nahi kar payenge.
+      // Unhein bhi "Forgot Password" karke naya password banana padega.
+      
+      if (!isMatch) {
         return res.status(401).json({ error: 'Wrong password!' });
       }
 
@@ -435,18 +446,17 @@ app.post('/api/auth/login', (req, res) => {
         return res.status(403).json({ error: 'Account not approved yet.' });
       }
 
-      // ✅ STEP 4: Token Generate Karna
-      // 'mySecretKey' ki jagah koi strong secret use karein
+      // ✅ STEP 2: Token Generate Karna
       const token = jwt.sign(
-    { id: user._id, isAdmin: user.isAdmin }, 
-    JWT_SECRET, // <--- Wahi variable jo upar define kiya
-    { expiresIn: '7d' }
-);
+        { id: user._id, isAdmin: user.isAdmin }, 
+        JWT_SECRET, 
+        { expiresIn: '7d' }
+      );
 
-      // ✅ STEP 5: Token ko Response me bhejna
+      // ✅ STEP 3: Response Bhejo
       res.status(200).json({ 
         message: 'Login Successful!', 
-        token: token, // <--- YE BHEJNA ZAROORI HAI
+        token: token, 
         user: { 
           id: user._id, 
           name: user.name, 
@@ -455,11 +465,11 @@ app.post('/api/auth/login', (req, res) => {
           isOfflineCustomer: user.isOfflineCustomer 
         } 
       });
-    })
-    .catch(err => {
+
+  } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Server error during login' });
-    });
+  }
 });
 
 
@@ -955,3 +965,92 @@ app.put('/api/users/:id', async (req, res) => {
     }
 });
 
+// 1. Email Sender Setup (Apna Gmail use karein)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'aasim2038y@gmail.com', // 🔴 Apna Asli Email yahan daalo
+        pass: 'mxcc halh dzgk iuzg'      // 🔴 Gmail App Password (Normal password nahi chalega)
+    }
+});
+
+// --- API 1: SEND OTP ---
+app.post('/api/forgot-password', async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // 4 Digit OTP Generate karo
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        
+        // Database mein OTP aur Expiry (10 min) save karo
+        user.resetPasswordOtp = otp;
+        user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 Minutes
+        await user.save();
+
+        // Email Bhejo
+        const mailOptions = {
+            from: 'ShoeOn Support <no-reply@shoeon.in>',
+            to: email,
+            subject: 'Password Reset OTP - ShoeOn',
+            text: `Your OTP for password reset is: ${otp}. It is valid for 10 minutes.`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ message: "Error sending email" });
+            }
+            res.json({ message: "OTP sent to email" });
+        });
+
+    } catch (err) {
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
+// --- API 2: VERIFY OTP ---
+app.post('/api/verify-otp', async (req, res) => {
+    const { email, otp } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        
+        if (!user || user.resetPasswordOtp !== otp || user.resetPasswordExpires < Date.now()) {
+            return res.status(400).json({ message: "Invalid or Expired OTP" });
+        }
+
+        res.json({ message: "OTP Verified" });
+    } catch (err) {
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
+// --- API 3: RESET PASSWORD ---
+app.post('/api/reset-password', async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+    try {
+        const user = await User.findOne({ email });
+
+        // Security Check: Dobara check karo ki OTP valid hai (Hackers ko rokne ke liye)
+        if (!user || user.resetPasswordOtp !== otp || user.resetPasswordExpires < Date.now()) {
+            return res.status(400).json({ message: "Invalid Request" });
+        }
+
+        // Password Hash karke save karo
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+
+        // OTP use ho gaya, ab hata do
+        user.resetPasswordOtp = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.json({ message: "Password Changed Successfully" });
+
+    } catch (err) {
+        res.status(500).json({ message: "Server Error" });
+    }
+});
