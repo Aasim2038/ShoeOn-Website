@@ -22,42 +22,96 @@ button { cursor: pointer; }
    2. HEADER / NAVBAR
    ========================================= */
 .main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+    height: 60px; /* Height fix kar di taaki kuch hile nahi */
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    gap: 5px; /* Items ke beech thoda gap */
 }
 
- .nav-left{flex-direction: column; justify-content: center;}
-.nav-left, .nav-right { display: flex; align-items: center; flex-shrink: 0; }
-.nav-center { flex-grow: 1; padding: 0 15px; }
-.nav-left p{
+.nav-left {
+    display: flex !important;
+    flex-direction: row !important; /* Row mein laao */
+    align-items: center;
+    gap: 10px; /* Menu aur Logo ke beech gap */
+    flex-shrink: 0; /* Isko dabne mat do */
+}
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Icons ke beech gap */
+    flex-shrink: 0;
+}.nav-center {
+    flex-grow: 1; /* Bachi hui jagah lega */
+    margin: 0 5px; /* Side se thoda gap */
+    min-width: 0; /* Taaki flexbox mein shrink ho sake */
+}.nav-left p{
   display: none;
 }
-.logo { font-size: 2.4rem; font-weight: bold; margin-left: 1px; color: #333; display: none; }
-.nav-icon { font-size: 1.3rem; color: #555; margin-left: 15px; position: relative; }
-.nav-right .nav-icon:first-child { margin-left: 0; }
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.logo img, .header-logo-img {
+    height: 28px !important; /* Logo ki height fix (choti) */
+    width: auto; /* Width apne aap adjust hogi */
+    max-width: 80px; /* Zyada chauda hone se roko */
+    object-fit: contain;
+    display: block;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0 !important; /* Purana margin hatao */
+}.nav-right .nav-icon:first-child { margin-left: 0; }
+
+.nav-icon, #cart-icon-btn {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+}
 
 .cart-count {
-  position: absolute; top: -5px; right: -8px;
-  background-color: #d9534f; color: white;
-  border-radius: 50%; padding: 2px 5px;
-  font-size: 0.7rem; font-weight: bold;
+    position: absolute !important;
+    top: -8px !important;   /* Thoda upar */
+    right: -8px !important; /* Thoda right */
+    
+    background-color: #ff3b30 !important; /* Red Color */
+    color: white !important;
+    font-size: 10px !important;
+    font-weight: bold;
+    
+    min-width: 18px; /* Golai ke liye */
+    height: 18px;
+    border-radius: 50%; /* Gol shape */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    z-index: 10;
+    border: 2px solid white; /* Border taaki saaf dikhe */
 }
+
 
 .search-bar {
-  display: flex; align-items: center;
-  background-color: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px; padding: 8px 12px;
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
 }
-.search-bar input { border: none; background: transparent; width: 100%; outline: none; }
-
+.search-bar input {
+    width: 100%;
+    font-size: 13px; /* Font thoda chota mobile ke liye */
+}
 /* =========================================
    3. MOBILE NAVIGATION (Hamburger Menu)
    ========================================= */
@@ -548,33 +602,71 @@ button { cursor: pointer; }
 }
 
 @media (min-width: 768px) {
+  
+  /* 1. Global Width Control */
   body { background-color: #e9e9e9; }
   .main-header, .container, .site-footer { max-width: 1200px; margin: 0 auto; }
+
+  /* 2. Header Ko Bada Karo (Desktop Feel) */
+  .main-header {
+      height: 80px; /* Height badhayi */
+      padding: 0 30px; /* Side spacing badhayi */
+      gap: 40px; /* Elements ke beech khula gap */
+  }
+
+  /* 3. LOGO FIX (Mobile wala rule todne ke liye) */
+  /* Mobile par 28px tha, yahan hum override kar rahe hain */
+  .logo img, .header-logo-img {
+      height: 50px !important; /* Bada Logo */
+      width: auto !important;
+      max-width: none !important; /* Width limit hatao */
+      margin-top: 0;
+  }
   
-  /* Desktop Nav */
-  .nav-left .logo{ display: block; font-size: 2.1rem; }
-  #menu-toggle { display: none; }
+  /* Menu Button Desktop par gayab */
+  #menu-toggle { 
+      display: none !important; /* !important zaroori hai */
+  }
+
+  /* 4. Search Bar (Center & Wide) */
+  .nav-center {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+  }
+  .search-bar {
+      width: 100%;
+      max-width: 600px; /* Search bar ki chaudai control mein */
+      height: 45px; /* Thoda bada input box */
+  }
+  .search-bar input {
+      font-size: 1rem;
+  }
+
+  /* 5. Right Icons */
+  .nav-right {
+      gap: 20px;
+  }
+  .nav-icon {
+      font-size: 1.4rem; /* Icons thode bade */
+      cursor: pointer;
+      display: none;
+  }
+
+  /* --- BAAKI DESKTOP STYLES (Same as before) --- */
   .category-nav { justify-content: center; }
   .horizontal-list { justify-content: center; }
   
-  /* Desktop Grid */
   .product-grid-container { grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 20px; }
   .plp-image-box img { height: 200px; }
   
-  /* Slider */
   .slide { height: 400px; }
-  .hero-banner-slider {
-    min-height: 400px; /* Desktop ke liye */
-  }
-  .whatsapp-float {
-        width: 50px;
-        height: 50px;
-        bottom: 20px;
-        right: 20px;
-        font-size: 25px;
-    }
+  .hero-banner-slider { min-height: 400px; }
   
-  /* Footer */
+  .whatsapp-float { width: 50px; height: 50px; bottom: 20px; right: 20px; font-size: 25px; }
+  .slogen { display: none !important; }
+  
   .footer-container { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
   .footer-column { flex: 1; min-width: 200px; }
 }
