@@ -8,12 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const invoiceBtn = document.getElementById('view-invoice-btn');
 
     // --- 2. Initial Setup (Order ID Display) ---
-    if (orderNo && displayId) { 
+    if (orderNo && displayId) {
         displayId.innerText = `Order ID: #SHO-${orderNo}`; // FIX: Yahan se Order ID page par dikhega
     }
 
     // --- 3. Invoice Button Click Listener ---
-  invoiceBtn.addEventListener('click', () => {
+    invoiceBtn.addEventListener('click', () => {
         if (!orderNo) {
             alert("Order ID missing. Cannot generate invoice.");
             return;
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prefix hata kar sirf number bhejo (clean handling)
         let cleanedOrderNo = orderNo.replace('SH-', '').replace('#SHO-', '').trim();
-        
+
         // Backend API call (Order Details ke liye)
         fetch(`/api/orders/details/${cleanedOrderNo}`)
             .then(res => {
@@ -50,30 +50,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 4. generateDigitalInvoice Function (Same as before) ---
 
-function generateDigitalInvoice(order) {
-    try {
-        // 1. ITEMS LIST
-        const itemsList = Array.isArray(order.orderItems) ? order.orderItems : [];
-        if (itemsList.length === 0) {
-            alert("No items found!");
-            return;
-        }
+    function generateDigitalInvoice(order) {
+        try {
+            // 1. ITEMS LIST
+            const itemsList = Array.isArray(order.orderItems) ? order.orderItems : [];
+            if (itemsList.length === 0) {
+                alert("No items found!");
+                return;
+            }
 
-        // 2. CALCULATE GROSS TOTAL
-        let grossTotal = 0;
-        let itemsRows = '';
-        let serialNumber = 1;
+            // 2. CALCULATE GROSS TOTAL
+            let grossTotal = 0;
+            let itemsRows = '';
+            let serialNumber = 1;
 
-        itemsList.forEach((item) => {
-            const unitPrice = parseFloat(item.price || item.unitPrice || 0); 
-            const qty = parseInt(item.quantity || item.moq || 0);
-            const packs = parseInt(item.packs || 1);
-            const hsn = item.hsn || "64029990"; 
+            itemsList.forEach((item) => {
+                const unitPrice = parseFloat(item.price || item.unitPrice || 0);
+                const qty = parseInt(item.quantity || item.moq || 0);
+                const packs = parseInt(item.packs || 1);
+                const hsn = item.hsn || "64029990";
 
-            const lineTotal = unitPrice * qty;
-            grossTotal += lineTotal;
+                const lineTotal = unitPrice * qty;
+                grossTotal += lineTotal;
 
-            itemsRows += `
+                itemsRows += `
                 <tr>
                     <td style="padding:8px; border-bottom:1px solid #eee; font-size:12px; text-align:center;">${serialNumber++}</td>
                     <td style="padding:8px; border-bottom:1px solid #eee; font-size:12px;">
@@ -89,52 +89,52 @@ function generateDigitalInvoice(order) {
                     <td style="padding:8px; border-bottom:1px solid #eee; text-align:right; font-size:12px;">₹${lineTotal.toFixed(2)}</td>
                 </tr>
             `;
-        });
+            });
 
-        // 3. SPECIAL CALCULATION LOGIC (FIX FOR 0.01 DIFFERENCE)
-        // Hum wahi values use karenge jo screen par dikhni hain (toFixed(2))
-        
-        // A. Raw Calculations (Internal)
-        const taxableRaw = grossTotal / 1.05; 
-        const totalTaxRaw = grossTotal - taxableRaw;
-        
-        // B. Display Values (Jo Bill par print honge) - INKO FIX KARO
-        const d_Gross = parseFloat(grossTotal.toFixed(2));
-        
-        // Requirement: Discount = Tax Amount
-        const d_Discount = parseFloat(totalTaxRaw.toFixed(2)); 
+            // 3. SPECIAL CALCULATION LOGIC (FIX FOR 0.01 DIFFERENCE)
+            // Hum wahi values use karenge jo screen par dikhni hain (toFixed(2))
 
-        const cgstRaw = totalTaxRaw / 2;
-        const sgstRaw = totalTaxRaw / 2;
-        
-        const d_CGST = parseFloat(cgstRaw.toFixed(2));
-        const d_SGST = parseFloat(sgstRaw.toFixed(2));
-        
-        const d_Taxable = parseFloat(taxableRaw.toFixed(2));
+            // A. Raw Calculations (Internal)
+            const taxableRaw = grossTotal / 1.05;
+            const totalTaxRaw = grossTotal - taxableRaw;
 
-        // C. Visible Total Calculation (Manual Check)
-        // Formula: Gross - Discount + CGST + SGST
-        // Example: 776.00 - 36.95 + 18.48 + 18.48 = 776.01
-        const visibleTotal = d_Gross - d_Discount + d_CGST + d_SGST;
+            // B. Display Values (Jo Bill par print honge) - INKO FIX KARO
+            const d_Gross = parseFloat(grossTotal.toFixed(2));
 
-        // D. Grand Total (Wanted Result)
-        const grandTotalRounded = Math.round(d_Gross); // Should be 776
-        
-        // E. Round Off (Difference between User Calc and Wanted Result)
-        // 776.00 - 776.01 = -0.01
-        const roundOffDiff = grandTotalRounded - visibleTotal;
+            // Requirement: Discount = Tax Amount
+            const d_Discount = parseFloat(totalTaxRaw.toFixed(2));
 
-        let billedToHTML = `<strong>${order.customerName}</strong>`;
-        if (order.shopName && order.shopName.trim().toUpperCase() !== "GUEST SHOP" && order.shopName !== "undefined") {
-            billedToHTML = `<strong style="font-size: 14px; text-transform: uppercase;">${order.shopName}</strong><br>
+            const cgstRaw = totalTaxRaw / 2;
+            const sgstRaw = totalTaxRaw / 2;
+
+            const d_CGST = parseFloat(cgstRaw.toFixed(2));
+            const d_SGST = parseFloat(sgstRaw.toFixed(2));
+
+            const d_Taxable = parseFloat(taxableRaw.toFixed(2));
+
+            // C. Visible Total Calculation (Manual Check)
+            // Formula: Gross - Discount + CGST + SGST
+            // Example: 776.00 - 36.95 + 18.48 + 18.48 = 776.01
+            const visibleTotal = d_Gross - d_Discount + d_CGST + d_SGST;
+
+            // D. Grand Total (Wanted Result)
+            const grandTotalRounded = Math.round(d_Gross); // Should be 776
+
+            // E. Round Off (Difference between User Calc and Wanted Result)
+            // 776.00 - 776.01 = -0.01
+            const roundOffDiff = grandTotalRounded - visibleTotal;
+
+            let billedToHTML = `<strong>${order.customerName}</strong>`;
+            if (order.shopName && order.shopName.trim().toUpperCase() !== "GUEST SHOP" && order.shopName !== "undefined") {
+                billedToHTML = `<strong style="font-size: 14px; text-transform: uppercase;">${order.shopName}</strong><br>
                             <span style="font-size: 12px; font-weight: normal;">Contact: ${order.customerName}</span>`;
-        }
+            }
 
-        // 4. HTML GENERATION
-        const invoiceWindow = window.open('', '_blank');
-        if (!invoiceWindow) return;
+            // 4. HTML GENERATION
+            const invoiceWindow = window.open('', '_blank');
+            if (!invoiceWindow) return;
 
-       const invoiceHTML = `
+            const invoiceHTML = `
     <html>
     <head>
         <title>Invoice #${order.orderNumber}</title>
@@ -173,10 +173,11 @@ function generateDigitalInvoice(order) {
 
         <div class="invoice-container">
             <div class="header-box">
-                <div class="company-details">
-                    <h2>ShoeOn</h2>
-                    <p style="font-size: 14px; font-weight: bold; color: #555;">We Connects You</p>
-                </div>
+              <div class="checkout-header" style="text-align: left; padding-bottom: 20px;">
+        
+        <img src="images/logo.png" alt="ShoeOn Logo" style="width: 280px; height: auto; display: block; margin-left: -62px; margin-bottom: -68px; margin-top: -50px;">
+        </a>
+      </div>
                 <div style="text-align: right;">
                     <h3>TAX INVOICE</h3>
                     <p style="font-size:12px;">No: #SHO-${order.orderNumber}<br>Date: ${new Date().toLocaleDateString('en-IN')}</p>
@@ -254,12 +255,12 @@ function generateDigitalInvoice(order) {
     </body>
     </html>`;
 
-        invoiceWindow.document.write(invoiceHTML);
-        invoiceWindow.document.close();
+            invoiceWindow.document.write(invoiceHTML);
+            invoiceWindow.document.close();
 
-    } catch (e) {
-        console.error(e);
-        alert("Error generating invoice");
+        } catch (e) {
+            console.error(e);
+            alert("Error generating invoice");
+        }
     }
-}
 });
