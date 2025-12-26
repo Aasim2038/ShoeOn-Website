@@ -1,11 +1,28 @@
 /* =========================================
-   LOGIN.JS - UPDATED FIXED CODE
+   LOGIN.JS - UPDATED (With Show Password Feature)
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('login-form');
     const messageDiv = document.getElementById('login-message');
 
+    // --- 1. SHOW/HIDE PASSWORD LOGIC (New) ---
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function () {
+            // Type toggle karo (password <-> text)
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Icon toggle karo (Eye <-> Eye Slash)
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    // --- 2. LOGIN FORM SUBMISSION ---
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -33,9 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return; 
                 } 
                 
-                // data.token ka check yahan zaroori hai
                 if (data.token && data.user) {
-                    // ✅ TOKEN SAVE KARNA ZAROORI HAI
                     localStorage.setItem('authToken', data.token); 
                     localStorage.setItem('shoeonUser', JSON.stringify(data.user)); 
 

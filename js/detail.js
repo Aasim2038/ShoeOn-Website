@@ -53,6 +53,21 @@ document.addEventListener("DOMContentLoaded", () => {
       // NOTE: Ab hum har jagah 'finalPrice' use karenge instead of 'salePrice'
 
       const comparePrice = parseFloat(product.comparePrice) || mrp;
+
+      let marginAmount = 0;
+      let marginPercent = 0;
+      let discountPercent = 0;
+
+      // 2. Margin Calculate Karo (Retailer ka Profit: MRP - Wholesale Price)
+      if (mrp > finalPrice) {
+          marginAmount = mrp - finalPrice;
+          marginPercent = ((mrp - finalPrice) / mrp) * 100;
+      }
+
+      // 3. Discount Calculate Karo (Compare Price - Selling Price)
+      if (comparePrice > finalPrice) {
+          discountPercent = ((comparePrice - finalPrice) / comparePrice) * 100;
+      }
       const currentStock = parseInt(product.stock) || 0;
       const packSelect = document.getElementById('pack-count');
       const customInput = document.getElementById('custom-pack-input');

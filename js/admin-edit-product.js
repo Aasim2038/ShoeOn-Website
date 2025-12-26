@@ -4,12 +4,12 @@
 
 // --- 0. CONSTANTS (Global Scope) ---
 const CATEGORY_DATA = {
-    "men": ["Casual", "PU-Chappal", "Sandals", "Sports-Shoes" , "Crocks", "Safty Shoe" ,  "Loose-products"],
-    "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Safty Shoe" , "Loose-products"],
-    "boys": ["Sports-Shoes", "PU-Chappal", "Sandals" , "School-Shoes" , "Crocks", "Loose-Products"],
-    "girls": ["Bellies", "PU-Chappal", "PU-Sandals" , "School-Bellies" , "Crocks", "Loose-Products"],
-    "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
-    "party": ["Womens", "Gilrs"],
+    "men": ["Casual", "PU-Chappal", "Sandals", "Sports-Shoes", "Crocks", "Safty Shoe", "Loose-products"],
+    "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Safty Shoe", "Loose-products"],
+    "boys": ["Sports-Shoes", "PU-Chappal", "Sandals", "School-Shoes", "Crocks", "Loose-Products"],
+    "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Bellies", "Crocks", "Loose-Products"],
+    "Loose": ["Womens", "Men", "Boys", "Girls", "Kids"], 
+    "party": ["Womens", "Girls"],
 };
 
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR','Phylon', 'Double Density'];

@@ -8,8 +8,8 @@ const CATEGORY_DATA = {
     "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Safty Shoe", "Loose-products"],
     "boys": ["Sports-Shoes", "PU-Chappal", "Sandals", "School-Shoes", "Crocks", "Loose-Products"],
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Bellies", "Crocks", "Loose-Products"],
-    "Loose": ["Womens", "Men", "Boys", "Gilrs", "Kids"],
-    "party": ["Womens", "Gilrs"],
+    "Loose": ["Womens", "Men", "Boys", "Girls", "Kids"], 
+    "party": ["Womens", "Girls"],
 };
 
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR', 'Phylon', 'Double Density'];
