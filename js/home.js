@@ -67,7 +67,7 @@ const allCategoryData = {
     title: 'Party Wear Footwear',
     items: [
       { name: 'Womens', img: 'images/sub-cat/women-party.webp', url: 'products.html?category=party-womens' },
-      { name: 'Girls', img: 'images/sub-cat/girl-party.webp', url: 'products.html?category=party-gilrs' },
+      { name: 'Girls', img: 'images/sub-cat/girl-party.webp', url: 'products.html?category=party-girls' },
     ]
   }
 };

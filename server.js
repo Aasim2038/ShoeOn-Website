@@ -169,14 +169,12 @@ app.get('/api/products', async (req, res) => {
             ];
         }
 
-        // --- 2. Category Filter ---
+       // --- 2. Category Filter (MAGIC FIX) ---
         if (req.query.category && req.query.category !== '') {
-            filter.category = req.query.category;
-        }
+            const catQuery = req.query.category;
+            const flexiblePattern = catQuery.replace(/[- ]/g, '[- ]');
 
-        // --- 3. Loose Product Filter ---
-        if (req.query.isLoose === 'true') {
-            filter.isLoose = true;
+            filter.category = { $regex: new RegExp(`^${flexiblePattern}$`, 'i') };
         }
 
         // --- 4. Material Filter ---
@@ -1054,5 +1052,71 @@ app.post('/api/reset-password', async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ message: "Server Error" });
+    }
+});
+
+// ==============================================
+// 🛠️ TEMPORARY: EK CLICK ME DUMMY PRODUCTS BANAO
+// URL: http://localhost:3000/api/fill-dummy-data
+// ==============================================
+app.get('/api/fill-dummy-data', async (req, res) => {
+    try {
+        // Tumhari Categories ki List (Jo admin file me thi)
+        const CATEGORY_DATA = {
+            "men": ["Casual", "PU-Chappal", "Sandals", "Sports-Shoes", "Crocks", "Safty Shoe", "Loose-products"],
+            "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Safty Shoe", "Loose-products"],
+            "boys": ["Sports-Shoes", "PU-Chappal", "Sandals", "School-Shoes", "Crocks", "Loose-Products"],
+            "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Bellies", "Crocks", "Loose-Products"],
+            "Loose": ["Womens", "Men", "Boys", "Girls", "Kids"], 
+            "party": ["Womens", "Girls"],
+        };
+
+        let count = 0;
+
+        // Har Category ke liye Loop chalayenge
+        for (const [mainCat, subCats] of Object.entries(CATEGORY_DATA)) {
+            for (const subCat of subCats) {
+                
+                // Category ka naam banana (Jaisa Admin Panel banata hai)
+                // Example: men + Casual = men-casual
+                const categoryName = `${mainCat}-${subCat.toLowerCase()}`; // Dash aur Lowercase
+                
+                // Product Create Karo
+                const dummyProduct = new Product({
+                    name: `Test ${subCat} (${mainCat})`,
+                    brand: "Test Brand",
+                    description: "This is a dummy product for testing.",
+                    mrp: 999,
+                    salePrice: 499,
+                    offlinePrice: 450,
+                    moq: 4,
+                    stock: 100,
+                    category: categoryName, // Asli Magic Yahan Hai
+                    isLoose: mainCat === "Loose", // Agar Loose hai to true
+                    images: ["images/placeholder.jpg"], // Ek nakli image
+                    tags: ["Featured"]
+                });
+
+                await dummyProduct.save();
+                count++;
+            }
+        }
+
+        res.send(`<h1>Done! ✅</h1><p>${count} Dummy Products added. Ab site check karo!</p>`);
+
+    } catch (err) {
+        res.status(500).send("Error: " + err.message);
+    }
+});
+
+// 🗑️ CLEANUP: SAARA KACHRA DELETE KARNE KE LIYE
+// URL: http://localhost:3000/api/delete-dummy-data
+app.get('/api/delete-dummy-data', async (req, res) => {
+    try {
+        // Sirf wahi delete karenge jinka brand "Test Brand" hai
+        await Product.deleteMany({ brand: "Test Brand" });
+        res.send("<h1>Cleaned! 🧹</h1><p>Saare dummy products delete ho gaye.</p>");
+    } catch (err) {
+        res.status(500).send("Error: " + err.message);
     }
 });
