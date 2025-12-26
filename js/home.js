@@ -14,9 +14,7 @@ const allCategoryData = {
       { name: 'Sandals', img: 'images/sub-cat/sandals.webp', url: 'products.html?category=men-sandals' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.webp', url: 'products.html?category=men-sports-shoes' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=men-crocks' },
-      { name: 'Safety Shoe', img: 'images/sub-cat/msafety-shoes.webp', url: 'products.html?category=men-safty%20shoe' },
-      { name: 'Loose Products', img: 'images/catogyloose.webp', url: 'products.html?category=men-loose-products' }
-    ]
+      { name: 'Safety Shoe', img: 'images/sub-cat/msafety-shoes.webp', url: 'products.html?category=men-safty%20shoe' },    ]
   },
 
   'women-sheet': {
@@ -67,7 +65,7 @@ const allCategoryData = {
     title: 'Party Wear Footwear',
     items: [
       { name: 'Womens', img: 'images/sub-cat/women-party.webp', url: 'products.html?category=party-womens' },
-      { name: 'Girls', img: 'images/sub-cat/girl-party.webp', url: 'products.html?category=party-girls' },
+      { name: 'Girls', img: 'images/sub-cat/girl-party.webp', url: 'products.html?category=party-girs' },
     ]
   }
 };
