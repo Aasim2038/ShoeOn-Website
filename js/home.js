@@ -255,29 +255,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const introOverlay = document.getElementById('intro-overlay');
   const introVideo = document.getElementById('intro-video');
 
-  // Sirf tab chalega jab HTML uncommented ho
   if (introOverlay && introVideo) {
-
-    // 1. Jab video khatam ho jaye, to overlay hata do
+    // 1. Jab video khatam ho, overlay hata do
     introVideo.onended = function () {
       closeIntro();
     };
 
-    // 2. Safety: Agar 5 second mein video load na ho to hata do (Fallback)
+    // 2. Fallback: Agar video load nahi hui to 5 sec baad hata do
     setTimeout(() => {
-      // Agar video atak gaya to 6 second baad auto close
-      // closeIntro(); 
-    }, 8000);
+       // closeIntro(); // Isse uncomment kar dena agar safety chahiye
+    }, 5000);
   }
 });
 
-// Function to close intro
 function closeIntro() {
   const introOverlay = document.getElementById('intro-overlay');
   if (introOverlay) {
-    introOverlay.style.opacity = '0'; // Smooth fade out
+    introOverlay.style.opacity = '0';
     setTimeout(() => {
-      introOverlay.style.display = 'none'; // Remove from screen
-    }, 500); // 0.5 sec ka fade animation
+      introOverlay.style.display = 'none';
+    }, 500);
   }
 }

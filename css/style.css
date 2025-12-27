@@ -679,3 +679,42 @@ button { cursor: pointer; }
   .footer-container { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
   .footer-column { flex: 1; min-width: 200px; }
 }
+
+#intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000; /* Black background */
+    z-index: 9999; /* Sabse upar dikhega */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease; /* Smooth gayab hone ke liye */
+}
+
+#intro-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Video poore screen par fit hogi */
+}
+
+#skip-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 10000;
+}
+
+#skip-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+    color: black;
+}
