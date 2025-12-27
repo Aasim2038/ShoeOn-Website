@@ -124,6 +124,11 @@ function generateDigitalInvoice(order) {
         // 776.00 - 776.01 = -0.01
         const roundOffDiff = grandTotalRounded - visibleTotal;
 
+        let billedToHTML = `<strong>${order.customerName}</strong>`;
+        if (order.shopName && order.shopName.trim().toUpperCase() !== "GUEST SHOP" && order.shopName !== "undefined") {
+            billedToHTML = `<strong style="font-size: 14px; text-transform: uppercase;">${order.shopName}</strong><br>
+                            <span style="font-size: 12px; font-weight: normal;">Contact: ${order.customerName}</span>`;
+        }
 
         // 4. HTML GENERATION
         const invoiceWindow = window.open('', '_blank');
@@ -178,9 +183,11 @@ function generateDigitalInvoice(order) {
                 </div>
             </div>
 
-            <div class="address-grid">
+           <div class="address-grid">
                 <div class="address-col">
-                    <strong>Billed To:</strong><br>${order.customerName}<br>Ph: ${order.customerPhone}
+                    <strong>Billed To:</strong><br>
+                    ${billedToHTML} <br>
+                    Ph: ${order.customerPhone}
                 </div>
                 <div class="address-col">
                     <strong>Shipped To:</strong><br>${order.shippingAddress || 'Same as Billing'}<br>State: 27 (MH)

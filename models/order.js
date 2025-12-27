@@ -9,6 +9,7 @@ const orderSchema = new Schema({
     required: true,
     unique: true
   },
+  shopName: { type: String },
   customerName: { type: String, required: true },
   customerPhone: { type: String, required: true },
   shippingAddress: { type: String, required: true },

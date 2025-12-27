@@ -1,5 +1,5 @@
 /* =========================================
-   ADMIN-ORDER-DETAIL.JS (SUCCESS LOGIC WITH DISCOUNT)
+   ADMIN-ORDER-DETAIL.JS (WITH WORDS CONVERTER & SHOP NAME)
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderOrderDetails(order) {
         if(orderIdEl) orderIdEl.innerText = `#${order.orderNumber}`;
         if(paymentIdEl) paymentIdEl.innerText = order.paymentId || 'COD/Manual';
+        
+        // Admin Panel pe Customer Name hi rehne do (Invoice me change karenge)
         if(customerNameEl) customerNameEl.innerText = order.customerName;
         if(customerPhoneEl) customerPhoneEl.innerText = order.customerPhone;
         
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if(orderStatusEl) orderStatusEl.value = order.status;
 
-        // --- Render Admin Table (Smart Logic for Display) ---
+        // --- Render Admin Table ---
         if (itemsTableBody) {
             itemsTableBody.innerHTML = '';
             const items = order.orderItems || [];
@@ -58,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let packs = parseInt(item.packs) || 0;
                 let totalQty = parseInt(item.quantity || item.qty) || 0;
 
-                // Smart Fix: Calculate Packs if missing (Admin View)
                 if (totalQty > moq && (packs <= 1)) {
                     packs = Math.floor(totalQty / moq);
                 }
@@ -114,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /* =================================================================
-   INVOICE GENERATOR (SUCCESS PAGE LOGIC WITH DISCOUNT)
+   INVOICE GENERATOR (UPDATED: SHOP NAME & WORDS)
    ================================================================= */
 function generateSuccessStyleInvoice(order) {
     try {
@@ -122,7 +123,7 @@ function generateSuccessStyleInvoice(order) {
         if (items.length === 0) { alert("No items found"); return; }
 
         let itemsRows = '';
-        let grossTotal = 0; // Use Gross Total like success.js
+        let grossTotal = 0;
         let serialNumber = 1;
 
         // --- ITEM LOOP ---
@@ -130,26 +131,21 @@ function generateSuccessStyleInvoice(order) {
             const unitPrice = parseFloat(item.price || 0);
             const hsn = item.hsn || "64029990";
 
-            // --- SMART LOGIC (Ensures Packs & Qty show correctly) ---
             const moq = parseInt(item.moq) || 1;
             let packs = parseInt(item.packs) || 0;
             let totalQty = parseInt(item.quantity || item.qty) || 0;
 
-            // Logic: Agar Total Qty MOQ se badi hai, aur packs chhota hai, to Packs recalculate karo
             if (totalQty > moq && packs <= 1) {
                 packs = Math.floor(totalQty / moq);
             }
-            // Fallback
             if (totalQty === 0) {
                 packs = packs || 1;
                 totalQty = packs * moq;
             }
 
-            // Calculation
             const lineTotal = unitPrice * totalQty;
             grossTotal += lineTotal;
 
-            // HTML Row (Matches Success Page Style)
             itemsRows += `
             <tr>
                 <td style="padding:8px; border-bottom:1px solid #eee; font-size:12px; text-align:center;">${serialNumber++}</td>
@@ -167,17 +163,11 @@ function generateSuccessStyleInvoice(order) {
             </tr>`;
         });
 
-        // --- CALCULATION LOGIC (COPIED EXACTLY FROM SUCCESS.JS) ---
-        // Requirement: Show Discount equals to Tax, so Final Amount = Item Total
-        
-        // A. Raw Calculations
+        // --- CALCULATION LOGIC ---
         const taxableRaw = grossTotal / 1.05; 
         const totalTaxRaw = grossTotal - taxableRaw;
         
-        // B. Display Values
         const d_Gross = parseFloat(grossTotal.toFixed(2));
-        
-        // Discount logic: Discount = Tax Amount
         const d_Discount = parseFloat(totalTaxRaw.toFixed(2)); 
 
         const cgstRaw = totalTaxRaw / 2;
@@ -186,16 +176,25 @@ function generateSuccessStyleInvoice(order) {
         const d_CGST = parseFloat(cgstRaw.toFixed(2));
         const d_SGST = parseFloat(sgstRaw.toFixed(2));
 
-        // C. Final Total Calculation
-        // Formula: Gross - Discount + CGST + SGST = Gross (approx)
         const visibleTotal = d_Gross - d_Discount + d_CGST + d_SGST;
-
-        // D. Rounding
         const grandTotalRounded = Math.round(d_Gross); 
         const roundOffDiff = grandTotalRounded - visibleTotal;
 
+        // 🔥 NEW: Convert Amount to Words
+        const amountInWords = numberToWords(grandTotalRounded);
 
-        // --- HTML TEMPLATE (WITH DISCOUNT ROW) ---
+        // 🔥 NEW: Shop Name Logic (Agar shopName empty hai to CustomerName dikhayega)
+       let billedToName = order.customerName; 
+        let contactPerson = '';
+
+        // Agar Shop Name asli hai (Empty nahi hai AUR "Guest Shop" nahi hai)
+        if (order.shopName && order.shopName.trim().toUpperCase() !== "GUEST SHOP" && order.shopName !== "undefined") {
+            billedToName = order.shopName; // To Dukaan ka naam bada dikhao
+            // Aur Customer ko Contact Person bana do
+            contactPerson = `<br><span style="font-size:11px; font-weight:normal;">Contact: ${order.customerName}</span>`; 
+        }
+
+        // --- HTML TEMPLATE ---
         const invoiceHTML = `
         <html>
         <head>
@@ -240,13 +239,16 @@ function generateSuccessStyleInvoice(order) {
                     </div>
                     <div style="text-align: right;">
                         <h3>TAX INVOICE</h3>
-                        <p style="font-size:12px;">No: #SHO-${order.orderNumber}<br>Date: ${new Date().toLocaleDateString('en-IN')}</p>
+                        <p style="font-size:12px;">No: #SHO-${order.orderNumber}<br>Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}</p>
                     </div>
                 </div>
 
                 <div class="address-grid">
                     <div class="address-col">
-                        <strong>Billed To:</strong><br>${order.customerName}<br>Ph: ${order.customerPhone}
+                        <strong>Billed To:</strong><br>
+                        <span style="font-size:14px; font-weight:bold; text-transform:uppercase;">${billedToName}</span>
+                        ${contactPerson}
+                        <br>Ph: ${order.customerPhone}
                     </div>
                     <div class="address-col">
                         <strong>Shipped To:</strong><br>${order.shippingAddress || 'Same as Billing'}<br>State: 27 (MH)
@@ -276,12 +278,10 @@ function generateSuccessStyleInvoice(order) {
                             <td>Total Amount:</td>
                             <td>₹${d_Gross.toFixed(2)}</td>
                         </tr>
-
                         <tr>
                             <td>Less: Discount (4.76%):</td>
                             <td>- ₹${d_Discount.toFixed(2)}</td>
                         </tr>
-
                         <tr>
                             <td>Add: CGST (2.5%):</td>
                             <td>+ ₹${d_CGST.toFixed(2)}</td>
@@ -290,12 +290,10 @@ function generateSuccessStyleInvoice(order) {
                             <td>Add: SGST (2.5%):</td>
                             <td>+ ₹${d_SGST.toFixed(2)}</td>
                         </tr>
-
                         <tr>
                             <td>Round Off:</td>
                             <td>${roundOffDiff > 0 ? '+' : ''}${roundOffDiff.toFixed(2)}</td>
                         </tr>
-
                         <tr class="grand-total-row">
                             <td>Grand Total:</td>
                             <td>₹${grandTotalRounded.toFixed(2)}</td>
@@ -303,8 +301,8 @@ function generateSuccessStyleInvoice(order) {
                     </table>
                 </div>
 
-                <div style="padding:10px; font-size:11px; border-top:1px solid #000;">
-                    <strong>Amount in Words:</strong> ₹${grandTotalRounded} Only.
+                <div style="padding:10px; font-size:11px; border-top:1px solid #000; background:#fcfcfc;">
+                    <strong>Amount in Words:</strong> ${amountInWords} Only.
                 </div>
             </div>
 
@@ -321,4 +319,29 @@ function generateSuccessStyleInvoice(order) {
         console.error(e);
         alert("Invoice generation failed");
     }
+}
+
+// ==========================================
+// 🛠️ HELPER: NUMBER TO WORDS (INDIAN FORMAT)
+// ==========================================
+function numberToWords(num) {
+    if (num === 0) return "Zero";
+    
+    const a = ['','One ','Two ','Three ','Four ', 'Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
+    const b = ['', '', 'Twenty','Thirty','Forty','Fifty', 'Sixty','Seventy','Eighty','Ninety'];
+
+    function inWords(n) {
+        if (n < 20) return a[n];
+        const digit = n % 10;
+        if (n < 100) return b[Math.floor(n / 10)] + (digit ? " " + a[digit] : "");
+        if (n < 1000) return a[Math.floor(n / 100)] + "Hundred " + (n % 100 === 0 ? "" : "and " + inWords(n % 100));
+        
+        // Indian System: Lakhs & Crores
+        if (n < 100000) return inWords(Math.floor(n / 1000)) + "Thousand " + (n % 1000 !== 0 ? inWords(n % 1000) : "");
+        if (n < 10000000) return inWords(Math.floor(n / 100000)) + "Lakh " + (n % 100000 !== 0 ? inWords(n % 100000) : "");
+        
+        return inWords(Math.floor(n / 10000000)) + "Crore " + (n % 10000000 !== 0 ? inWords(n % 10000000) : "");
+    }
+
+    return inWords(num).trim();
 }

@@ -424,6 +424,16 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => { // 👈 async zaroori hai
   const { phone, password } = req.body;
 
+  console.log("Login Request Aayi:", req.body); // Dekho Phone/Pass aa raha hai?
+
+const user = await User.findOne({ phone: req.body.phone });
+console.log("User DB me mila?", user); // Dekho user mila ya null aaya?
+
+if (user) {
+    console.log("DB Password:", user.password);
+    console.log("Input Password:", req.body.password);
+}
+
   try {
       const user = await User.findOne({ phone: phone });
       
@@ -431,16 +441,29 @@ app.post('/api/auth/login', async (req, res) => { // 👈 async zaroori hai
         return res.status(404).json({ error: 'User not found. Please register.' });
       }
 
-      // 🔍 STEP 1: PASSWORD CHECK (Bcrypt Comparison)
-      // Hum check karenge ki kya jo password user ne dala, wo database ke hash se match karta hai?
-      const isMatch = await bcrypt.compare(password, user.password);
+      let isMatch = false;
 
-      // Note: Agar purane users ke password plain text hain, toh wo login nahi kar payenge.
-      // Unhein bhi "Forgot Password" karke naya password banana padega.
-      
-      if (!isMatch) {
-        return res.status(401).json({ error: 'Wrong password!' });
-      }
+        // Check 1: Kya Password seedha Plain Text match ho raha hai? (Purane users ke liye)
+        if (user.password === req.body.password) {
+            isMatch = true;
+        } 
+        // Check 2: Agar nahi, to Bcrypt Hash check karo (Naye users ke liye)
+        else {
+            try {
+                // Bcrypt tabhi chalega agar DB password hash jaisa dikhe
+                if (user.password.startsWith('$2b$') || user.password.startsWith('$2a$')) {
+                    isMatch = await bcrypt.compare(req.body.password, user.password);
+                }
+            } catch (err) {
+                console.log("Bcrypt Error:", err.message);
+                isMatch = false;
+            }
+        }
+
+        // Agar dono fail ho gaye
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid Credentials (Password Wrong)' });
+        }
 
       if (user.isApproved === false) {
         return res.status(403).json({ error: 'Account not approved yet.' });
@@ -462,7 +485,9 @@ app.post('/api/auth/login', async (req, res) => { // 👈 async zaroori hai
           name: user.name, 
           phone: user.phone,
           isAdmin: user.isAdmin,
-          isOfflineCustomer: user.isOfflineCustomer 
+          isOfflineCustomer: user.isOfflineCustomer,
+          shopName: user.shopName,
+          shopAddress: user.shopAddress
         } 
       });
 

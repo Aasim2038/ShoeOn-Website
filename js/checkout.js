@@ -227,10 +227,18 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("name").value = user.name;
         if (document.getElementById("phone"))
             document.getElementById("phone").value = user.phone;
-        if (document.getElementById("address"))
-            document.getElementById(
-                "address"
-            ).value = `${user.shopName}, ${user.shopAddress}`;
+        if (document.getElementById("address")) {
+            // Check karo ki value hai ya nahi, agar nahi hai to empty string maano
+            const sName = user.shopName || ""; 
+            const sAddr = user.shopAddress || "";
+            
+            // Comma tabhi lagao jab dono cheezein ho
+            let finalAddr = sName;
+            if (sName && sAddr) finalAddr += ", " + sAddr;
+            else if (!sName) finalAddr = sAddr;
+
+            document.getElementById("address").value = finalAddr;
+        }
         // Agar shopName field alag se hai, use bhi set karein (optional)
         // if (document.getElementById("shopName")) document.getElementById("shopName").value = user.shopName;
     }
