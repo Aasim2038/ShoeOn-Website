@@ -51,4 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
       
     });
   }
+
+  // --- PASSWORD TOGGLE LOGIC ---
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordInput = document.getElementById('password');
+
+  if (togglePassword && passwordInput) {
+    togglePassword.addEventListener('click', function () {
+      // Type badlo: Password <-> Text
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      
+      // Icon badlo: Eye <-> Eye Slash
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+  }
 });

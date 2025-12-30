@@ -245,11 +245,48 @@ document.addEventListener("DOMContentLoaded", () => {
       // Slider
       if (sliderTrack && product.images && product.images.length > 0) {
         let slidesHTML = "";
-        product.images.forEach(img => {
+        const dotsContainer = document.getElementById("sliderDots");
+        
+        // 1. Slides aur Dots Generate karo
+        if (dotsContainer) dotsContainer.innerHTML = ""; // Purana saaf karo
+
+        product.images.forEach((img, index) => {
+          // Slide Add karo
           slidesHTML += `<div class="slide"><img src="${img}" alt="${product.name}"></div>`;
+          
+          // Dot Add karo
+          if (dotsContainer) {
+            const dot = document.createElement("div");
+            dot.classList.add("dot");
+            if (index === 0) dot.classList.add("active"); // Pehla dot active
+            dotsContainer.appendChild(dot);
+          }
         });
+
         sliderTrack.innerHTML = slidesHTML;
+
+        // 2. Scroll Listener (Jab user slide kare to dot badle)
+        if (dotsContainer) {
+          sliderTrack.addEventListener("scroll", () => {
+            const slideWidth = sliderTrack.clientWidth;
+            // Calculate karo kaunsa slide dikh raha hai
+            const activeIndex = Math.round(sliderTrack.scrollLeft / slideWidth);
+
+            // Saare dots se active hatao
+            const allDots = dotsContainer.querySelectorAll(".dot");
+            allDots.forEach(d => d.classList.remove("active"));
+
+            // Sahi dot ko active karo
+            if (allDots[activeIndex]) {
+              allDots[activeIndex].classList.add("active");
+            }
+          });
+        }
+      } else {
+        // Agar image nahi hai to placeholder
+        if(sliderTrack) sliderTrack.innerHTML = `<div class="slide"><img src="images/placeholder.jpg" alt="No Image"></div>`;
       }
+      // ===============================================
 
       // ===============================================
       // BUTTON LISTENERS (AAPKA PURANA LOGIC SAME HAI)
