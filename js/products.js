@@ -85,19 +85,33 @@ document.addEventListener('DOMContentLoaded', () => {
           cardsHTML = "<p style='text-align: center; color: #777; width: 100%;'>No products found matching your filters.</p>";
         }
 
+        const user = JSON.parse(localStorage.getItem('shoeonUser'));
+        const isOffline = user && user.isOfflineCustomer;
+
         products.forEach(product => {
           const productLink = `product-detail.html?id=${product._id}`; 
           
           const mrp = parseFloat(product.mrp);
-          const salePrice = parseFloat(product.salePrice);
+          
+          // 🔥 2. PRICE LOGIC (Offline vs Online)
+          let finalPrice = parseFloat(product.salePrice);
+          let priceColorStyle = ""; // Normal color
+
+          // Agar Offline User hai AUR Offline Price set hai
+          if (isOffline && product.offlinePrice && product.offlinePrice > 0) {
+              finalPrice = parseFloat(product.offlinePrice);
+              priceColorStyle = "color: #d35400; font-weight: bold;"; // Orange Color (Alag dikhne ke liye)
+          }
+
+          const salePrice = finalPrice; // Nayi price use karo calculations me
           const marginPercent = ((mrp - salePrice) / mrp) * 100;
           
           const displayPrice = isUserLoggedIn 
-                               ? `₹${salePrice.toFixed(2)}` 
+                               ? `<span style="${priceColorStyle}">₹${salePrice.toFixed(2)}</span>` 
                                : `<span style="color:#d3a14b; font-weight:bold;">Login to View Price</span>`;
           
           const displayMrp = isUserLoggedIn
-                               ? `<del>₹${mrp.toFixed(2)}</del>`
+                               ? `₹${mrp.toFixed(2)}`
                                : ``;
 
           cardsHTML += `

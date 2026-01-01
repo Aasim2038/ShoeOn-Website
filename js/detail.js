@@ -142,7 +142,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (pdpMoq) pdpMoq.innerHTML = `<i class="fa-solid fa-box"></i> MOQ: ${product.moq} Pairs (1 Set)`;
       
       // MRP sabko dikhao (Taaki product premium lage)
-      if (pdpMrpEl) pdpMrpEl.innerText = `₹${comparePrice.toFixed(2)}`;
+      if (pdpMrpEl) {
+          if (isUsingOfflinePrice) {
+              // 🛑 AGAR OFFLINE PRICE HAI TO CUT PRICE MAT DIKHAO
+              // Hum parent element (span) ko hide kar denge
+              pdpMrpEl.parentElement.style.display = 'none';
+          } else {
+              // ✅ ONLINE USER KE LIYE DIKHAO
+              pdpMrpEl.parentElement.style.display = 'inline';
+              pdpMrpEl.innerText = `₹${comparePrice.toFixed(2)}`;
+          }
+      }
       if (pdpRetailPriceEl) pdpRetailPriceEl.innerText = `₹${mrp.toFixed(2)}`;
 
       // 3. SENSITIVE DATA (Sirf Logged In Users ke liye)
