@@ -169,10 +169,10 @@ app.get('/api/products', async (req, res) => {
         }
 
         // --- 2. Category Filter ---
-        if (req.query.category && req.query.category !== '') {
+       if (req.query.category && req.query.category !== '') {
             const catQuery = req.query.category;
             const flexiblePattern = catQuery.replace(/[- ]/g, '[- ]');
-            filter.category = { $regex: new RegExp(`^${flexiblePattern}$`, 'i') };
+            filter.category = { $regex: new RegExp(`^${flexiblePattern}`, 'i') };
         }
 
         // --- 3. Material Filter ---
