@@ -188,7 +188,7 @@ button { cursor: pointer; }
 .horizontal-list {
   display: flex;
   overflow-x: auto;
-  gap: 10px; 
+  gap: 30px; 
   padding: 0 15px; 
   align-items: flex-start !important; /* TOP alignment ko force karo */
   scrollbar-width: none;

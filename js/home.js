@@ -10,7 +10,7 @@ const allCategoryData = {
     title: 'Men Footwear',
     items: [
       { name: 'Casual Shoes', img: 'images/sub-cat/casual-shoes.webp', url: 'products.html?category=men-casual' },
-      { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.webp', url: 'products.html?category=men-pu-chappal' },
+      { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpeg', url: 'products.html?category=men-pu-chappal' },
       { name: 'Sandals', img: 'images/sub-cat/sandals.webp', url: 'products.html?category=men-sandals' },
       { name: 'Sports Shoes', img: 'images/sub-cat/sports-shoes.webp', url: 'products.html?category=men-sports-shoes' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=men-crocks' },
@@ -21,7 +21,7 @@ const allCategoryData = {
     title: 'Women Footwear',
     items: [
       { name: 'Bellies', img: 'images/sub-cat/women-bellies.webp', url: 'products.html?category=women-bellies' },
-      { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.webp', url: 'products.html?category=women-pu-chappal' },
+      { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpeg', url: 'products.html?category=women-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.webp', url: 'products.html?category=women-pu-sandals' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=women-crocks' },
       { name: 'Safety Shoe', img: 'images/sub-cat/wsafety-shoes.webp', url: 'products.html?category=women-safty%20shoe' },
@@ -43,7 +43,7 @@ const allCategoryData = {
     title: 'Girls Footwear',
     items: [
       { name: 'Bellies', img: 'images/sub-cat/women-bellies.webp', url: 'products.html?category=girls-bellies' },
-      { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.webp', url: 'products.html?category=girls-pu-chappal' },
+      { name: 'PU-chappal', img: 'images/sub-cat/women-pu-chappal.jpeg', url: 'products.html?category=girls-pu-chappal' },
       { name: 'PU-sandals', img: 'images/sub-cat/women-pu-sandals.webp', url: 'products.html?category=girls-pu-sandals' },
       { name: 'School Bellies', img: 'images/sub-cat/girl-school-ballies.webp', url: 'products.html?category=girls-school-bellies' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=girls-crocks' }

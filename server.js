@@ -158,7 +158,6 @@ app.get('/api/products', async (req, res) => {
     let searchRegex; 
 
     try { 
-        
         // --- 1. Search Logic ---
         if (req.query.search) {
             searchRegex = new RegExp(req.query.search, 'i');
@@ -169,56 +168,60 @@ app.get('/api/products', async (req, res) => {
             ];
         }
 
-       // --- 2. Category Filter (MAGIC FIX) ---
+        // --- 2. Category Filter ---
         if (req.query.category && req.query.category !== '') {
             const catQuery = req.query.category;
             const flexiblePattern = catQuery.replace(/[- ]/g, '[- ]');
-
             filter.category = { $regex: new RegExp(`^${flexiblePattern}$`, 'i') };
         }
 
-        // --- 4. Material Filter ---
+        // --- 3. Material Filter ---
         if (req.query.material) {
             filter.material = { $in: req.query.material.split(',') };
         }
 
-        // --- 5. Tag Filter ---
-        if (req.query.tag) {
-            filter.tags = req.query.tag;
-        }
+        // --- 4. Tag Filter ---
+        if (req.query.tag) filter.tags = req.query.tag;
 
-        // =========================================================
-        // --- 6. NEW: Price Range Filter (Min & Max) ---
-        // =========================================================
+        // --- 5. Price Range Filter ---
         if (req.query.minPrice || req.query.maxPrice) {
-            filter.salePrice = {}; // Hum 'salePrice' (Your Rate) par filter lagayenge
-
-            if (req.query.minPrice) {
-                // $gte matlab "Greater Than or Equal" (Isse bada ya barabar)
-                filter.salePrice.$gte = Number(req.query.minPrice);
-            }
-            
-            if (req.query.maxPrice) {
-                // $lte matlab "Less Than or Equal" (Isse chhota ya barabar)
-                filter.salePrice.$lte = Number(req.query.maxPrice);
-            }
+            filter.salePrice = {}; 
+            if (req.query.minPrice) filter.salePrice.$gte = Number(req.query.minPrice);
+            if (req.query.maxPrice) filter.salePrice.$lte = Number(req.query.maxPrice);
         }
-        // =========================================================
-
-        // --- 7. Sort Logic (Already Correct: Uses salePrice) ---
-        let sortOptions = { createdAt: -1 }; 
         
+        // --- 6. Sort Logic ---
+        let sortOptions = { createdAt: -1 }; 
         if (req.query.sort) {
-            if (req.query.sort === 'price-asc') {
-                sortOptions = { salePrice: 1 }; // Low to High (Your Rate)
-            } else if (req.query.sort === 'price-desc') {
-                sortOptions = { salePrice: -1 }; // High to Low (Your Rate)
-            }
+            if (req.query.sort === 'price-asc') sortOptions = { salePrice: 1 };
+            else if (req.query.sort === 'price-desc') sortOptions = { salePrice: -1 };
         }
 
-        // --- 8. Execute Database Query ---
-        const products = await Product.find(filter).sort(sortOptions); 
+        // --- 7. PAGINATION LOGIC (NEW) ---
+        // Agar 'page' query param aaya hai, tabhi pagination lagao
+        if (req.query.page) {
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 20; // Default 20 products
+            const skip = (page - 1) * limit;
 
+            const products = await Product.find(filter)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(limit);
+            
+            const totalProducts = await Product.countDocuments(filter);
+
+            // Admin ko Object return karo (Orders jaisa)
+            return res.status(200).json({
+                products,
+                currentPage: page,
+                totalPages: Math.ceil(totalProducts / limit),
+                totalProducts
+            });
+        }
+
+        // Agar 'page' nahi hai (Customer Side), to Saare bhejo (Array format me)
+        const products = await Product.find(filter).sort(sortOptions); 
         res.status(200).json(products);
         
     } catch (err) { 

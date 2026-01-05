@@ -8,6 +8,7 @@ const CATEGORY_DATA = {
     "women": ["Bellies", "PU-Chappal", "PU-Sandals", "Crocks", "Safty Shoe", "Loose-products"],
     "boys": ["Sports-Shoes", "PU-Chappal", "Sandals", "School-Shoes", "Crocks", "Loose-Products"],
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Bellies", "Crocks", "Loose-Products"],
+    "kids": ["Boys", "Girls"], 
     "Loose": ["Womens", "Men", "Boys", "Girls", "Kids"], 
     "party": ["Womens", "Girls"],
 };

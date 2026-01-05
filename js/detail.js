@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const pdpMarginEl = document.getElementById("pdp-margin-display");
   const pdpMoq = document.getElementById("pdp-moq-display");
   const pdpStockDisplay = document.getElementById("pdp-stock-display");
+  const pdpDesc = document.getElementById("pdp-description");
 
   const addToCartBtn = document.querySelector(".btn-cart");
   const buyNowBtn = document.querySelector(".btn-buy");
@@ -250,6 +251,9 @@ document.addEventListener("DOMContentLoaded", () => {
             specsList.appendChild(li);
           }
         });
+      }
+      if (pdpDesc) {
+        pdpDesc.innerText = product.description || "No description available.";
       }
 
       // Slider
