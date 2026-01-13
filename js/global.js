@@ -3,6 +3,23 @@
    (FIXED - openCart ko global banaya hai)
    ========================================= */
 
+     (function checkLogin() {
+    const token = localStorage.getItem('token');
+    const currentPath = window.location.pathname;
+
+    // Ye wo pages hain jaha bina login ke ja sakte hain (Inhe rokna nahi hai)
+    const allowedPages = ['login.html', 'register.html', 'forgot-password.html', 'admin-login.html'];
+
+    // Check: Agar hum allowed page par nahi hain
+    const isAllowedPage = allowedPages.some(page => currentPath.includes(page));
+
+    // Agar Token nahi hai AUR hum protected page par hain -> Login pe bhejo
+    if (!token && !isAllowedPage) {
+        window.location.href = 'login.html';
+    }
+})();
+/* ========================================= */
+
 // --- A. UNIVERSAL HELPER FUNCTIONS ---
 
 // Check karo user logged in hai ya nahi
