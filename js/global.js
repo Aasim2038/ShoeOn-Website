@@ -4,7 +4,7 @@
    ========================================= */
 
      (function checkLogin() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || localStorage.getItem('authToken');
     const currentPath = window.location.pathname;
 
     // Ye wo pages hain jaha bina login ke ja sakte hain (Inhe rokna nahi hai)
