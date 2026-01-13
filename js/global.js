@@ -273,17 +273,21 @@ function updateMenuAuth() {
       `;
 
     // Logout button par click logic
-    document.getElementById("btn-logout").addEventListener("click", () => {
-      // 1. Data delete karo
+   document.getElementById("btn-logout").addEventListener("click", () => {
+      // 1. Data delete karo (SARA KACHRA SAAF KARNA ZAROORI HAI)
       localStorage.removeItem("shoeonUser");
-      localStorage.removeItem("shoeonCart"); // Cart bhi khaali kar do (Safety)
+      localStorage.removeItem("shoeonCart"); 
+      
+      // 🔥 FIX: Token bhi delete karo, warna checkLogin pakad nahi payega
+      localStorage.removeItem("token");     
+      localStorage.removeItem("authToken"); // Dono naam hata do safety ke liye
 
       // 2. Message dikhao
       showToast("Logged out successfully");
 
-      // 3. Page reload karo (taaki prices chup jayein)
+      // 3. Seedha Login Page par bhejo (Reload nahi, Redirect)
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = "login.html"; 
       }, 1000);
     });
   } else {
