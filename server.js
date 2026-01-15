@@ -1211,13 +1211,13 @@ app.get('/api/fill-dummy-data', async (req, res) => {
 
 // 🗑️ CLEANUP: SAARA KACHRA DELETE KARNE KE LIYE
 // URL: http://localhost:3000/api/delete-dummy-data
-app.get('/api/delete-dummy-data', async (req, res) => {
-    try {
-        // Sirf wahi delete karenge jinka brand "Test Brand" hai
-        await Product.deleteMany({ brand: "Test Brand" });
-        res.send("<h1>Cleaned! 🧹</h1><p>Saare dummy products delete ho gaye.</p>");
-    } catch (err) {
-        res.status(500).send("Error: " + err.message);
-    }
-});
+// app.get('/api/delete-dummy-data', async (req, res) => {
+//     try {
+//         // Sirf wahi delete karenge jinka brand "Test Brand" hai
+//         await Product.deleteMany({ brand: "Test Brand" });
+//         res.send("<h1>Cleaned! 🧹</h1><p>Saare dummy products delete ho gaye.</p>");
+//     } catch (err) {
+//         res.status(500).send("Error: " + err.message);
+//     }
+// });
 
