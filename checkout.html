@@ -58,7 +58,7 @@
         <section class="checkout-section">
     <h3>2. Payment Method</h3>
 
-    <div class="qr-payment-container" style="text-align: center; border: 1px solid #ddd; padding: 20px; border-radius: 8px; background: #f9f9f9;">
+    <!-- <div class="qr-payment-container" style="text-align: center; border: 1px solid #ddd; padding: 20px; border-radius: 8px; background: #f9f9f9;">
         
         <p style="margin-bottom: 15px; font-weight: bold; color: #333;">Scan QR Code to Pay</p>
         
@@ -66,7 +66,7 @@
             <img src="https://www.imgonline.com.ua/examples/qr-code-url.png" alt="Payment QR Code" id="myQrImage" 
                  style="width: 150px; height: 150px; object-fit: contain; border: 2px solid #333; border-radius: 8px;">
             <p style="font-size: 12px; color: #666; margin-top: 5px;">(Click to Zoom)</p>
-        </div>
+        </div> -->
 
         <p style="margin-top: 15px; font-size: 14px; color: #555;">
             After payment, please click "Place Order".
@@ -99,6 +99,67 @@
         </section> -->
       </div>
 
+      <div class="payment-breakdown" style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #333;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <span>Total Bill Amount:</span>
+                <span id="summary-total" style="font-weight: bold;">₹0</span>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: #d35400;">
+                <span>Advance to Pay Now (20%):</span>
+                <span id="summary-advance" style="font-weight: bold;">₹0</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 5px;">
+                <span>Balance (Pay on Delivery):</span>
+                <span id="summary-balance" style="font-weight: bold; color: #2e7d32;">₹0</span>
+            </div>
+        </div>
+
+        <div class="payment-box" style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ddd;">
+            
+            <div id="payment-mode-container" style="display: none; margin-bottom: 20px; background: #e3f2fd; padding: 10px; border-radius: 5px; border: 1px dashed #2196f3;">
+                <label style="font-weight: bold; display: block; margin-bottom: 5px; color: #0d47a1;">
+                    <i class="fa-solid fa-user-tie"></i> Agent / Offline Option:
+                </label>
+                <select id="payment-method-select" style="width: 100%; padding: 10px; border: 1px solid #2196f3; border-radius: 5px; font-weight: bold;">
+                    <option value="online">Pay Online (UPI/QR)</option>
+                    <option value="cash">Cash Received by Agent</option>
+                </select>
+            </div>
+
+            <div id="qr-section" style="text-align: center;">
+                <h3 style="margin-bottom: 10px; color: #d35400;">Pay 20% Advance</h3>
+                <p style="font-size: 1rem; color: #333; margin-bottom: 15px;">
+                    Please pay <strong id="qr-pay-amount" style="background: yellow; padding: 2px 5px;">₹0</strong> to confirm order.
+                </p>
+
+                <img src="images/qr-code.jpg" alt="QR Code" style="width: 200px; height: 200px; border-radius: 10px; border: 1px solid #ddd;">
+                
+                <div style="margin-top: 20px; text-align: left;">
+                    <label style="font-weight: bold;">Enter Transaction ID / UTR <span style="color:red">*</span></label>
+                    <input type="text" id="payment-ref-online" placeholder="Example: 1234567890" 
+                           style="width: 100%; padding: 12px; border: 2px solid #333; border-radius: 5px;">
+                </div>
+            </div>
+
+            <div id="cash-section" style="display: none; text-align: left; padding: 10px;">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <i class="fa-solid fa-hand-holding-dollar" style="font-size: 3rem; color: #2e7d32;"></i>
+                    <h3 style="color: #2e7d32; margin-top: 10px;">Cash Collected</h3>
+                </div>
+
+                <label style="font-weight: bold;">Cash Details / Agent Name <span style="color:red">*</span></label>
+                <input type="text" id="payment-ref-cash" placeholder="E.g. Collected 2000 by Rahul" 
+                       style="width: 100%; padding: 12px; border: 2px solid #2e7d32; border-radius: 5px;">
+                
+                <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                    * Enter amount collected and agent name. Order will be marked as "Advance Received".
+                </p>
+            </div>
+
+        </div>
+
       <div class="checkout-summary-column">
         <section class="checkout-section order-summary">
           <h3>Order Summary</h3>
@@ -121,12 +182,10 @@
               <span id="summary-grandtotal">₹0.00</span>
             </div>
           </div>
-          <a
-            href="order-success.html"
-            class="btn-place-order"
-            id="place-order-btn"
-            >Place Order</a
-          >
+         <button id="place-order-btn" class="btn-checkout btn-disabled" disabled 
+                style="width: 100%; padding: 15px; font-size: 1.1rem; background: #333; color: white; border: none; border-radius: 5px;">
+            Enter Details to Place Order
+        </button>
         </section>
       </div>
     </main>
@@ -137,6 +196,6 @@
     <div id="toast-popup">...</div>
 
     <script src="js/global.js"></script>
-    <script src="js/checkout.js"></script>
+    <script src="js/checkout.js?v=100"></script>
   </body>
 </html>

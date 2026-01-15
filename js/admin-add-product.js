@@ -11,6 +11,7 @@ const CATEGORY_DATA = {
     "kids": ["Boys", "Girls"], 
     "Loose": ["Womens", "Men", "Boys", "Girls", "Kids"], 
     "party": ["Womens", "Girls"],
+    "lot": ["Womens", "Mens"],
 };
 
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR', 'Phylon', 'Double Density', 'Fabrication', 'Rubber'];

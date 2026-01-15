@@ -1,40 +1,40 @@
 /* =========================================
-   ADMIN-CUSTOMER-EDIT.JS (CLEAN VERSION)
-   Only Offline Status & Approval
+   ADMIN-CUSTOMER-EDIT.JS (FINAL FIXED)
+   Includes: Offline, Cash Allowed & Advance %
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. Variables & Elements ---
     const form = document.getElementById('customer-update-form'); 
     const responseDiv = document.getElementById('update-message');
-    
-    // URL se ID nikalo
     const params = new URLSearchParams(window.location.search);
     const userId = params.get('id');
 
-    // Inputs (Sirf Offline wala rakha hai)
+    // Elements Select Karo
     const isOfflineCustomerInput = document.getElementById('isOfflineCustomer'); 
+    const isCashAllowedInput = document.getElementById('isCashAllowed'); 
+    const advancePercentInput = document.getElementById('advancePercent'); // 👈 Ye Naya Hai
 
-    // Error check
     if (!userId) { 
         if(responseDiv) responseDiv.innerText = 'Error: User ID not found.'; 
         return; 
     }
 
-    // --- 2. Data Load & Display ---
+    // --- LOAD DATA ---
     function loadCustomer(id) {
         fetch(`/api/users/${id}`)
             .then(res => res.json())
             .then(user => {
                 if (user.error || !user.name) throw new Error("Could not load user data.");
                 
-                // 1. Checkbox set karo (Agar DB mein true hai to tick dikhega)
-                if(isOfflineCustomerInput) {
-                    isOfflineCustomerInput.checked = user.isOfflineCustomer || false;
-                }
+                // 1. Checkboxes Set
+                if(isOfflineCustomerInput) isOfflineCustomerInput.checked = user.isOfflineCustomer || false;
+                if(isCashAllowedInput) isCashAllowedInput.checked = user.isCashAllowed || false;
 
-                // 2. Info Display (Naam, Shop, etc.)
+                // 2. Advance Percent Set
+                if(advancePercentInput) advancePercentInput.value = user.advancePercent || 20;
+
+                // 3. Info Display
                 const infoDisplay = document.getElementById('customer-info-display');
                 if(infoDisplay) {
                     infoDisplay.innerHTML = `
@@ -42,49 +42,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div><strong>Phone:</strong><span>${user.phone}</span></div>
                         <div><strong>Shop Name:</strong><span>${user.shopName}</span></div>
                         <div><strong>Shop Address:</strong><span>${user.shopAddress}</span></div>
-                        <div><strong>GST:</strong><span>${user.gstNumber || 'N/A'}</span></div>
                         
-                        <div style="margin-top:15px; padding:10px; background:${user.isOfflineCustomer ? '#fff3cd' : '#d4edda'}; border-radius:5px;">
-                            <strong>Current Type:</strong> 
-                            <span style="color:${user.isOfflineCustomer ? '#856404' : '#155724'}; font-weight:bold;">
-                                ${user.isOfflineCustomer ? '🛑 Existing/Offline Customer' : '✅ New/Online Customer'}
-                            </span>
+                        <div style="margin-top:15px; padding:10px; background: #f9f9f9; border: 1px solid #ddd; border-radius:5px;">
+                            <p><strong>Customer Type:</strong> ${user.isOfflineCustomer ? '<span style="color:#d35400;">Offline (Low Rate)</span>' : 'Online'}</p>
+                            <p><strong>Payment:</strong> ${user.isCashAllowed ? '<span style="color:green;">Cash Allowed</span>' : 'Prepaid Only'}</p>
+                            <p><strong>Advance:</strong> <strong>${user.advancePercent || 20}%</strong> Required</p>
                         </div>
                     `;
                 }
 
-                // 3. Status Badge Update
+                // 4. Status Badge
                 const currentStatusDisplay = document.getElementById('current-approval-status');
                 if(currentStatusDisplay) {
                     const statusText = user.isApproved ? 'Approved' : 'Pending Approval';
-                    const statusClass = user.isApproved ? 'status-delivered' : 'status-cancelled';
+                    const statusClass = user.isApproved ? 'status-delivered' : 'status-cancelled'; 
                     currentStatusDisplay.innerHTML = `<span class="status-badge ${statusClass}">${statusText}</span>`;
                 }
             })
             .catch(err => {
                 console.error(err);
-                if(responseDiv) responseDiv.innerText = `Error loading user data.`;
+                if(responseDiv) responseDiv.innerText = `Error loading data.`;
             });
     }
 
-    // --- 3. SAVE BUTTON LOGIC ---
+    // --- SAVE BUTTON ---
     if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault(); 
-            
             responseDiv.innerText = 'Updating...';
             responseDiv.style.color = 'blue';
 
-            // Sirf ye data bhejenge
             const updateData = {
-                // Checkbox ki value (True/False)
+                isApproved: true,
                 isOfflineCustomer: isOfflineCustomerInput ? isOfflineCustomerInput.checked : false,
-                
-                // Button dabane ka matlab hai Admin ne Approve kar diya
-                isApproved: true 
+                isCashAllowed: isCashAllowedInput ? isCashAllowedInput.checked : false, // 👈 Ab ye Server jayega
+                advancePercent: advancePercentInput ? parseInt(advancePercentInput.value) : 20
             };
 
-            // Server ko bhejo
             fetch(`/api/users/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -96,23 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     responseDiv.innerText = `Error: ${data.error}`;
                     responseDiv.style.color = 'red';
                 } else {
-                    responseDiv.innerText = 'Saved & User Approved!';
+                    responseDiv.innerText = 'Saved Successfully!';
                     responseDiv.style.color = 'green';
-                    
-                    // Data refresh karo taaki naya status dikhe
                     loadCustomer(userId); 
                 }
             })
             .catch(err => {
                 console.error(err);
                 responseDiv.innerText = 'Server Error.';
-                responseDiv.style.color = 'red';
             });
         });
-    } else {
-        console.error("Form not found!");
     }
 
-    // Page khulte hi data load karo
     loadCustomer(userId);
 });

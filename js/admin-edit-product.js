@@ -10,6 +10,7 @@ const CATEGORY_DATA = {
     "girls": ["Bellies", "PU-Chappal", "PU-Sandals", "School-Bellies", "Crocks"],
     "Loose": ["Womens", "Men", "Boys", "Girls", "Kids"], 
     "party": ["Womens", "Girls"],
+    "lot": ["Womens", "Mens"],
 };
 
 const SOLE_OPTIONS = ['PU', 'Eva', 'PVC', 'Airmax', 'TPR', 'Phylon', 'Double Density', 'Fabrication', 'Rubber'];

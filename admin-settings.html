@@ -38,7 +38,7 @@
           
           <div class="form-section">
             <h3>Home Page Banners</h3>
-            <p>Upload new images to replace the current slider. (Max 4)</p>
+            <p>Upload new images to replace the current slider. (Max 10)</p>
             <div class="form-group">
               <label>Select Images</label>
               <input type="file" id="banners" multiple accept="image/*">
@@ -47,6 +47,33 @@
             <div id="current-banners" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
               </div>
           </div>
+
+
+         <div class="form-section" style="border-top: 1px solid #eee; margin-top: 30px; padding-top: 20px;">
+                <h3>✨ Highlights & Offers (Stories)</h3>
+                <p>Upload vertical images/videos (9:16 Ratio). You can select multiple files.</p>
+                
+                <div style="background: #f9f9f9; padding: 20px; border-radius: 12px; border: 2px dashed #ccc; text-align: center;">
+                    
+                    <input type="text" id="highlight-title" placeholder="Caption (Optional for all)" 
+                           style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px;">
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="file" id="highlight-media" multiple accept="image/*,video/*" 
+                               style="padding: 10px; background: #fff; border: 1px solid #ddd; border-radius: 6px; width: 100%;">
+                    </div>
+    
+                    <button type="button" id="btn-upload-highlight" class="btn-primary" 
+                            style="background: #e91e63; border:none; padding: 10px 25px; font-size: 1rem;">
+                       <i class="fa-solid fa-cloud-arrow-up"></i> Upload Stories
+                    </button>
+                    <p id="highlight-response" style="font-size: 0.9rem; margin-top: 10px; font-weight: bold;"></p>
+                </div>
+    
+                <h4 style="margin-top: 20px; color: #555;">Active Stories:</h4>
+                <div id="highlights-list" style="display:flex; gap:15px; overflow-x:auto; padding: 15px 5px;">
+                    </div>
+            </div> 
 
           <div class="form-actions">
             <button type="submit" class="btn-primary">Save Settings</button>

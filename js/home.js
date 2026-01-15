@@ -1,10 +1,9 @@
 /* =========================================
-                  HOME.JS 
+                  HOME.JS (FIXED & CLEANED)
    ========================================= */
 
+// --- 1. CONFIGURATION & DATA ---
 
-
-// 1. Categories Data (Pop-ups ke liye - Waisa hi hai)
 const allCategoryData = {
   'men-sheet': {
     title: 'Men Footwear',
@@ -16,7 +15,6 @@ const allCategoryData = {
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=men-crocks' },
       { name: 'Safety Shoe', img: 'images/sub-cat/msafety-shoes.webp', url: 'products.html?category=men-safty%20shoe' },    ]
   },
-
   'women-sheet': {
     title: 'Women Footwear',
     items: [
@@ -27,18 +25,16 @@ const allCategoryData = {
       { name: 'Safety Shoe', img: 'images/sub-cat/wsafety-shoes.webp', url: 'products.html?category=women-safty%20shoe' },
     ]
   },
-
   'boys-sheet': {
     title: 'Boys Footwear',
     items: [
       { name: 'Sports-shoes', img: 'images/sub-cat/boyssportsshoe.webp', url: 'products.html?category=boys-sports-shoes' },
-      { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.webp', url: 'products.html?category=boys-pu-chappal' },
+      { name: 'PU Chappals', img: 'images/sub-cat/PU-Chappal.jpeg', url: 'products.html?category=boys-pu-chappal' },
       { name: 'Sandals', img: 'images/sub-cat/sandals.webp', url: 'products.html?category=boys-sandals' },
       { name: 'School shoes', img: 'images/sub-cat/shool-shoe.webp', url: 'products.html?category=boys-school-shoes' },
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=boys-crocks' },
     ]
   },
-
   'girl-sheet': {
     title: 'Girls Footwear',
     items: [
@@ -49,7 +45,6 @@ const allCategoryData = {
       { name: 'Crocks', img: 'images/sub-cat/crock.webp', url: 'products.html?category=girls-crocks' }
     ]
   },
-
   'loose-sheet': {
     title: 'Loose Footwear',
     items: [
@@ -60,88 +55,189 @@ const allCategoryData = {
       { name: 'Kids', img: 'images/sub-cat/crock.webp', url: 'products.html?category=Loose-kids' }
     ]
   },
-
   'party-sheet': {
     title: 'Party Wear Footwear',
     items: [
       { name: 'Womens', img: 'images/sub-cat/women-party.webp', url: 'products.html?category=party-womens' },
       { name: 'Girls', img: 'images/sub-cat/girl-party.webp', url: 'products.html?category=party-girls' },
     ]
+  },
+  'lot-sheet': {
+    title: 'Lot & Surplus Footwear',
+    items: [
+      { name: 'Mens', img: 'images/sub-cat/PU-Chappal.jpeg', url: 'products.html?category=lot-mens' },
+      { name: 'Womens', img: 'images/sub-cat/women-party.webp', url: 'products.html?category=lot-womens' },
+    ]
   }
 };
 
+// --- 2. GLOBAL HELPER FUNCTIONS ---
+
 function getOptimizedUrl(url, width = 600) {
   if (!url) return 'images/puma-logo.webp';
-
-
   if (url.includes('/upload/')) {
     return url.replace('/upload/', `/upload/w_${width},f_auto,q_auto/`);
   }
   return url;
 }
 
+function startSliderAnimation(slideCount) {
+  if (slideCount <= 1) return; 
+  const sliderTrack = document.getElementById('slider-track');
+  let currentSlideIndex = 0;
+  setInterval(() => {
+    currentSlideIndex = (currentSlideIndex + 1) % slideCount;
+    if(sliderTrack) {
+        sliderTrack.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    }
+  }, 3000); 
+}
+
+function loadSiteSettings() {
+  const sliderTrack = document.getElementById('slider-track');
+  const footerEmail = document.getElementById('footer-email');
+  const footerPhone = document.getElementById('footer-phone');
+
+  fetch('/api/settings')
+    .then(res => res.json())
+    .then(settings => {
+      // Update Footer
+      if (settings.supportEmail && footerEmail) footerEmail.innerText = settings.supportEmail;
+      if (settings.supportPhone && footerPhone) footerPhone.innerText = settings.supportPhone;
+
+      // Build Slider
+      if (sliderTrack && settings.banners && settings.banners.length > 0) {
+        sliderTrack.innerHTML = ''; 
+        settings.banners.forEach((imgUrl, index) => {
+          const slideDiv = document.createElement('div');
+          slideDiv.className = 'slide';
+          slideDiv.innerHTML = `<img src="${getOptimizedUrl(imgUrl, 800)}" alt="Banner ${index+1}" loading="${index === 0 ? 'eager' : 'lazy'}">`;
+          sliderTrack.appendChild(slideDiv);
+        });
+        startSliderAnimation(settings.banners.length);
+      }
+    })
+    .catch(err => console.error('Settings load error:', err));
+}
+
+function loadHighlights() {
+  const track = document.getElementById('highlights-track');
+  const section = document.getElementById('highlights-section');
+
+  if (!track || !section) return; // Safety Check
+
+  fetch('/api/highlights')
+      .then(res => res.json())
+      .then(items => {
+          if (Array.isArray(items) && items.length > 0) {
+              section.style.display = 'block'; // Data hai to dikhao
+              track.innerHTML = '';
+
+              items.forEach(item => {
+                  let mediaHTML = '';
+                  
+                  if (item.type === 'video') {
+                      mediaHTML = `<video src="${item.url}" muted loop playsinline onclick="this.paused ? this.play() : this.pause()"></video>`;
+                  } else {
+                      mediaHTML = `<img src="${item.url}" alt="Highlight">`;
+                  }
+
+                  const card = document.createElement('div');
+                  card.className = 'highlight-card';
+                  card.innerHTML = `
+                      ${mediaHTML}
+                      <div style="position:absolute; bottom:0; left:0; width:100%; background:linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding:10px;">
+                          <p style="color:white; font-size:0.8rem; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.title || ''}</p>
+                      </div>
+                  `;
+                  track.appendChild(card);
+              });
+          } else {
+            section.style.display = 'none'; // Data nahi hai to chupao
+          }
+      })
+      .catch(err => console.error("Highlights error:", err));
+}
+
+function loadHomeSection(tag, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const userData = JSON.parse(localStorage.getItem('shoeonUser'));
+  const isUserLoggedIn = userData ? true : false;
+  const isOffline = userData && userData.isOfflineCustomer; 
+
+  fetch(`/api/products?tag=${tag}`, { cache: 'no-store' })
+    .then(res => res.json())
+    .then(products => {
+      if (products.length === 0) {
+        container.innerHTML = '<p style="padding:20px; color:#999;">Coming Soon...</p>';
+        return;
+      }
+      let html = '';
+      products.forEach(product => {
+        let finalPrice = product.salePrice; 
+        let priceStyle = "";
+
+        if (isOffline && product.offlinePrice && product.offlinePrice > 0) {
+          finalPrice = product.offlinePrice;
+          priceStyle = "color: #d35400;"; 
+        }
+
+        html += `
+          <div class="product-card-b2b" onclick="window.location.href='product-detail.html?id=${product._id}'" style="cursor:pointer;">
+            <div class="card-image-container">
+              <img src="${getOptimizedUrl(product.images[0], 400)}" alt="${product.name}" class="product-image" loading="lazy">
+            </div>
+            <div class="card-info-container">
+              <h3 class="product-brand">${product.brand}</h3>
+              <p class="product-category">${product.name}</p>
+              <div class="b2b-info">
+                <div class="info-left">
+                  <span class="product-price-label">Price</span>
+                  <span class="product-price" style="${priceStyle}">
+                     ${isUserLoggedIn ? '₹' + finalPrice : 'Login'}
+                  </span>
+                </div>
+                <div class="info-right">
+                  <span class="moq-label">MOQ</span>
+                  <span class="moq-value">${product.moq} Prs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    })
+    .catch(err => console.error(err));
+}
+
+function closeIntro() {
+    const introOverlay = document.getElementById('intro-overlay');
+    if (introOverlay) {
+      introOverlay.style.opacity = '0';
+      setTimeout(() => {
+        introOverlay.style.display = 'none';
+      }, 500);
+    }
+}
+
+
+// --- 3. MAIN INITIALIZATION (DOM LOADED) ---
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  // --- A. LOAD SETTINGS (Slider & Contact) ---
-  function loadSiteSettings() {
-    const sliderTrack = document.getElementById('slider-track');
-    const footerEmail = document.getElementById('footer-email');
-    const footerPhone = document.getElementById('footer-phone');
+  // A. Load Sections
+  loadHomeSection('Top Best', 'top-best-container');
+  loadHomeSection('New Arrival', 'new-arrival-container');
+  loadHomeSection('Featured', 'featured-container');
 
-    fetch('/api/settings')
-      .then(res => res.json())
-      .then(settings => {
+  // B. Load Banners & Highlights
+  loadSiteSettings();
+  loadHighlights(); // 🔥 Ab ye Error nahi dega
 
-        // 1. Update Footer Info
-        if (settings.supportEmail && footerEmail) footerEmail.innerText = settings.supportEmail;
-        if (settings.supportPhone && footerPhone) footerPhone.innerText = settings.supportPhone;
-
-        // 2. Build Slider
-        if (sliderTrack && settings.banners && settings.banners.length > 0) {
-          sliderTrack.innerHTML = ''; // Clear default
-
-          settings.banners.forEach((imgUrl, index) => {
-            const slideDiv = document.createElement('div');
-            slideDiv.className = 'slide';
-
-            const loadingMode = index === 0 ? 'eager' : 'lazy';
-            const priority = index === 0 ? 'fetchpriority="high"' : '';
-
-            slideDiv.innerHTML = `<img src="${getOptimizedUrl(imgUrl, 600)}" alt="Banner" loading="${loadingMode}" ${priority}>`;
-            sliderTrack.appendChild(slideDiv);
-          });
-
-          // Images load hone ke baad Slider Animation start karo
-          startSliderAnimation(settings.banners.length);
-        }
-      })
-      .catch(err => console.error('Settings load error:', err));
-  }
-
-  // --- B. SLIDER ANIMATION LOGIC ---
-  function startSliderAnimation(slideCount) {
-    if (slideCount <= 1) return; // Agar 1 hi image hai toh slide mat karo
-
-    const sliderTrack = document.getElementById('slider-track');
-    let currentSlideIndex = 0;
-
-    // Track ki width set karo (e.g., 3 images = 300%)
-    sliderTrack.style.width = `${slideCount * 100}%`;
-
-    // Har slide ki width set karo
-    Array.from(sliderTrack.children).forEach(slide => {
-      slide.style.width = `${100 / slideCount}%`;
-    });
-
-    // Auto Slide Interval (Har 3 second me)
-    setInterval(() => {
-      currentSlideIndex = (currentSlideIndex + 1) % slideCount;
-      const amountToMove = currentSlideIndex * (100 / slideCount);
-      sliderTrack.style.transform = `translateX(-${amountToMove}%)`;
-    }, 3000);
-  }
-
-  // --- C. POPUP LOGIC (Waisa hi hai) ---
+  // C. Category Sheet Logic
   const categoryTriggers = document.querySelectorAll('.category-trigger');
   const sheetOverlay = document.getElementById('sheet-overlay');
   const bottomSheet = document.getElementById('category-sheet-modal');
@@ -159,9 +255,9 @@ document.addEventListener('DOMContentLoaded', () => {
       let itemsHTML = '';
       data.items.forEach(item => {
         itemsHTML += `<a href="${item.url}" class="subcategory-item">
-    <img src="${getOptimizedUrl(item.img, 200)}" alt="${item.name}" loading="lazy">
-    <p>${item.name}</p>
-</a>`;
+            <img src="${getOptimizedUrl(item.img, 200)}" alt="${item.name}" loading="lazy">
+            <p>${item.name}</p>
+        </a>`;
       });
       sheetGrid.innerHTML = itemsHTML;
       bottomSheet.classList.add('active');
@@ -178,102 +274,18 @@ document.addEventListener('DOMContentLoaded', () => {
     sheetOverlay.addEventListener('click', closeSheet);
   }
 
-  // --- D. HOME SECTIONS (New Arrival etc.) ---
-  // (Yeh code bhi humne pehle add kiya tha)
-  function loadHomeSection(tag, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    // 1. User Data Nikalo (Login check + Offline Check)
-    const userData = JSON.parse(localStorage.getItem('shoeonUser'));
-    const isUserLoggedIn = userData ? true : false;
-    const isOffline = userData && userData.isOfflineCustomer; // 🔥 Offline status check
-
-    fetch(`/api/products?tag=${tag}`, { cache: 'no-store' })
-      .then(res => res.json())
-      .then(products => {
-        if (products.length === 0) {
-          container.innerHTML = '<p style="padding:20px; color:#999;">Coming Soon...</p>';
-          return;
-        }
-        let html = '';
-        products.forEach(product => {
-
-          // 🔥 2. PRICE LOGIC (Ye add kiya hai) 🔥
-          let finalPrice = product.salePrice; // Default Online Price
-          let priceStyle = "";
-
-          // Agar Offline User hai AUR Offline Price set hai
-          if (isOffline && product.offlinePrice && product.offlinePrice > 0) {
-            finalPrice = product.offlinePrice;
-            priceStyle = "color: #d35400;"; // Orange color taaki alag dikhe
-          }
-
-          html += `
-            <div class="product-card-b2b" onclick="window.location.href='product-detail.html?id=${product._id}'" style="cursor:pointer;">
-              <div class="card-image-container">
-                <img src="${getOptimizedUrl(product.images[0], 400)}" alt="${product.name}" class="product-image" loading="lazy">
-              </div>
-              <div class="card-info-container">
-                <h3 class="product-brand">${product.brand}</h3>
-                <p class="product-category">${product.name}</p>
-                <div class="b2b-info">
-                  <div class="info-left">
-                    <span class="product-price-label">Price</span>
-                    
-                    <span class="product-price" style="${priceStyle}">
-                       ${isUserLoggedIn ? '₹' + finalPrice : 'Login'}
-                    </span>
-
-                  </div>
-                  <div class="info-right">
-                    <span class="moq-label">MOQ</span>
-                    <span class="moq-value">${product.moq} Prs</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-        container.innerHTML = html;
-      })
-      .catch(err => console.error(err));
-  }
-
-  // Load Sections
-  loadHomeSection('Top Best', 'top-best-container');
-  loadHomeSection('New Arrival', 'new-arrival-container');
-  loadHomeSection('Featured', 'featured-container');
-
-  // Load Settings (Banner) - Sabse last me call karo
-  loadSiteSettings();
-
-});/* =========================================
-   INTRO VIDEO LOGIC
-   ========================================= */
-document.addEventListener('DOMContentLoaded', () => {
+  // D. Intro Video Logic
   const introOverlay = document.getElementById('intro-overlay');
   const introVideo = document.getElementById('intro-video');
 
   if (introOverlay && introVideo) {
-    // 1. Jab video khatam ho, overlay hata do
     introVideo.onended = function () {
       closeIntro();
     };
-
-    // 2. Fallback: Agar video load nahi hui to 5 sec baad hata do
+    // Fallback: 5 sec baad auto close
     setTimeout(() => {
-       // closeIntro(); // Isse uncomment kar dena agar safety chahiye
+       // closeIntro(); 
     }, 5000);
   }
-});
 
-function closeIntro() {
-  const introOverlay = document.getElementById('intro-overlay');
-  if (introOverlay) {
-    introOverlay.style.opacity = '0';
-    setTimeout(() => {
-      introOverlay.style.display = 'none';
-    }, 500);
-  }
-}
+});

@@ -136,6 +136,20 @@
                                     </label>
                                 </div>
 
+                              <div class="form-group" style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                                    <label style="color: #0d47a1; font-weight: bold; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                        <input type="checkbox" id="isCashAllowed" style="width: 18px; height: 18px;"> 
+                                        Allow Cash / Pay Later Option
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label style="font-weight: bold;">Advance Payment (%)</label>
+                                    <input type="number" id="advancePercent" placeholder="Default: 20" min="0" max="100" 
+                                           style="border: 2px solid #007bff; padding: 8px; width: 100%; border-radius: 5px;">
+                                    <small style="color: #666;">Enter percentage (e.g. 10, 20, 50)</small>
+                                </div>
+
                                 <button type="submit" class="btn-primary btn-action-wide" id="save-credit-btn">Save
                                     Submit</button>
                                 <div id="update-message" style="margin-top:10px;"></div>

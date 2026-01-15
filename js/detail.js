@@ -208,13 +208,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Stock Display
-      if (pdpStockDisplay) {
-        if (currentStock > 0) {
+     if (pdpStockDisplay) {
+        if (currentStock >= moq) { // 🔥 Fix: Agar Stock MOQ se kam hai to bhi Out of Stock maano
           pdpStockDisplay.innerHTML = `<span style="color: #2e7d32; font-weight: bold;"><i class="fa-solid fa-check-circle"></i> In Stock (${currentStock} pieces)</span>`;
+          
+          // Buttons ON
+          if (buyNowBtn) { buyNowBtn.disabled = false; buyNowBtn.style.opacity = "1"; buyNowBtn.innerText = "Buy Now"; buyNowBtn.style.cursor = "pointer"; }
+          if (addToCartBtn) { addToCartBtn.disabled = false; addToCartBtn.style.opacity = "1"; addToCartBtn.style.cursor = "pointer"; }
+        
         } else {
           pdpStockDisplay.innerHTML = `<span style="color: #d32f2f; font-weight: bold;"><i class="fa-solid fa-circle-xmark"></i> Out of Stock</span>`;
-          if (buyNowBtn) { buyNowBtn.style.opacity = "0.5"; buyNowBtn.innerText = "Sold Out"; }
-          if (addToCartBtn) { addToCartBtn.style.opacity = "0.5"; }
+          
+          // 🔥 Fix: Buttons ko sach me Disable karo
+          if (buyNowBtn) { 
+              buyNowBtn.disabled = true; // Click nahi hoga
+              buyNowBtn.style.opacity = "0.5"; 
+              buyNowBtn.innerText = "Sold Out"; 
+              buyNowBtn.style.cursor = "not-allowed";
+          }
+          if (addToCartBtn) { 
+              addToCartBtn.disabled = true; // Click nahi hoga
+              addToCartBtn.style.opacity = "0.5"; 
+              addToCartBtn.style.cursor = "not-allowed";
+          }
         }
       }
 
@@ -313,6 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         newBuyBtn.addEventListener("click", () => {
           // 🔥 LOGIN CHECK (Waisa ka waisa)
+          if (currentStock < moq) { alert("This item is Out of Stock!"); return; }
           if (!isUserLoggedIn()) {
             showToast("Please Login to buy.");
             setTimeout(() => window.location.href = "login.html", 1000);
@@ -359,6 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         newCartBtn.addEventListener('click', () => {
           // 🔥 LOGIN CHECK
+          if (currentStock < moq) { alert("This item is Out of Stock!"); return; }
           if (!isUserLoggedIn()) { showToast('Please Login first'); return; }
 
           const packs = getSelectedPacks();

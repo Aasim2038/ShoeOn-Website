@@ -19,6 +19,9 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
+
+  isCashAllowed: { type: Boolean, default: false },
+  
   isOfflineCustomer: { type: Boolean, default: false },
 
   // 4. Role (Customer hai ya Admin)
@@ -36,12 +39,15 @@ const userSchema = new Schema({
     type: Date,
     default: undefined
   },
+  
 
   email: { 
     type: String, 
     required: true, 
     unique: true // Ek email se ek hi account banega
   },
+
+  advancePercent: { type: Number, default: 20 },
 
 }, { timestamps: true });
 

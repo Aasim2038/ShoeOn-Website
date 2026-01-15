@@ -3,7 +3,7 @@
    (FIXED - openCart ko global banaya hai)
    ========================================= */
 
-     (function checkLogin() {
+   (function checkLogin() {
     const token = localStorage.getItem('token') || localStorage.getItem('authToken');
     const currentPath = window.location.pathname;
 
@@ -273,21 +273,21 @@ function updateMenuAuth() {
       `;
 
     // Logout button par click logic
-   document.getElementById("btn-logout").addEventListener("click", () => {
-      // 1. Data delete karo (SARA KACHRA SAAF KARNA ZAROORI HAI)
+    document.getElementById("btn-logout").addEventListener("click", () => {
+      // 1. Data delete karo (SAARA KACHRA SAAF KARO)
       localStorage.removeItem("shoeonUser");
       localStorage.removeItem("shoeonCart"); 
       
-      // 🔥 FIX: Token bhi delete karo, warna checkLogin pakad nahi payega
+      // 🔥 FIX: Token bhi delete karo, tabhi to login page aayega!
       localStorage.removeItem("token");     
-      localStorage.removeItem("authToken"); // Dono naam hata do safety ke liye
+      localStorage.removeItem("authToken"); // Safety ke liye dono hata do
 
       // 2. Message dikhao
       showToast("Logged out successfully");
 
       // 3. Seedha Login Page par bhejo (Reload nahi, Redirect)
       setTimeout(() => {
-        window.location.href = "login.html"; 
+        window.location.href = "login.html"; // ✅ Ab ye Login page par le jayega
       }, 1000);
     });
   } else {

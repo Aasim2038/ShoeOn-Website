@@ -36,6 +36,9 @@ const orderSchema = new Schema({
     type: Number,
     required: true
   },
+
+  advancePaid: { type: Number, default: 0 },
+    balanceAmount: { type: Number, default: 0 },
   
   // 3. Status
   status: {

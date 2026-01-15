@@ -11,6 +11,7 @@ const cloudinary = require('cloudinary').v2; // UPLOAD ke liye
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs'); // Password hash karne ke liye (Zaroori hai)
+const Highlight = require('./models/Highlight');
 
 
 const JWT_SECRET = 'shoeon_secret_key_123';
@@ -90,6 +91,71 @@ mongoose.connect(dbURI)
   .catch((err) => { console.log('❌ Database connection fail!'); console.log(err); });
 
 // --- 6. API ROUTES (FINAL) ---
+
+// --- HIGHLIGHTS API ---
+
+// 1. Get All Highlights
+app.get('/api/highlights', async (req, res) => {
+    try {
+        const highlights = await Highlight.find().sort({ createdAt: -1 });
+        res.json(highlights);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error fetching highlights" });
+    }
+});
+
+// 2. Upload Multiple Highlights (Image OR Video)
+app.post('/api/highlights', upload.array('mediaFiles', 10), async (req, res) => { // 🔥 Array of 10
+    try {
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: "No files uploaded" });
+        }
+
+        const uploadedItems = [];
+
+        // Loop through all files
+        for (const file of req.files) {
+            const isVideo = file.mimetype.startsWith('video');
+            const resourceType = isVideo ? 'video' : 'image';
+
+            // Cloudinary Upload
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: 'shoeon-highlights',
+                resource_type: resourceType
+            });
+
+            // Save to DB
+            const newHighlight = new Highlight({
+                type: resourceType,
+                url: result.secure_url,
+                title: req.body.title || "" // Ek hi title sab par lagega (optional)
+            });
+
+            await newHighlight.save();
+            uploadedItems.push(newHighlight);
+
+            // Cleanup local file
+            try { require('fs').unlinkSync(file.path); } catch(e) {}
+        }
+
+        res.json({ message: "Upload Successful", items: uploadedItems });
+
+    } catch (err) {
+        console.error("Highlight Upload Error:", err);
+        res.status(500).json({ error: "Upload failed" });
+    }
+});
+
+// 3. Delete Highlight
+app.delete('/api/highlights/:id', async (req, res) => {
+    try {
+        await Highlight.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: "Delete failed" });
+    }
+});
 
 // (A) NAYA PRODUCT BANANE KA ROUTE (File Upload Ke Saath!)
 app.post('/api/products', upload.array('images', 5), async (req, res) => {
@@ -424,18 +490,8 @@ app.post('/api/auth/register', async (req, res) => {
  * URL: /api/auth/login
  * ============================================
  */
-app.post('/api/auth/login', async (req, res) => { // 👈 async zaroori hai
+app.post('/api/auth/login', async (req, res) => {
   const { phone, password } = req.body;
-
-  console.log("Login Request Aayi:", req.body); // Dekho Phone/Pass aa raha hai?
-
-const user = await User.findOne({ phone: req.body.phone });
-console.log("User DB me mila?", user); // Dekho user mila ya null aaya?
-
-if (user) {
-    console.log("DB Password:", user.password);
-    console.log("Input Password:", req.body.password);
-}
 
   try {
       const user = await User.findOne({ phone: phone });
@@ -445,41 +501,23 @@ if (user) {
       }
 
       let isMatch = false;
-
-        // Check 1: Kya Password seedha Plain Text match ho raha hai? (Purane users ke liye)
+        // Password Check Logic (Old + Bcrypt)
         if (user.password === req.body.password) {
             isMatch = true;
-        } 
-        // Check 2: Agar nahi, to Bcrypt Hash check karo (Naye users ke liye)
-        else {
+        } else {
             try {
-                // Bcrypt tabhi chalega agar DB password hash jaisa dikhe
                 if (user.password.startsWith('$2b$') || user.password.startsWith('$2a$')) {
                     isMatch = await bcrypt.compare(req.body.password, user.password);
                 }
-            } catch (err) {
-                console.log("Bcrypt Error:", err.message);
-                isMatch = false;
-            }
+            } catch (err) { isMatch = false; }
         }
 
-        // Agar dono fail ho gaye
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid Credentials (Password Wrong)' });
-        }
+        if (!isMatch) return res.status(401).json({ message: 'Invalid Credentials' });
+        if (user.isApproved === false) return res.status(403).json({ error: 'Account not approved yet.' });
 
-      if (user.isApproved === false) {
-        return res.status(403).json({ error: 'Account not approved yet.' });
-      }
+      const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: '7d' });
 
-      // ✅ STEP 2: Token Generate Karna
-      const token = jwt.sign(
-        { id: user._id, isAdmin: user.isAdmin }, 
-        JWT_SECRET, 
-        { expiresIn: '7d' }
-      );
-
-      // ✅ STEP 3: Response Bhejo
+      // ✅ RESPONSE MEIN COMMA LAGA DIYA HAI
       res.status(200).json({ 
         message: 'Login Successful!', 
         token: token, 
@@ -487,8 +525,9 @@ if (user) {
           id: user._id, 
           name: user.name, 
           phone: user.phone,
-          isAdmin: user.isAdmin,
-          isOfflineCustomer: user.isOfflineCustomer,
+         isOfflineCustomer: user.isOfflineCustomer,
+          isCashAllowed: user.isCashAllowed, 
+          advancePercent: user.advancePercent || 20, 
           shopName: user.shopName,
           shopAddress: user.shopAddress
         } 
@@ -551,55 +590,95 @@ app.get('/api/suggestions', async (req, res) => {
  * ============================================
  */
 
-// 1. GET SETTINGS (Site par dikhane ke liye)
+// 0. MODEL DEFINITION (Agar alag file me nahi hai to yahi bana lo)
+const siteSettingsSchema = new mongoose.Schema({
+    banners: { type: [String], default: [] }, 
+    supportEmail: { type: String, default: "support@shoeon.com" },
+    supportPhone: { type: String, default: "+91 98765 43210" }
+});
+const SiteSettings = mongoose.models.SiteSettings || mongoose.model('SiteSettings', siteSettingsSchema);
+
+
+// 1. GET SETTINGS
 app.get('/api/settings', async (req, res) => {
-  try {
-    // Hamesha pehla document dhoondo
-    let settings = await Setting.findOne();
-    
-    // Agar settings abhi tak bani nahi hain, toh nayi bana do
-    if (!settings) {
-      settings = new Setting({});
-      await settings.save();
+    try {
+        let settings = await SiteSettings.findOne();
+        if (!settings) {
+            settings = new SiteSettings({});
+            await settings.save();
+        }
+        res.json(settings);
+    } catch (err) {
+        console.error("Settings Load Error:", err);
+        res.status(500).json({ error: "Server Error" });
     }
-    res.status(200).json(settings);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch settings' });
-  }
 });
 
-// 2. UPDATE SETTINGS (File Upload ke saath)
-app.post('/api/settings', upload.array('banners', 5), async (req, res) => {
-  try {
-    const files = req.files;
-    
-    // Pehle purani settings dhoondo
-    let settings = await Setting.findOne();
-    if (!settings) settings = new Setting({});
 
+// 2. UPLOAD BANNERS (CLOUDINARY LOGIC)
+app.post('/api/settings', upload.array('banners', 10), async (req, res) => {
+    try {
+        let settings = await SiteSettings.findOne();
+        if (!settings) settings = new SiteSettings({});
 
-    // Agar nayi photos aayi hain, toh upload karke add karo
-    if (files && files.length > 0) {
-      // Note: Hum purani photos replace kar rahe hain ya add?
-      // Chalo abhi ke liye "Replace" karte hain (Fresh Slider)
-      settings.banners = []; // Purana khaali karo
+        // Limit Check
+        const currentCount = settings.banners.length;
+        const newFilesCount = req.files.length;
+        if (currentCount + newFilesCount > 10) {
+            return res.status(400).json({ 
+                error: `Limit reached! Max 10 banners allowed.` 
+            });
+        }
 
-      for (const file of files) {
-        const result = await cloudinary.uploader.upload(file.path, {
-          folder: 'shoeon-banners'
-        });
-        settings.banners.push(result.secure_url);
-        require('fs').unlinkSync(file.path);
-      }
+        let newBannerUrls = [];
+
+        // 🔥 CLOUDINARY UPLOAD LOOP
+        if (req.files && req.files.length > 0) {
+            for (const file of req.files) {
+                // Cloudinary pe bhejo
+                const result = await cloudinary.uploader.upload(file.path, { 
+                    folder: 'shoeon-banners', // Alag folder banners ke liye
+                    resource_type: "image"
+                });
+                
+                newBannerUrls.push(result.secure_url);
+
+                // Local temp file delete karo (Safai)
+                try { require('fs').unlinkSync(file.path); } catch(e) {}
+            }
+        }
+
+        // Database me URLs jodo (Append)
+        settings.banners = [...settings.banners, ...newBannerUrls];
+        await settings.save();
+
+        res.json({ message: "Banners uploaded to Cloudinary!", banners: settings.banners });
+
+    } catch (err) {
+        console.error("Cloudinary Upload Error:", err);
+        res.status(500).json({ error: "Server Error during upload" });
     }
+});
 
-    await settings.save();
-    res.status(200).json({ message: 'Settings Updated!', settings });
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Update failed' });
-  }
+// 3. DELETE BANNER
+app.post('/api/settings/delete-banner', async (req, res) => {
+    try {
+        const { imageUrl } = req.body;
+        
+        let settings = await SiteSettings.findOne();
+        if (!settings) return res.status(404).json({ error: "Settings not found" });
+
+        // Sirf List se hata rahe hain (Cloudinary se delete karna optional hai)
+        settings.banners = settings.banners.filter(url => url !== imageUrl);
+        
+        await settings.save();
+        res.json({ message: "Banner removed", banners: settings.banners });
+
+    } catch (err) {
+        console.error("Delete Error:", err);
+        res.status(500).json({ error: "Failed to delete banner" });
+    }
 });
 /**
  * ============================================
@@ -936,55 +1015,48 @@ app.put('/api/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         
-        // Frontend se jo bhi data aa raha hai usse nikaal lo
+        // 🔥 STEP 1: Yahan se data nikaalna zaroori hai
         const { 
-            name, 
-            phone, 
-            shopName, 
-            shopAddress, 
-            gstNumber, 
-            
-            isApproved,        // Approval Status (Button se aata hai)
-            isOfflineCustomer, // Offline/Online Status (Checkbox se aata hai)
-            
-            // Agar future me Credit wapis lagana ho to ye fields yahi rahengi
-            isCreditApproved, 
-            creditTermsDays, 
-            creditLimit 
+            name, phone, shopName, shopAddress, gstNumber, 
+            isApproved, 
+            isOfflineCustomer, 
+            isCashAllowed,  // 👈 Ye zaroori hai
+            advancePercent, // 👈 Ye bhi zaroori hai
+            isCreditApproved, creditTermsDays, creditLimit 
         } = req.body;
 
-        // Ek 'update object' banao (Jo data aaya sirf wahi update hoga)
         const updateFields = {};
 
-        // Text fields update karo agar aaye hain to
+        // Text fields update
         if (name) updateFields.name = name;
         if (phone) updateFields.phone = phone;
         if (shopName) updateFields.shopName = shopName;
         if (shopAddress) updateFields.shopAddress = shopAddress;
         if (gstNumber) updateFields.gstNumber = gstNumber;
 
-        // Boolean (True/False) fields check karo
-        // (Hum 'undefined' check kar rahe hain taaki false value bhi save ho sake)
+        // 🔥 STEP 2: Advance Percent Logic
+        if (advancePercent !== undefined && advancePercent !== "") {
+            updateFields.advancePercent = parseInt(advancePercent);
+        }
+
+        // Boolean fields check
         if (typeof isApproved !== 'undefined') updateFields.isApproved = isApproved;
         if (typeof isOfflineCustomer !== 'undefined') updateFields.isOfflineCustomer = isOfflineCustomer;
         
-        // Credit fields (Optional)
-        if (typeof isCreditApproved !== 'undefined') updateFields.isCreditApproved = isCreditApproved;
-        if (creditTermsDays) updateFields.creditTermsDays = creditTermsDays;
-        if (creditLimit) updateFields.creditLimit = creditLimit;
-
-        // Database Update Query
+        // 🔥 STEP 3: Cash Allowed Logic
+        if (typeof isCashAllowed !== 'undefined') updateFields.isCashAllowed = isCashAllowed;
+        
+        // Database Update
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { $set: updateFields }, // Sirf wahi fields update hongi jo humne set ki hain
-            { new: true } // Naya data wapis milega
+            { $set: updateFields },
+            { new: true }
         );
 
         if (!updatedUser) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // Success Response
         res.json(updatedUser);
 
     } catch (err) {
