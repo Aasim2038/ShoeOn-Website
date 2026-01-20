@@ -15,13 +15,34 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 300px;
         }
         .login-card h2 { margin-bottom: 20px; color: #333; }
-        .login-card input {
-            width: 100%; padding: 10px; margin-bottom: 15px;
-            border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;
+        
+        /* New CSS for Password Wrapper */
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
         }
+        
+        .password-wrapper input {
+            width: 100%; padding: 10px; 
+            padding-right: 40px; /* Space for the eye icon */
+            border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;
+            margin-bottom: 0; /* Margin wrapper handle karega */
+        }
+
+        .password-wrapper i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+
         .login-card button {
             width: 100%; padding: 10px; background: #333; color: white;
             border: none; border-radius: 5px; cursor: pointer; font-size: 16px;
+            margin-top: 15px; /* Added margin top since input wrapper removed it */
         }
         .login-card button:hover { background: #555; }
         .error { color: red; font-size: 13px; margin-top: 10px; display: none; }
@@ -31,7 +52,12 @@
 
     <div class="login-card">
         <h2>Admin Panel</h2>
-        <input type="password" id="adminPass" placeholder="Enter Password">
+        
+        <div class="password-wrapper">
+            <input type="password" id="adminPass" placeholder="Enter Password">
+            <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePassword()"></i>
+        </div>
+
         <button onclick="checkLogin()">Login</button>
         <p class="error" id="errorMsg">Incorrect Password!</p>
     </div>
@@ -40,6 +66,22 @@
         // Check if already logged in
         if (sessionStorage.getItem('shoeonAdminLoggedIn') === 'true') {
             window.location.href = 'admin-dashboard.html';
+        }
+
+        // Feature: Toggle Password Visibility
+        function togglePassword() {
+            const passInput = document.getElementById('adminPass');
+            const icon = document.getElementById('toggleIcon');
+
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
         }
 
         function checkLogin() {

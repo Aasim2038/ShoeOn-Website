@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Our Agents - ShoeOn</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Reusing the clean container style from about.html */
+        .about-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .about-header h1 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .about-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* --- AGENT CARD STYLES --- */
+        .agents-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .agent-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 30px 20px;
+            width: 300px; /* Fixed width for consistency */
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #d3a14b;
+        }
+
+        /* Gold top border for branding */
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 5px;
+            background: #d3a14b;
+        }
+
+        .agent-photo-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px auto;
+            position: relative;
+        }
+
+        .agent-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #f9f9f9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #2ecc71; /* Green for trust */
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border: 2px solid white;
+        }
+
+        .agent-name {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .agent-role {
+            color: #d3a14b; /* Theme color */
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+
+        .contact-btn:hover {
+            background-color: #d3a14b;
+        }
+
+        .contact-btn i {
+            margin-right: 8px;
+        }
+
+        /* --- TRUST & SAFETY SECTION --- */
+        .trust-section {
+            background-color: #fcfcfc;
+            border: 1px dashed #d3a14b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .trust-section h3 {
+            color: #333;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .trust-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #555;
+        }
+
+        .trust-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .trust-list i {
+            color: #d3a14b;
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .agent-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="nav-left">
+            <a href="index.html" class="nav-icon"><i class="fa-solid fa-arrow-left"></i></a>
+            <a href="index.html" class="logo">ShoeOn</a>
+        </div>
+        <div class="nav-center">
+            <h3>Field Agents</h3>
+        </div>
+        <div class="nav-right">
+            <a href="#" class="nav-icon"><i class="fa-solid fa-headset"></i></a>
+        </div>
+    </header>
+
+    <main>
+        <div class="about-container">
+            <div class="about-header">
+                <h1>Meet Our Field Team</h1>
+                <p>Bringing Super Agencies directly to your shop. Our verified agents are here to assist you with onboarding and orders.</p>
+            </div>
+
+            <div class="agents-grid">
+                
+                <div class="agent-card">
+                    <div class="agent-photo-container">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Agent Photo" class="agent-photo">
+                        <div class="verified-badge" title="Verified Staff">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                    <h3 class="agent-name">Rahul Sharma</h3> <p class="agent-role">Sales Executive</p>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 20px;">
+                        Responsible for: Market Area A & B
+                    </p>
+                    <!-- <a href="tel:+919876543210" class="contact-btn">
+                        <i class="fa-solid fa-phone"></i> Call Agent
+                    </a> -->
+                </div>
+
+                <div class="agent-card">
+                    <div class="agent-photo-container">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Agent Photo" class="agent-photo">
+                        <div class="verified-badge" title="Verified Staff">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                    <h3 class="agent-name">Amit Verma</h3> <p class="agent-role">Sales Executive</p>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 20px;">
+                        Responsible for: Market Area C & D
+                    </p>
+                    <!-- <a href="tel:+919876543210" class="contact-btn">
+                        <i class="fa-solid fa-phone"></i> Call Agent
+                    </a> -->
+                </div>
+
+            </div>
+
+           <div class="trust-section">
+                <h3><i class="fa-solid fa-shield-halved"></i> How to Verify Our Agents</h3>
+                <ul class="trust-list">
+                    <li>
+                        <i class="fa-solid fa-user-check"></i>
+                        <span><strong>Official Listing:</strong> To confirm the identity of the person visiting your shop, simply match them with the photos and names listed above on this official page.</span>
+                    </li>
+                    
+                    <li>
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span><strong>App Access:</strong> Our authorized agents will always use the official ShoeOn Admin App to show you the catalog and place orders.</span>
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-phone"></i>
+                        <span><strong>Direct Verification:</strong> If you still have any doubts, please feel free to call our main office number listed on the 'About Us' page.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p style="text-align: center; color: #888; padding: 20px;">&copy; 2025 ShoeOn. All rights reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
