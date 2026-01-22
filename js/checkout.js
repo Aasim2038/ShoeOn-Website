@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // 🔍 DEBUG 1: Token Check
     if (!token) {
-        alert("❌ ERROR: Token nahi mila! Iska matlab aap Logged In nahi ho.");
+        // alert("❌ ERROR: Token nahi mila! Iska matlab aap Logged In nahi ho.");
     } 
     else {
         // alert("✅ Token Mil gaya! Server ko call kar raha hoon..."); // Step 1 Pass
